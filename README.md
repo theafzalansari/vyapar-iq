@@ -128,16 +128,46 @@ npm run test:backend
 
 ---
 
-## 📡 API Endpoints (Milestone 1)
+## 📡 API Endpoints
 
-### Public Endpoints
-- **`GET /api/health`**
+### System & Authentication
+- **`GET /api/health`** (Public)
   - Returns service status, uptime, environment, and MongoDB connection state (`connected` | `disconnected` | `connecting`).
+- **`GET /api/auth/me`** (Protected)
+  - Requires Clerk Bearer token (or `x-mock-user-id` in dev/test mode). Returns authenticated user identity.
 
-### Protected Endpoints
-- **`GET /api/auth/me`**
-  - Requires valid Clerk Bearer token in the `Authorization` header (or `x-mock-user-id` in dev/test mode).
-  - Returns authenticated user ID and access confirmation.
+### Transactions & CSV Ingestion (Milestone 2)
+- **`GET /api/transactions/template`** (Public)
+  - Downloads a sample CSV template (`date,type,amount,category,description,reference`).
+- **`POST /api/transactions/import`** (Protected)
+  - Ingests transactions via `multipart/form-data` with form field name `file`.
+  - Supports `?allowDuplicate=true` to override duplicate file detection.
+- **`GET /api/transactions`** (Protected)
+  - Fetches paginated transactions scoped strictly to the authenticated user.
+  - Query parameters: `page`, `limit`, `type`, `category`, `startDate`, `endDate`, `search`, `sortBy`, `sortOrder`.
+
+---
+
+## 📥 CSV Ingestion & Idempotency Specification
+
+### Accepted Columns
+| Column | Type | Required | Description / Example |
+|---|---|---|---|
+| `date` | String | **Yes** | ISO-8601 (`2026-10-01`), `YYYY-MM-DD`, or `DD-MM-YYYY` |
+| `type` | String | **Yes** | `income` or `expense` (case-insensitive) |
+| `amount` | Number/String | **Yes** | Positive number, supports commas (e.g. `12500` or `"12,500.00"`) |
+| `category` | String | **Yes** | Category name (e.g. `Sales`, `Inventory`, `Rent`, `Utilities`) |
+| `description` | String | **Yes** | Transaction description (max 500 chars) |
+| `reference` | String | *Optional* | Invoice, cheque, or reference code (e.g. `INV-001`, `PO-982`) |
+
+### Idempotency & Duplicate Upload Strategy
+1. **Mechanism**: Every uploaded CSV file buffer is cryptographically hashed using **SHA-256**.
+2. **Behavior**: Before processing rows, the system queries `ImportBatch` for an existing batch with the same `userId` and `fileHash`.
+   - If found, the request is immediately rejected with **HTTP 409 Conflict** (`code: 'DUPLICATE_UPLOAD'`), returning the previous batch ID and timestamp.
+   - To deliberately re-import an identical file, clients can pass `?allowDuplicate=true` or the header `x-allow-duplicate: true`.
+3. **Strategy Limitations**:
+   - **Byte-sensitivity**: Changing a single space, header capitalization, or row ordering modifies the SHA-256 hash, so partial overlaps cannot be caught by file hash alone.
+   - **Filename-insensitivity**: Files with different names but identical content are correctly recognized as duplicate uploads.
 
 ---
 
@@ -146,7 +176,7 @@ npm run test:backend
 Full TypeScript interfaces are exported in [backend/src/types/contracts.types.ts](file:///d:/Hackathon/vyapar-iq/backend/src/types/contracts.types.ts):
 
 1. **CSV Import Contract**:
-   - `CsvImportResponse`: `{ batchId, fileName, totalRows, successfulRows, failedRows, errors, sampleTransactions, status }`
+   - `CsvImportResponse`: `{ batchId, fileName, totalRows, importedRows, rejectedRows, status, errors, sampleTransactions, importedAt }`
 2. **Dashboard Summary Contract**:
    - `DashboardSummaryResponse`: `{ period, metrics: { totalRevenue, totalExpenses, netProfit, burnRateOrSavings }, cashflowTrends, topExpenseCategories, recentTransactions, anomalyAlertsCount }`
 3. **Anomaly Findings Contract**:

@@ -12,6 +12,11 @@ export interface IImportBatchDocument extends Document {
   userId: string;
   fileName: string;
   fileSize: number;
+  fileHash?: string;
+  totalRows: number;
+  importedRows: number;
+  rejectedRows: number;
+  // Aliases for compatibility
   rowCount: number;
   successCount: number;
   errorCount: number;
@@ -42,23 +47,40 @@ const ImportBatchSchema = new Schema<IImportBatchDocument>(
       default: 0,
       min: 0,
     },
-    rowCount: {
+    fileHash: {
+      type: String,
+      index: true,
+      default: null,
+    },
+    totalRows: {
       type: Number,
       required: true,
       default: 0,
       min: 0,
+    },
+    importedRows: {
+      type: Number,
+      required: true,
+      default: 0,
+      min: 0,
+    },
+    rejectedRows: {
+      type: Number,
+      required: true,
+      default: 0,
+      min: 0,
+    },
+    rowCount: {
+      type: Number,
+      default: 0,
     },
     successCount: {
       type: Number,
-      required: true,
       default: 0,
-      min: 0,
     },
     errorCount: {
       type: Number,
-      required: true,
       default: 0,
-      min: 0,
     },
     status: {
       type: String,
@@ -87,6 +109,7 @@ const ImportBatchSchema = new Schema<IImportBatchDocument>(
 );
 
 ImportBatchSchema.index({ userId: 1, createdAt: -1 });
+ImportBatchSchema.index({ userId: 1, fileHash: 1 });
 
 export const ImportBatch: Model<IImportBatchDocument> =
   mongoose.models.ImportBatch || mongoose.model<IImportBatchDocument>('ImportBatch', ImportBatchSchema);

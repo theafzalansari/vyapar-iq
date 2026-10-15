@@ -14,17 +14,20 @@
   "dependencies": {
     "@clerk/express": "^2.1.78",
     "cors": "^2.8.5",
+    "csv-parse": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
+    "multer": "^2.4.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^2.3.0",
     "@types/node": "^22.13.4",
     "@types/supertest": "^6.0.2",
     "supertest": "^7.0.0",

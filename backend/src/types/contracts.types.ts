@@ -31,6 +31,7 @@ export interface TransactionDTO {
   category: string;
   paymentMethod: PaymentMethod;
   status: TransactionStatus;
+  reference?: string | null;
   notes?: string;
   metadata?: Record<string, unknown>;
   createdAt: string;
@@ -58,8 +59,11 @@ export interface CsvImportResponse {
   batchId: string;
   fileName: string;
   totalRows: number;
-  successfulRows: number;
-  failedRows: number;
+  importedRows: number;
+  rejectedRows: number;
+  // Aliases for compatibility
+  successfulRows?: number;
+  failedRows?: number;
   errors: CsvRowError[];
   sampleTransactions: TransactionDTO[];
   status: 'completed' | 'partial' | 'failed';

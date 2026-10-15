@@ -11,6 +11,7 @@ export interface ITransactionDocument extends Document {
   category: string;
   paymentMethod: PaymentMethod;
   status: TransactionStatus;
+  reference?: string | null;
   notes?: string;
   metadata?: Record<string, unknown>;
   createdAt: Date;
@@ -76,6 +77,13 @@ const TransactionSchema = new Schema<ITransactionDocument>(
         message: '{VALUE} is not a valid transaction status',
       },
       default: 'completed',
+    },
+    reference: {
+      type: String,
+      trim: true,
+      maxlength: [100, 'reference cannot exceed 100 characters'],
+      default: null,
+      index: true,
     },
     notes: {
       type: String,

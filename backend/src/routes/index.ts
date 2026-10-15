@@ -2,11 +2,15 @@ import { Router, Request, Response } from 'express';
 import { requireAuth } from '../middleware/auth';
 import { ApiResponse } from '../types/api.types';
 import { healthRouter } from './health.routes';
+import { transactionRouter } from './transaction.routes';
 
 export const apiRouter = Router();
 
 // Mount public health router at /health (e.g. /api/health)
 apiRouter.use('/', healthRouter);
+
+// Mount transaction router at /transactions (e.g. /api/transactions)
+apiRouter.use('/transactions', transactionRouter);
 
 // Protected route to verify Clerk authentication
 apiRouter.get('/auth/me', requireAuth, (req: Request, res: Response) => {
