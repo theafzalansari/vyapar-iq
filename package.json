@@ -1,0 +1,14 @@
+{
+  "name": "vyapar-iq-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VyaparIQ - AI-powered business copilot for small businesses",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "test:backend": "npm --prefix backend run test"
+  },
+  "keywords": ["business-copilot", "ai", "finance", "sme", "vyapar-iq"],
+  "author": "",
+  "license": "ISC"
+}
