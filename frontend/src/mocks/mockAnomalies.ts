@@ -1,0 +1,67 @@
+import { AnomalyFinding, AnomalyListResponse } from '../types/contracts.types';
+
+export const mockAnomaliesList: AnomalyFinding[] = [
+  {
+    id: 'anom_001',
+    type: 'duplicate_payment',
+    severity: 'critical',
+    title: 'Duplicate Payment Detected within 15 Minutes',
+    description: 'Two identical payments of ₹3,200 were made to vendor "Packaging & Logistics" on 9th Oct with references INV-BOX-12 and UPI-REF-091.',
+    detectedAt: '2026-10-09T13:25:00.000Z',
+    transactionId: 'tx_106',
+    affectedAmount: 3200,
+    confidenceScore: 0.96,
+    recommendedAction: 'Request a refund or credit note adjustment from vendor Sri Packaging Corp.',
+    isResolved: false,
+  },
+  {
+    id: 'anom_002',
+    type: 'expense_spike',
+    severity: 'high',
+    title: 'Abnormal 3.4x Expense Spike in Electricity & Utilities',
+    description: 'Commercial electricity bill of ₹4,850 exceeded the 6-month historical rolling average of ₹1,420 for October.',
+    detectedAt: '2026-10-10T17:00:00.000Z',
+    transactionId: 'tx_105',
+    affectedAmount: 3430,
+    confidenceScore: 0.88,
+    recommendedAction: 'Verify meter reading on MSEDCL portal to rule out commercial tariff penalties or faulty meter.',
+    isResolved: false,
+  },
+  {
+    id: 'anom_003',
+    type: 'negative_cashflow',
+    severity: 'medium',
+    title: 'Cashflow Outflow Velocity Alert for Week 1',
+    description: 'Total expenses between Oct 1 and Oct 7 exceeded incoming receivables by 18%, reducing liquid buffer to ₹38,000.',
+    detectedAt: '2026-10-07T20:00:00.000Z',
+    affectedAmount: 14500,
+    confidenceScore: 0.82,
+    recommendedAction: 'Expedite overdue B2B receivables before releasing further wholesale supplier payments.',
+    isResolved: true,
+    resolvedAt: '2026-10-09T10:00:00.000Z',
+  },
+  {
+    id: 'anom_004',
+    type: 'unexpected_vendor',
+    severity: 'low',
+    title: 'First-time Vendor Transaction without GSTIN',
+    description: 'Payment of ₹7,500 made under "Salaries & Wages" with generic cash voucher #VOUCHER-08.',
+    detectedAt: '2026-10-07T18:00:00.000Z',
+    transactionId: 'tx_109',
+    affectedAmount: 7500,
+    confidenceScore: 0.74,
+    recommendedAction: 'Attach signed muster roll or wage receipt for internal audit compliance.',
+    isResolved: false,
+  },
+];
+
+export const mockAnomaliesData: AnomalyListResponse = {
+  anomalies: mockAnomaliesList,
+  summary: {
+    total: 4,
+    critical: 1,
+    high: 1,
+    medium: 1,
+    low: 1,
+  },
+};
