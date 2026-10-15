@@ -14,14 +14,14 @@ describe('Transaction Ingestion & Management API', () => {
     // Clean up previous test artifacts for test users
     await Transaction.deleteMany({ userId: { $in: [TEST_USER_1, TEST_USER_2] } });
     await ImportBatch.deleteMany({ userId: { $in: [TEST_USER_1, TEST_USER_2] } });
-  });
+  }, 30000);
 
   afterAll(async () => {
     // Clean up test records
     await Transaction.deleteMany({ userId: { $in: [TEST_USER_1, TEST_USER_2] } });
     await ImportBatch.deleteMany({ userId: { $in: [TEST_USER_1, TEST_USER_2] } });
     await disconnectDatabase();
-  });
+  }, 30000);
 
   // ==========================================================================
   // 1. Authentication Enforcement
