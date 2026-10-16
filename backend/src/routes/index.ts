@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { requireAuth } from '../middleware/auth';
 import { ApiResponse } from '../types/api.types';
 import { analyticsRouter } from './analytics.routes';
+import { anomalyRouter } from './anomaly.routes';
 import { healthRouter } from './health.routes';
 import { transactionRouter } from './transaction.routes';
 
@@ -15,6 +16,9 @@ apiRouter.use('/transactions', transactionRouter);
 
 // Mount analytics router at /analytics (e.g. /api/analytics)
 apiRouter.use('/analytics', analyticsRouter);
+
+// Mount anomaly router at /anomalies (e.g. /api/anomalies)
+apiRouter.use('/anomalies', anomalyRouter);
 
 // Protected route to verify Clerk authentication
 apiRouter.get('/auth/me', requireAuth, (req: Request, res: Response) => {

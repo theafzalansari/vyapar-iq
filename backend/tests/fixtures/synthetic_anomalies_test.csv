@@ -1,0 +1,15 @@
+date,type,amount,category,description,reference
+2026-10-01,income,45000.00,Sales,Bulk wholesale textile sales,INV-2026-001
+2026-10-02,expense,1200.00,Utilities,Commercial water and municipal cess,MUNI-991
+2026-10-03,expense,1350.00,Utilities,Internet and broadband telecom,TEL-4412
+2026-10-05,expense,1100.00,Utilities,Office maintenance and minor repairs,MAINT-88
+2026-10-06,expense,3200.00,Packaging,Corrugated packaging box shipment,INV-BOX-12
+2026-10-06,expense,3200.00,Packaging,Corrugated packaging box shipment,UPI-REF-091
+2026-10-08,income,28500.00,Sales,Retail counter collections,INV-2026-002
+2026-10-09,expense,12000.00,Rent,Shop commercial lease payment,RENT-OCT-26
+2026-10-10,expense,4850.00,Utilities,Commercial electricity bill,EB-99214
+2026-10-11,expense,1500.00,Logistics,Local tempo delivery charge,LOG-01
+2026-10-11,expense,1500.00,Logistics,Local tempo delivery charge,LOG-02
+2026-10-11,expense,1500.00,Logistics,Local tempo delivery charge,LOG-03
+2026-10-12,expense,8500.00,Salaries,Temporary warehouse labor payment,
+2026-10-13,income,15000.00,Services,Fabric custom design consulting,SRV-331

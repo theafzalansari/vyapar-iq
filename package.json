@@ -6,7 +6,9 @@
   "scripts": {
     "dev:backend": "npm --prefix backend run dev",
     "build:backend": "npm --prefix backend run build",
-    "test:backend": "npm --prefix backend run test"
+    "test:backend": "npm --prefix backend run test",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build"
   },
   "keywords": ["business-copilot", "ai", "finance", "sme", "vyapar-iq"],
   "author": "",

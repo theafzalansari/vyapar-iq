@@ -133,15 +133,20 @@ export interface AnomalyFinding {
   id: string;
   type: AnomalyType;
   severity: AnomalySeverity;
+  rule?: string;
   title: string;
   description: string;
   detectedAt: string;
   transactionId?: string;
+  transactionIds?: string[];
   affectedAmount?: number;
   confidenceScore: number; // 0.00 to 1.00
+  riskScore?: number; // 0.00 to 1.00
+  evidence?: Record<string, unknown>;
   recommendedAction: string;
   isResolved: boolean;
   resolvedAt?: string;
+  resolutionNotes?: string;
 }
 
 export interface AnomalyListResponse {

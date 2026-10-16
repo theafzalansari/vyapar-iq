@@ -49,6 +49,36 @@ npm test
   - Query params: `type` (`income` | `expense` | `all`), `startDate`, `endDate`.
   - Uncategorized records (null, empty, whitespace) are mapped to `"Uncategorized"`.
 
+### 4. Explainable Hybrid Anomaly Detection (Milestone 4)
+- **`GET /api/anomalies`** (Protected): List detected anomalies scoped to the authenticated user.
+  - Query params: `severity` (`critical` | `high` | `medium` | `low`), `type`, `isResolved` (`true` | `false`), `startDate`, `endDate`, `recompute` (`true` | `false`).
+- **`POST /api/anomalies/detect`** (Protected): Trigger anomaly scan or force recompute.
+- **`PATCH /api/anomalies/:id/resolve`** (Protected): Update audit review status and resolution notes.
+
+---
+
+## 🧮 Anomaly Scoring Formula & Rules
+
+Every anomaly finding generates a deterministic, transparent risk score ($0.0 \le \text{score} \le 1.0$) and an evidence map:
+
+| Rule ID | Name | Trigger Condition | Scoring Formula / Weights | Severity Band |
+|---|---|---|---|---|
+| `DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT` | Duplicate Payment | Same amount within 24h & high description similarity | $0.50 \times \text{timeFactor} + 0.35 \times \text{descFactor} + 0.15 \times \text{amountFactor}$ (Boosted to $\ge 0.88$ if $\le 15$ min) | Critical ($\le 15$m) / High / Medium |
+| `UNUSUAL_EXPENSE_SPIKE` | Expense Spike | Category $Z$-score $\ge 2.0$ & Multiplier $M \ge 2.2\times$ (leave-one-out baseline) | $0.40 \times \min(1, \frac{Z}{4}) + 0.45 \times \min(1, \frac{M}{5}) + 0.15 \times \text{amountFactor}$ | Critical ($\ge 0.85$) / High |
+| `REPEATED_TRANSACTION_BURST` | Repeated Bursts | $\ge 3$ transactions with same amount within 24h | Fixed $0.72$ for 3 transactions; $0.85$ for $\ge 4$ | High / Critical |
+| `HIGH_VALUE_UNRECONCILED` | Missing Reference | Single expense $> ₹15,000$ lacking invoice/cheque reference | Fixed $0.65$ base score | Medium |
+| `NEGATIVE_CASHFLOW_VELOCITY` | Outflow Velocity | Rolling 7-day outflow $> 1.8\times$ inflow (and net negative $> ₹10,000$) | Fixed $0.80$ base score | High |
+
+### Severity Thresholds:
+- **Critical**: Risk Score $\ge 0.85$
+- **High**: $0.70 \le \text{Risk Score} < 0.85$
+- **Medium**: $0.50 \le \text{Risk Score} < 0.70$
+- **Low**: $\text{Risk Score} < 0.50$
+
+### Resolution & Idempotency:
+- Findings are deduplicated and tracked via an invariant SHA-256 fingerprint (`rule:userId:keys`).
+- Re-scanning preserves previously resolved statuses (`isResolved: true`, `resolutionNotes`, `resolvedAt`).
+
 ---
 
 ## 📅 Date Boundary Semantics
@@ -69,4 +99,29 @@ curl -X GET "http://localhost:5000/api/analytics/trends?groupBy=month" -H "x-moc
 
 # 3. Categories
 curl -X GET "http://localhost:5000/api/analytics/categories?type=all" -H "x-mock-user-id: user_srushti_patil"
+
+# 4. Get Anomalies (Filtered by unresolved)
+curl -X GET "http://localhost:5000/api/anomalies?isResolved=false" -H "x-mock-user-id: user_srushti_patil"
+
+# 5. Trigger Re-scan
+curl -X POST "http://localhost:5000/api/anomalies/detect" -H "x-mock-user-id: user_srushti_patil"
+
+# 6. Resolve Anomaly
+curl -X PATCH "http://localhost:5000/api/anomalies/<ANOMALY_ID>/resolve" \
+  -H "x-mock-user-id: user_srushti_patil" \
+  -H "Content-Type: application/json" \
+  -d '{"isResolved": true, "resolutionNotes": "Verified with vendor invoice #INV-982"}'
 ```
+
+---
+
+## 📂 Synthetic Test Dataset
+A synthetic CSV test file with seeded normal baselines and injected anomalies is available at:
+`backend/tests/fixtures/synthetic_anomalies_test.csv`
+It contains 14 rows demonstrating:
+- Clean baseline expenses & revenue
+- Duplicate ₹3,200 payment within 12 minutes
+- 4.5× Electricity spike in Utilities
+- Repeated 3× ₹1,500 courier burst within 3 hours
+- ₹28,000 unreconciled equipment expense without invoice reference
+

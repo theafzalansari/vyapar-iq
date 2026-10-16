@@ -4,6 +4,7 @@ import { IImportBatchDocument, ImportBatch } from '../models/ImportBatch';
 import { ITransactionDocument, Transaction } from '../models/Transaction';
 import { csvRowSchema } from '../schemas/transaction.schema';
 import { CsvImportResponse, CsvRowError, TransactionDTO } from '../types/contracts.types';
+import { anomalyDetectionService } from './anomalyDetection.service';
 
 export class DuplicateUploadError extends Error {
   public code = 'DUPLICATE_UPLOAD';
@@ -219,6 +220,11 @@ export const processCsvImport = async (options: ProcessCsvOptions): Promise<CsvI
 
     const insertedDocs = await Transaction.insertMany(validTransactionsToInsert, { ordered: false });
     sampleTransactions = insertedDocs.slice(0, 5).map(mapTransactionToDTO);
+
+    // Trigger deterministic anomaly scan for newly ingested records
+    anomalyDetectionService.detectAnomalies(userId).catch((err) => {
+      console.error('Async anomaly scan error after CSV ingestion:', err);
+    });
   }
 
   return {
