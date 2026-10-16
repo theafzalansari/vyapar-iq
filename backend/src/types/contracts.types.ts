@@ -301,3 +301,63 @@ export interface NetworkGraphResponse {
   summary: NetworkGraphSummary;
 }
 
+// ============================================================================
+// 8. Audit Reports Contract
+// ============================================================================
+
+export interface AuditReportBusinessProfile {
+  name: string;
+  gstin: string;
+  pan: string;
+  industry: string;
+  auditorNotes: string;
+}
+
+export interface AuditReportFinancialSummary {
+  totalRevenue: number;
+  totalExpenses: number;
+  netOperatingProfit: number;
+  profitMarginPct: number;
+  reconciledCount: number;
+  unreconciledCount: number;
+  totalVolume: number;
+  currency: string;
+}
+
+export interface AuditReportAnomaliesAudit {
+  totalIdentified: number;
+  resolvedCount: number;
+  openCriticalCount: number;
+  totalDisputedAmount: number;
+}
+
+export interface AuditReportActionItem {
+  id: string;
+  title: string;
+  priority: 'high' | 'medium' | 'low';
+  description: string;
+  category: string;
+}
+
+export interface AuditReportData {
+  reportId: string;
+  generatedAt: string;
+  period: {
+    startDate: string;
+    endDate: string;
+  };
+  scope: 'reconciliation' | 'anomalies' | 'gst';
+  businessProfile: AuditReportBusinessProfile;
+  financialSummary: AuditReportFinancialSummary;
+  anomaliesAudit: AuditReportAnomaliesAudit;
+  expenseCategories: CategoryBreakdownItem[];
+  cashflowTrends: AnalyticsTrendPoint[];
+  findings: AnomalyFinding[];
+  sampleTransactions: TransactionDTO[];
+  actionRecommendations: AuditReportActionItem[];
+  disclaimer: string;
+}
+
+export type AuditReportCategoryItem = CategoryBreakdownItem;
+export type AuditReportTrendPoint = AnalyticsTrendPoint;
+

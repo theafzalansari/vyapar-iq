@@ -566,4 +566,23 @@ A reproducible synthetic CSV dataset with real-world edge cases and injected ano
   - Irregular frequency burst: Three ₹1,500 delivery courier debits within 3 hours
   - Unreconciled high-value expense: ₹28,000 equipment payment lacking an invoice reference
 
+---
+
+## 📊 Audit Reports & Compliance Export (Milestone 7)
+
+### 1. Features
+- **Deterministic Workpapers**: Integrates live ledger analytics, expense category breakdown, monthly cash flow progression, and heuristic anomaly findings into an auditable report pack.
+- **Dynamic Scope Modes**:
+  - `Reconciliation`: Focuses on bank statement matching, ledger balances, and payment verification.
+  - `Dispute Evidence`: Deep dive on duplicate payments, unusual spikes, and unresolved counterparty risks.
+  - `GST / Tax Prep`: Aggregates taxable turnovers, input tax credit schedules, and period-close summaries.
+- **Multi-Format Export**:
+  - **Vector PDF Report Pack**: Server-rendered PDF using PDFKit featuring business headers, KPI metric quad cards, anomaly evidence tables, advisory action items, statutory disclaimer, and dynamic page numbering.
+  - **Ledger CSV**: Complete export of all reconciled transactions for the selected period.
+  - **Audit Findings CSV**: Granular export of detected anomalies, confidence weights, affected amounts, and triggered rules.
+- **Enterprise Isolation & Transparency**:
+  - Strict user-level data isolation via Clerk authentication.
+  - Clear distinction between verified historical facts and automated advisory recommendations.
+  - Statutory disclaimer embedded in every export asserting that anomalies indicate variance for review and do not constitute legal proof of fraud.
+
 

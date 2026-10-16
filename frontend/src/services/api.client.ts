@@ -75,8 +75,28 @@ export const apiClient = async <T>(endpoint: string, options: RequestOptions = {
 
     const contentType = response.headers.get('content-type');
 
+    // Handle PDF or binary blob downloads
+    if (contentType && (contentType.includes('application/pdf') || contentType.includes('application/octet-stream'))) {
+      if (!response.ok) {
+        throw new ApiError(
+          `Failed to download file: ${response.statusText}`,
+          `HTTP_${response.status}`,
+          response.status
+        );
+      }
+      const blob = await response.blob();
+      return blob as unknown as T;
+    }
+
     // Handle CSV or text blob downloads
     if (contentType && (contentType.includes('text/csv') || contentType.includes('text/plain'))) {
+      if (!response.ok) {
+        throw new ApiError(
+          `Failed to download CSV data: ${response.statusText}`,
+          `HTTP_${response.status}`,
+          response.status
+        );
+      }
       const text = await response.text();
       return text as unknown as T;
     }

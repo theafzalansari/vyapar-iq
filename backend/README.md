@@ -61,6 +61,18 @@ npm test
   - Grounded strictly in deterministic metrics and verified anomalies.
   - Mitigates prompt injection via XML boundary isolation and strict input sanitization.
 
+### 6. Transaction Network Graph (Milestone 6)
+- **`GET /api/network-graph`** (Protected): Graph visualization of counterparties, transactions, and anomaly clusters.
+  - Query params: `startDate`, `endDate`, `minAmount`, `counterparty`, `category`.
+  - Returns typed nodes (vendors, customers, flagged transactions) and relationship edges (payments, duplicate links, burst links).
+
+### 7. Audit Reports & Export (Milestone 7)
+- **`GET /api/reports`** (Protected): Compiled audit report JSON preview combining financial metrics, anomaly findings, category breakdown, cash flow trends, and advisory follow-up recommendations.
+  - Query params: `startDate`, `endDate`, `scope` (`reconciliation` | `anomalies` | `gst`), `businessName`, `gstin`, `pan`, `industry`.
+- **`GET /api/reports/pdf`** (Protected): Vector PDF audit workpaper generated on-the-fly with headers, financial quad cards, audit evidence tables, statutory disclaimer, and dynamic page numbers.
+- **`GET /api/reports/transactions/csv`** (Protected): Downloadable CSV export of ledger transactions for the selected period.
+- **`GET /api/reports/findings/csv`** (Protected): Downloadable CSV export of audit anomaly findings with severity, confidence weights, and rule explanations.
+
 ---
 
 ## 🧮 Anomaly Scoring Formula & Rules

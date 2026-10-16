@@ -7,6 +7,7 @@ import { copilotRouter } from './copilot.routes';
 import { dashboardRouter } from './dashboard.routes';
 import { healthRouter } from './health.routes';
 import { networkGraphRouter } from './networkGraph.routes';
+import { reportsRouter } from './reports.routes';
 import { transactionRouter } from './transaction.routes';
 
 export const apiRouter = Router();
@@ -32,6 +33,9 @@ apiRouter.use('/anomalies', anomalyRouter);
 
 // Mount copilot router at /copilot (e.g. /api/copilot)
 apiRouter.use('/copilot', copilotRouter);
+
+// Mount reports router at /reports (e.g. /api/reports)
+apiRouter.use('/reports', reportsRouter);
 
 // Protected route to verify Clerk authentication
 apiRouter.get('/auth/me', requireAuth, (req: Request, res: Response) => {

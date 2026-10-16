@@ -133,12 +133,15 @@ export interface AnomalyFinding {
   id: string;
   type: AnomalyType;
   severity: AnomalySeverity;
+  rule?: string;
   title: string;
   description: string;
   detectedAt: string;
   transactionId?: string;
+  transactionIds?: string[];
   affectedAmount?: number;
   confidenceScore: number; // 0.00 to 1.00
+  riskScore?: number;
   recommendedAction: string;
   isResolved: boolean;
   resolvedAt?: string;
@@ -236,4 +239,77 @@ export interface NetworkGraphResponse {
   nodes: NetworkNode[];
   edges: NetworkEdge[];
   summary: NetworkGraphSummary;
+}
+
+// ============================================================================
+// 7. Audit Reports Contract
+// ============================================================================
+
+export interface AuditReportBusinessProfile {
+  name: string;
+  gstin: string;
+  pan: string;
+  industry: string;
+  auditorNotes: string;
+}
+
+export interface AuditReportFinancialSummary {
+  totalRevenue: number;
+  totalExpenses: number;
+  netOperatingProfit: number;
+  profitMarginPct: number;
+  reconciledCount: number;
+  unreconciledCount: number;
+  totalVolume: number;
+  currency: string;
+}
+
+export interface AuditReportAnomaliesAudit {
+  totalIdentified: number;
+  resolvedCount: number;
+  openCriticalCount: number;
+  totalDisputedAmount: number;
+}
+
+export interface AuditReportActionItem {
+  id: string;
+  title: string;
+  priority: 'high' | 'medium' | 'low';
+  description: string;
+  category: string;
+}
+
+export interface AuditReportCategoryItem {
+  category: string;
+  type?: 'income' | 'expense';
+  totalAmount: number;
+  transactionCount: number;
+  percentage: number;
+}
+
+export interface AuditReportTrendPoint {
+  period: string;
+  income: number;
+  expenses: number;
+  netCashflow: number;
+  transactionCount?: number;
+}
+
+export interface AuditReportData {
+  reportId: string;
+  generatedAt: string;
+  period: {
+    startDate: string;
+    endDate: string;
+  };
+  scope: 'reconciliation' | 'anomalies' | 'gst';
+  businessProfile: AuditReportBusinessProfile;
+  financialSummary: AuditReportFinancialSummary;
+  anomaliesAudit: AuditReportAnomaliesAudit;
+  expenseCategories: AuditReportCategoryItem[];
+  cashflowTrends: AuditReportTrendPoint[];
+  findings: AnomalyFinding[];
+  sampleTransactions: TransactionDTO[];
+  actionRecommendations: AuditReportActionItem[];
+  disclaimer: string;
 }
