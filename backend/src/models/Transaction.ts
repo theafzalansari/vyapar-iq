@@ -12,6 +12,7 @@ export interface ITransactionDocument extends Document {
   paymentMethod: PaymentMethod;
   status: TransactionStatus;
   reference?: string | null;
+  counterparty?: string | null;
   notes?: string;
   metadata?: Record<string, unknown>;
   createdAt: Date;
@@ -82,6 +83,13 @@ const TransactionSchema = new Schema<ITransactionDocument>(
       type: String,
       trim: true,
       maxlength: [100, 'reference cannot exceed 100 characters'],
+      default: null,
+      index: true,
+    },
+    counterparty: {
+      type: String,
+      trim: true,
+      maxlength: [200, 'counterparty cannot exceed 200 characters'],
       default: null,
       index: true,
     },

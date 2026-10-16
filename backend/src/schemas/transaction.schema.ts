@@ -44,6 +44,7 @@ export const createTransactionSchema = z.object({
   status: transactionStatusEnum.default('completed'),
   notes: z.string().trim().max(1000).optional(),
   reference: z.string().trim().max(100).optional().nullable(),
+  counterparty: z.string().trim().max(200).optional().nullable(),
   metadata: z.record(z.unknown()).optional(),
   batchId: z.string().regex(/^[0-9a-fA-F]{24}$/, 'batchId must be a valid Mongo ObjectId').optional().nullable(),
 });
@@ -131,6 +132,13 @@ export const csvRowSchema = z.object({
     .string()
     .trim()
     .max(100, 'Reference cannot exceed 100 characters')
+    .optional()
+    .nullable()
+    .transform((val) => val || null),
+  counterparty: z
+    .string()
+    .trim()
+    .max(200, 'Counterparty cannot exceed 200 characters')
     .optional()
     .nullable()
     .transform((val) => val || null),

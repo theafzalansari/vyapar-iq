@@ -32,6 +32,7 @@ export interface TransactionDTO {
   paymentMethod: PaymentMethod;
   status: TransactionStatus;
   reference?: string | null;
+  counterparty?: string | null;
   notes?: string;
   metadata?: Record<string, unknown>;
   createdAt: string;
@@ -251,5 +252,52 @@ export interface AnalyticsCategoriesResponse {
     income: CategoryBreakdownItem[];
     expenses: CategoryBreakdownItem[];
   };
+}
+
+// ============================================================================
+// 7. Network Graph Contract
+// ============================================================================
+
+export type NetworkNodeType = 'vendor' | 'customer' | 'transaction' | 'reference' | 'account';
+export type NetworkNodeSeverity = 'normal' | 'flagged' | 'critical';
+
+export interface NetworkNode {
+  id: string;
+  label: string;
+  type: NetworkNodeType;
+  amount?: number;
+  category?: string;
+  severity?: NetworkNodeSeverity;
+  x: number;
+  y: number;
+  details?: string;
+  transactionCount?: number;
+  metadata?: Record<string, unknown>;
+}
+
+export interface NetworkEdge {
+  id: string;
+  source: string;
+  target: string;
+  label?: string;
+  amount?: number;
+  isFlagged?: boolean;
+  type?: 'payment' | 'receivable' | 'duplicate_link' | 'burst_link' | 'shared_reference';
+}
+
+export interface NetworkGraphSummary {
+  totalNodes: number;
+  totalEdges: number;
+  vendorNodes: number;
+  customerNodes: number;
+  transactionNodes: number;
+  flaggedNodes: number;
+  flaggedEdges: number;
+}
+
+export interface NetworkGraphResponse {
+  nodes: NetworkNode[];
+  edges: NetworkEdge[];
+  summary: NetworkGraphSummary;
 }
 

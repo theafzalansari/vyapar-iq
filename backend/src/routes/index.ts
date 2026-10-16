@@ -6,9 +6,14 @@ import { anomalyRouter } from './anomaly.routes';
 import { copilotRouter } from './copilot.routes';
 import { dashboardRouter } from './dashboard.routes';
 import { healthRouter } from './health.routes';
+import { networkGraphRouter } from './networkGraph.routes';
 import { transactionRouter } from './transaction.routes';
 
 export const apiRouter = Router();
+
+// Mount network graph router at /network-graph and /network/graph
+apiRouter.use('/network-graph', networkGraphRouter);
+apiRouter.use('/network/graph', networkGraphRouter);
 
 // Mount dashboard router at /dashboard (e.g. /api/dashboard)
 apiRouter.use('/dashboard', dashboardRouter);

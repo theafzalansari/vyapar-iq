@@ -45,6 +45,7 @@ export const mapTransactionToDTO = (doc: ITransactionDocument): TransactionDTO =
     paymentMethod: doc.paymentMethod,
     status: doc.status,
     reference: doc.reference || null,
+    counterparty: doc.counterparty || null,
     notes: doc.notes || undefined,
     metadata: doc.metadata || undefined,
     createdAt: doc.createdAt ? doc.createdAt.toISOString() : new Date().toISOString(),
@@ -147,6 +148,7 @@ export const processCsvImport = async (options: ProcessCsvOptions): Promise<CsvI
     type: 'income' | 'expense';
     category: string;
     reference?: string | null;
+    counterparty?: string | null;
     paymentMethod: 'cash' | 'upi' | 'bank_transfer' | 'credit_card' | 'debit_card' | 'cheque' | 'other';
     status: 'completed';
     notes?: string;
@@ -154,6 +156,12 @@ export const processCsvImport = async (options: ProcessCsvOptions): Promise<CsvI
 
   rawRecords.forEach((record, index) => {
     const rowNumber = index + 2; // Row 1 is header, data starts at row 2
+
+    // Normalize vendor/party/payee aliases into counterparty if not explicitly set
+    if (!record.counterparty) {
+      record.counterparty =
+        record.vendor || record.party || record.payee || record.payer || '';
+    }
 
     const parsed = csvRowSchema.safeParse(record);
 
@@ -175,6 +183,7 @@ export const processCsvImport = async (options: ProcessCsvOptions): Promise<CsvI
         type: parsed.data.type,
         category: parsed.data.category,
         reference: parsed.data.reference || null,
+        counterparty: parsed.data.counterparty || null,
         paymentMethod: (parsed.data.paymentMethod as any) || 'other',
         status: 'completed',
         notes: parsed.data.notes || '',
