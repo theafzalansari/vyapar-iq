@@ -23,8 +23,23 @@ export const RecentTransactionsWidget: React.FC<RecentTransactionsWidgetProps> =
             </tr>
           </thead>
           <tbody>
-            {transactions.map((tx) => {
-              const isIncome = tx.type === 'income';
+            {transactions.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={5}
+                  style={{
+                    textAlign: 'center',
+                    padding: '36px 16px',
+                    color: 'var(--text-muted)',
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  No transactions recorded yet.
+                </td>
+              </tr>
+            ) : (
+              transactions.map((tx) => {
+                const isIncome = tx.type === 'income';
               const dateStr = new Date(tx.date).toLocaleDateString('en-IN', {
                 day: '2-digit',
                 month: 'short',
@@ -56,7 +71,7 @@ export const RecentTransactionsWidget: React.FC<RecentTransactionsWidgetProps> =
                   </td>
                 </tr>
               );
-            })}
+            }))}
           </tbody>
         </table>
       </div>

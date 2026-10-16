@@ -4,10 +4,14 @@ import { ApiResponse } from '../types/api.types';
 import { analyticsRouter } from './analytics.routes';
 import { anomalyRouter } from './anomaly.routes';
 import { copilotRouter } from './copilot.routes';
+import { dashboardRouter } from './dashboard.routes';
 import { healthRouter } from './health.routes';
 import { transactionRouter } from './transaction.routes';
 
 export const apiRouter = Router();
+
+// Mount dashboard router at /dashboard (e.g. /api/dashboard)
+apiRouter.use('/dashboard', dashboardRouter);
 
 // Mount public health router at /health (e.g. /api/health)
 apiRouter.use('/', healthRouter);

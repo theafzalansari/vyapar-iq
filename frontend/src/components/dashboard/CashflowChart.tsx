@@ -6,7 +6,20 @@ interface CashflowChartProps {
 }
 
 export const CashflowChart: React.FC<CashflowChartProps> = ({ data }) => {
-  if (!data || data.length === 0) return null;
+  if (!data || data.length === 0) {
+    return (
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '48px 16px',
+          color: 'var(--text-muted)',
+          fontSize: '0.9rem',
+        }}
+      >
+        No cashflow trend data recorded yet. Import your bank statement to view monthly trends.
+      </div>
+    );
+  }
 
   const maxVal = Math.max(...data.map((d) => Math.max(d.income, d.expenses))) * 1.15;
 

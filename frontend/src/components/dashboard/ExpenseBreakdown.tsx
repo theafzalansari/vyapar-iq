@@ -6,6 +6,21 @@ interface ExpenseBreakdownProps {
 }
 
 export const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ categories }) => {
+  if (!categories || categories.length === 0) {
+    return (
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '48px 16px',
+          color: 'var(--text-muted)',
+          fontSize: '0.9rem',
+        }}
+      >
+        No expense categories recorded yet.
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
       {categories.map((cat, idx) => (
