@@ -194,6 +194,8 @@ export interface CopilotChatResponse {
   recommendedActions: ActionRecommendation[];
   confidence: number;
   timestamp: string;
+  relatedAnomalies?: AnomalyFinding[];
+  supportingEvidence?: Record<string, unknown>;
 }
 
 // ============================================================================

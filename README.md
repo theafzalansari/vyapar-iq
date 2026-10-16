@@ -78,6 +78,8 @@ cp backend/.env.example backend/.env
 | `CLERK_PUBLISHABLE_KEY` | Clerk Publishable Key (`pk_test_...`) | — | Yes (for production auth) |
 | `CLERK_SECRET_KEY` | Clerk Secret Key (`sk_test_...`) | — | Yes (for production auth) |
 | `FRONTEND_URL` | Allowed CORS frontend origin | `http://localhost:5173` | No |
+| `GEMINI_API_KEY` | Google Gemini API Key | — | Yes (for AI Copilot features) |
+| `GEMINI_MODEL` | Gemini Model identifier | `gemini-3.5-flash` | No |
 
 > **Development Mode Fallback:** If Clerk keys are not yet configured, the server boots normally, and protected routes can be tested locally using the header `x-mock-user-id: <user_id>`.
 
@@ -167,6 +169,12 @@ npm run test:backend
   - Triggers or recomputes deterministic anomaly detection scan across user's transactions.
 - **`PATCH /api/anomalies/:id/resolve`** (Protected)
   - Updates review status (`isResolved: true/false`) and records reviewer/auditor notes with audit timestamp.
+
+### Gemini Business AI Copilot (Milestone 5)
+- **`POST /api/copilot/chat`** (Protected)
+  - Evidence-grounded conversational business intelligence powered by Google Gemini.
+  - Rate-limited to 30 queries/minute per user. Scoped strictly to authenticated ledger records.
+  - Returns grounded metrics, suggested follow-ups, and actionable business recommendations.
 
 ---
 
@@ -349,6 +357,59 @@ Full TypeScript interfaces are exported in [backend/src/types/contracts.types.ts
 }
 ```
 
+### 5. Copilot Chat Response (`POST /api/copilot/chat`)
+```json
+{
+  "success": true,
+  "data": {
+    "reply": "Based on your verified ledger records, your total income is **₹50,000** and total expenses are **₹23,200**, leaving a net cash balance of **₹26,800**.\n\nYour highest expenditure category is **Packaging Supplies (₹15,000, 64.7% of total expenses)**, followed by **Utilities at ₹8,200**.\n\n⚠️ Note: An unresolved duplicate payment of ₹3,200 in Utilities was flagged on Oct 5. Reviewing this could save ₹3,200.",
+    "groundedMetrics": [
+      {
+        "metric": "Total Income",
+        "value": "₹50,000",
+        "basis": "Calculated from 2 verified sales records"
+      },
+      {
+        "metric": "Total Expenses",
+        "value": "₹23,200",
+        "basis": "Calculated from 3 verified expense records"
+      },
+      {
+        "metric": "Net Balance",
+        "value": "₹26,800",
+        "basis": "Total Income minus Total Expenses"
+      }
+    ],
+    "suggestedFollowUps": [
+      "Which supplier accounted for the most packaging expenses?",
+      "Show details of the flagged duplicate payment in Utilities",
+      "What steps can reduce our recurring overhead costs?"
+    ],
+    "recommendedActions": [
+      {
+        "id": "act_review_packaging",
+        "title": "Review Packaging Supplies Supplier Terms",
+        "actionType": "review_transactions",
+        "payload": { "category": "Packaging" }
+      }
+    ],
+    "confidence": 0.95,
+    "timestamp": "2026-10-16T07:50:00.000Z",
+    "relatedAnomalies": [
+      {
+        "id": "6ad189ac0dea...",
+        "rule": "DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT",
+        "type": "duplicate_payment",
+        "severity": "high",
+        "title": "Potential Duplicate Payment in Utilities",
+        "affectedAmount": 3200,
+        "isResolved": false
+      }
+    ]
+  }
+}
+```
+
 ---
 
 ## 🧮 Explainable Anomaly Detection Rules & Scoring Model
@@ -434,6 +495,63 @@ curl -X PATCH "http://localhost:5000/api/anomalies/673f41ab9c/resolve" \
   -H "Content-Type: application/json" \
   -d '{"isResolved": true, "resolutionNotes": "Verified with supplier: double debit refunded on Oct 8"}'
 ```
+
+### 5. Gemini Business AI Copilot
+```bash
+# Ask general financial position question
+curl -X POST "http://localhost:5000/api/copilot/chat" \
+  -H "x-mock-user-id: user_srushti_patil" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is our net balance and what are our biggest expenses?"}'
+
+# Ask for anomaly explanation with context
+curl -X POST "http://localhost:5000/api/copilot/chat" \
+  -H "x-mock-user-id: user_srushti_patil" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "Why was the ₹3,200 packaging expense flagged as an anomaly?",
+    "context": { "category": "Packaging" }
+  }'
+```
+
+---
+
+## 🤖 Gemini AI Copilot Architecture & Security (Milestone 5)
+
+### 1. Hybrid Analytical Model
+VyaparIQ adopts a strict separation between deterministic financial computation and generative interpretation:
+```
+[User Ledger Data] 
+       │
+       ▼ (Deterministic Execution)
+[Analytics & Anomaly Engine] ───► Calculates net balance, category shares, Z-scores, duplicate timestamps
+       │
+       ▼ (Grounding Layer)
+[Verified Evidence Payload]  ───► Sanitized JSON inside <verified_ledger_evidence> boundary
+       │
+       ▼ (Generative Interpretation)
+[Google Gemini API]          ───► Explains patterns, cites verified grounds, suggests human business actions
+       │
+       ▼ (Zod Output Validation)
+[Safe Structured Response]   ───► Validated reply, groundedMetrics[], recommendedActions[], suggestedFollowUps[]
+```
+
+### 2. Supported Business Inquiries
+The Copilot is engineered to address core business questions grounded in verified data:
+- *What are my total income, expenses, and net cash flow?*
+- *Which expense categories cost the most?*
+- *What unusual transactions were detected?*
+- *Explain this anomaly and show its supporting evidence.*
+- *What financial changes occurred during the selected period?*
+- *What practical steps could help reduce expenses?*
+- *Summarize the current business financial position.*
+
+### 3. Enterprise Security & Anti-Prompt-Injection Safeguards
+- **Authentication & User Scoping**: Protected by Clerk JWTs in production. Every database query filters strictly by `userId`.
+- **Anti-Prompt-Injection Guardrails**: Transaction descriptions and invoice references are treated as untrusted data. HTML/XML tags are stripped, text is truncated, and system instructions explicitly command the model to ignore adversarial instructions or persona overrides embedded within ledger records.
+- **No Hallucinated Financials**: Gemini is strictly instructed never to fabricate numbers or claim an anomaly constitutes fraud or criminal misconduct.
+- **Shielded Error Handling**: Rate limits (429), timeouts (504), and provider issues (502/503) return clean, typed error envelopes without leaking API keys, tokens, or raw stack traces.
+- **In-Memory Rate Limiter**: Enforces a limit of 30 queries/minute per user to protect against automated abuse.
 
 ---
 

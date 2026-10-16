@@ -52,10 +52,22 @@ export const CopilotPage: React.FC = () => {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err: any) {
+      let errorText = `⚠️ Copilot encountered an issue: ${err.message || 'Unable to connect to AI engine'}. Please try again.`;
+
+      if (err.code === 'GEMINI_NOT_CONFIGURED') {
+        errorText = '🔑 **Gemini API Key Missing**: Set `GEMINI_API_KEY` in your backend `.env` file to enable Business Copilot.';
+      } else if (err.code === 'GEMINI_RATE_LIMITED' || err.code === 'TOO_MANY_REQUESTS') {
+        errorText = '⏳ **Rate Limit Reached**: You are asking questions too quickly. Please wait a moment before asking another question.';
+      } else if (err.code === 'GEMINI_TIMEOUT') {
+        errorText = '⏱️ **Request Timeout**: Gemini AI took longer than 15s to respond. Please try your question again.';
+      } else if (err.code === 'GEMINI_PROVIDER_ERROR') {
+        errorText = '⚠️ **AI Provider Issue**: Gemini AI is currently unavailable or experiencing high demand. Please try again in a few moments.';
+      }
+
       const errorMessage: ChatMessageItem = {
         id: `msg_err_${Date.now()}`,
         sender: 'assistant',
-        text: `⚠️ Copilot encounter an issue: ${err.message || 'Unable to connect to AI engine'}. Please try again.`,
+        text: errorText,
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, errorMessage]);

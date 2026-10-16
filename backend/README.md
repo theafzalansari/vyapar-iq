@@ -55,6 +55,12 @@ npm test
 - **`POST /api/anomalies/detect`** (Protected): Trigger anomaly scan or force recompute.
 - **`PATCH /api/anomalies/:id/resolve`** (Protected): Update audit review status and resolution notes.
 
+### 5. Gemini Business AI Copilot (Milestone 5)
+- **`POST /api/copilot/chat`** (Protected): Conversational grounded financial query engine.
+  - Rate limited to 30 requests/minute per authenticated user.
+  - Grounded strictly in deterministic metrics and verified anomalies.
+  - Mitigates prompt injection via XML boundary isolation and strict input sanitization.
+
 ---
 
 ## 🧮 Anomaly Scoring Formula & Rules
@@ -111,7 +117,36 @@ curl -X PATCH "http://localhost:5000/api/anomalies/<ANOMALY_ID>/resolve" \
   -H "x-mock-user-id: user_srushti_patil" \
   -H "Content-Type: application/json" \
   -d '{"isResolved": true, "resolutionNotes": "Verified with vendor invoice #INV-982"}'
+
+# 7. Ask Business AI Copilot
+curl -X POST "http://localhost:5000/api/copilot/chat" \
+  -H "x-mock-user-id: user_srushti_patil" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What were my top expense categories and why did Utilities spike?"}'
 ```
+
+---
+
+## 🤖 Google Gemini AI Copilot Configuration (Milestone 5)
+
+### 1. Environment Setup
+Add the following to `backend/.env`:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-3.5-flash
+```
+> Obtain your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+### 2. Hybrid AI Architecture & Grounding
+- **Deterministic Analytics Engine**: Aggregates income, expenses, category breakdowns, and flags anomalies (duplicates, spikes, bursts).
+- **Grounding Layer**: Constructs a minimal, sanitized evidence payload (`<verified_ledger_evidence>`) scoped exclusively to the authenticated user.
+- **Google Gemini API**: Interprets the user query, references verified ledger metrics, explains patterns, and suggests practical business actions without hallucinating numbers.
+
+### 3. Security & Anti-Prompt-Injection
+- **User Scoping**: Every database lookup is strictly filtered by `userId`.
+- **Untrusted Data Sanitization**: Transaction descriptions and references strip tag syntax (`<`, `>`) and are framed as literal text.
+- **System Guardrails**: System instructions explicitly mandate that ledger data must never be executed as instructions or jailbreaks.
+- **Safe Error Shielding**: Quotas, timeouts, and provider errors return structured API codes (`GEMINI_RATE_LIMITED`, `GEMINI_TIMEOUT`, `GEMINI_PROVIDER_ERROR`) without leaking keys or stack traces.
 
 ---
 
@@ -124,4 +159,5 @@ It contains 14 rows demonstrating:
 - 4.5× Electricity spike in Utilities
 - Repeated 3× ₹1,500 courier burst within 3 hours
 - ₹28,000 unreconciled equipment expense without invoice reference
+
 

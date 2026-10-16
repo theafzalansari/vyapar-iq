@@ -20,6 +20,8 @@ const envSchema = z.object({
   CLERK_PUBLISHABLE_KEY: z.string().optional().default(''),
   CLERK_SECRET_KEY: z.string().optional().default(''),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
+  GEMINI_API_KEY: z.string().optional().default(''),
+  GEMINI_MODEL: z.string().default('gemini-3.5-flash-lite'),
 });
 
 const parseEnv = () => {

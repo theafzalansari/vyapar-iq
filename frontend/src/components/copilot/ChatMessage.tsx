@@ -79,6 +79,36 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onSelectPromp
             </div>
           )}
 
+          {/* AI Recommended Actions */}
+          {message.copilotResponse?.recommendedActions && message.copilotResponse.recommendedActions.length > 0 && (
+            <div style={{ marginTop: '14px' }}>
+              <div style={{ fontSize: '0.74rem', color: '#93C5FD', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
+                AI Recommendations (Action Required)
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {message.copilotResponse.recommendedActions.map((act) => (
+                  <div
+                    key={act.id}
+                    style={{
+                      backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                      border: '1px solid rgba(59, 130, 246, 0.25)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '8px 12px',
+                      fontSize: '0.82rem',
+                      color: '#E0E7FF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <span>💡</span>
+                    <span>{act.title}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Suggested Followups */}
           {message.copilotResponse?.suggestedFollowUps && message.copilotResponse.suggestedFollowUps.length > 0 && (
             <div style={{ marginTop: '14px', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
