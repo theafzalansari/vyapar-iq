@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import {
+  CheckCircle2,
+  LogOut,
   Moon,
   Save,
+  ShieldCheck,
   Sun,
   User,
 } from 'lucide-react';
@@ -11,6 +14,7 @@ import { Card } from '../components/common/Card';
 import { useAppAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
+import { authService } from '../services/auth.service';
 
 export interface BusinessProfileSettings {
   businessName: string;
@@ -26,9 +30,12 @@ export interface BusinessProfileSettings {
 const SETTINGS_STORAGE_KEY = 'vyapariq_business_profile';
 
 export const SettingsPage: React.FC = () => {
-  const { user, isMockMode } = useAppAuth();
+  const { user, isMockMode, signOut } = useAppAuth();
   const { theme, setTheme } = useTheme();
   const { success } = useToast();
+
+  const [verifyingToken, setVerifyingToken] = useState(false);
+  const [tokenVerificationResult, setTokenVerificationResult] = useState<string | null>(null);
 
   const [settings, setSettings] = useState<BusinessProfileSettings>(() => {
     try {
@@ -316,37 +323,116 @@ export const SettingsPage: React.FC = () => {
 
         {/* Authenticated Identity Information */}
         <Card title="Security & Authentication Status">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '42px',
-                  height: '42px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--primary-light)',
-                  color: 'var(--primary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <User size={20} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--primary-light)',
+                    color: 'var(--primary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 700,
+                  }}
+                >
+                  <User size={22} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.94rem' }}>
+                    {user?.fullName || 'Active User'}
+                  </div>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                    {user?.primaryEmailAddress?.emailAddress || `User ID: ${user?.id || 'unknown'}`}
+                  </div>
+                </div>
               </div>
-              <div>
-                <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.92rem' }}>
-                  {user?.fullName || 'User'}
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  {user?.primaryEmailAddress?.emailAddress || 'User ID: ' + (user?.id || 'unknown')}
-                </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {isMockMode ? (
+                  <Badge variant="warning">Dev Mock Session</Badge>
+                ) : (
+                  <Badge variant="success">Clerk JWT Active</Badge>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={signOut}
+                  icon={<LogOut size={14} />}
+                >
+                  Sign Out
+                </Button>
               </div>
             </div>
 
-            <div>
-              {isMockMode ? (
-                <Badge variant="warning">Dev Mock Session</Badge>
-              ) : (
-                <Badge variant="success">Clerk JWT Active</Badge>
+            {/* Live Token Verification against Backend API */}
+            <div
+              style={{
+                backgroundColor: 'var(--bg-surface)',
+                borderRadius: 'var(--radius-md)',
+                padding: '14px 16px',
+                border: '1px solid var(--border-subtle)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+                <div>
+                  <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    Backend Token Verification (GET /api/auth/me)
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                    Tests token transmission and cryptographical signature validation against Express middleware.
+                  </div>
+                </div>
+
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={async () => {
+                    setVerifyingToken(true);
+                    try {
+                      const res = await authService.getAuthMe();
+                      setTokenVerificationResult(`Verified: ${res.userId} • "${res.message}"`);
+                      success(res.message, 'Backend Auth Verified');
+                    } catch (err: any) {
+                      setTokenVerificationResult(`Verification Failed: ${err.message}`);
+                    } finally {
+                      setVerifyingToken(false);
+                    }
+                  }}
+                  disabled={verifyingToken}
+                  icon={<ShieldCheck size={14} />}
+                >
+                  {verifyingToken ? 'Verifying...' : 'Test Backend Auth'}
+                </Button>
+              </div>
+
+              {tokenVerificationResult && (
+                <div
+                  style={{
+                    fontSize: '0.8rem',
+                    padding: '8px 12px',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: tokenVerificationResult.includes('Failed')
+                      ? 'rgba(239, 68, 68, 0.1)'
+                      : 'rgba(16, 185, 129, 0.1)',
+                    color: tokenVerificationResult.includes('Failed') ? 'var(--danger)' : 'var(--success)',
+                    border: tokenVerificationResult.includes('Failed')
+                      ? '1px solid rgba(239, 68, 68, 0.2)'
+                      : '1px solid rgba(16, 185, 129, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <CheckCircle2 size={14} />
+                  <span>{tokenVerificationResult}</span>
+                </div>
               )}
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { UserButton } from '@clerk/clerk-react';
 import {
   AlertTriangle,
   ArrowRight,
@@ -7,21 +8,25 @@ import {
   CheckCircle2,
   Download,
   FileText,
+  LogIn,
   Network,
   Shield,
   ShieldAlert,
   Sparkles,
   TrendingUp,
   UploadCloud,
+  UserPlus,
   Zap,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { CashflowChart } from '../components/dashboard/CashflowChart';
+import { useAppAuth } from '../context/AuthContext';
 import { mockDashboardData } from '../mocks/mockDashboard';
 import { transactionsService } from '../services/transactions.service';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { isSignedIn, isMockMode, user } = useAppAuth();
 
   const handleDownloadTemplate = async () => {
     try {
@@ -84,22 +89,71 @@ export const LandingPage: React.FC = () => {
           </a>
         </nav>
 
-        {/* CTA Buttons */}
+        {/* CTA & Authentication Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button
-            onClick={() => navigate('/apps')}
-            style={{
-              color: 'var(--text-primary)',
-              fontSize: '0.88rem',
-              fontWeight: 600,
-              padding: '8px 16px',
-            }}
-          >
-            App Launcher
-          </button>
-          <Button variant="primary" size="sm" onClick={() => navigate('/dashboard')}>
-            Launch Dashboard
-          </Button>
+          {isSignedIn ? (
+            <>
+              <button
+                onClick={() => navigate('/apps')}
+                style={{
+                  color: 'var(--text-primary)',
+                  fontSize: '0.88rem',
+                  fontWeight: 600,
+                  padding: '8px 16px',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                App Launcher
+              </button>
+              <Button variant="primary" size="sm" onClick={() => navigate('/dashboard')}>
+                Dashboard
+              </Button>
+              {!isMockMode ? (
+                <UserButton afterSignOutUrl="/" />
+              ) : (
+                <div
+                  onClick={() => navigate('/apps')}
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'var(--primary-gradient)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#FFF',
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                  title={user?.fullName || 'User Profile'}
+                >
+                  {user?.firstName?.slice(0, 2).toUpperCase() || 'SP'}
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate('/sign-in')}
+                icon={<LogIn size={15} />}
+              >
+                Sign In
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => navigate('/sign-up')}
+                icon={<UserPlus size={15} />}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
       </header>
 
@@ -119,21 +173,44 @@ export const LandingPage: React.FC = () => {
         </p>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => navigate('/apps')}
-            icon={<ArrowRight size={18} />}
-          >
-            Launch App Suite
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={() => navigate('/dashboard')}
-          >
-            Financial Overview
-          </Button>
+          {isSignedIn ? (
+            <>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/apps')}
+                icon={<ArrowRight size={18} />}
+              >
+                Launch App Suite
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => navigate('/dashboard')}
+              >
+                Financial Overview
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/sign-up')}
+                icon={<UserPlus size={18} />}
+              >
+                Get Started Free
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => navigate('/sign-in')}
+                icon={<LogIn size={18} />}
+              >
+                Sign In to Workspace
+              </Button>
+            </>
+          )}
           <Button
             variant="outline"
             size="lg"
@@ -438,14 +515,37 @@ export const LandingPage: React.FC = () => {
           <p style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto 28px', fontSize: '0.95rem' }}>
             Experience VyaparIQ's AI copilot, explore interactive ledger filters, and test anomaly detection with sample data.
           </p>
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => navigate('/dashboard')}
-            icon={<ArrowRight size={18} />}
-          >
-            Launch VyaparIQ App
-          </Button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
+            {isSignedIn ? (
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/apps')}
+                icon={<ArrowRight size={18} />}
+              >
+                Launch VyaparIQ App Suite
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={() => navigate('/sign-up')}
+                  icon={<UserPlus size={18} />}
+                >
+                  Create Free Account
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => navigate('/sign-in')}
+                  icon={<LogIn size={18} />}
+                >
+                  Sign In
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </section>
 
