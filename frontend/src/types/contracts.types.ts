@@ -313,3 +313,58 @@ export interface AuditReportData {
   actionRecommendations: AuditReportActionItem[];
   disclaimer: string;
 }
+
+// ============================================================================
+// 8. Deterministic Financial Analytics Contracts (Milestone 3)
+// ============================================================================
+
+export interface AnalyticsPeriod {
+  startDate: string | null;
+  endDate: string | null;
+}
+
+export interface AnalyticsSummaryResponse {
+  totalIncome: number;
+  totalExpenses: number;
+  netBalance: number;
+  transactionCount: number;
+  incomeCount: number;
+  expenseCount: number;
+  currency: string;
+  period: AnalyticsPeriod;
+  calculationBasis: string;
+}
+
+export interface AnalyticsTrendPoint {
+  period: string; // "YYYY-MM" or "YYYY-MM-DD"
+  income: number;
+  expenses: number;
+  netCashflow: number;
+  transactionCount: number;
+}
+
+export interface AnalyticsTrendsResponse {
+  groupBy: 'day' | 'month';
+  period: AnalyticsPeriod;
+  trends: AnalyticsTrendPoint[];
+}
+
+export interface CategoryBreakdownItem {
+  category: string;
+  type: TransactionType;
+  totalAmount: number;
+  transactionCount: number;
+  percentage: number;
+}
+
+export interface AnalyticsCategoriesResponse {
+  period: AnalyticsPeriod;
+  typeFilter: 'income' | 'expense' | 'all';
+  totalIncome: number;
+  totalExpenses: number;
+  categories: CategoryBreakdownItem[];
+  breakdown: {
+    income: CategoryBreakdownItem[];
+    expenses: CategoryBreakdownItem[];
+  };
+}

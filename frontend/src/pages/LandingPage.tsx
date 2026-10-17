@@ -67,6 +67,9 @@ export const LandingPage: React.FC = () => {
 
         {/* Product Navigation */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }} className="landing-nav-links">
+          <Link to="/apps" style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+            App Suite
+          </Link>
           <a href="#features" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
             Features
           </a>
@@ -84,7 +87,7 @@ export const LandingPage: React.FC = () => {
         {/* CTA Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/apps')}
             style={{
               color: 'var(--text-primary)',
               fontSize: '0.88rem',
@@ -92,10 +95,10 @@ export const LandingPage: React.FC = () => {
               padding: '8px 16px',
             }}
           >
-            Sign In
+            App Launcher
           </button>
           <Button variant="primary" size="sm" onClick={() => navigate('/dashboard')}>
-            Get Started
+            Launch Dashboard
           </Button>
         </div>
       </header>
@@ -119,13 +122,20 @@ export const LandingPage: React.FC = () => {
           <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/apps')}
             icon={<ArrowRight size={18} />}
           >
-            Explore Dashboard
+            Launch App Suite
           </Button>
           <Button
             variant="secondary"
+            size="lg"
+            onClick={() => navigate('/dashboard')}
+          >
+            Financial Overview
+          </Button>
+          <Button
+            variant="outline"
             size="lg"
             onClick={handleDownloadTemplate}
             icon={<Download size={18} />}

@@ -1,6 +1,17 @@
 import React from 'react';
 
-export type BadgeVariant = 'income' | 'expense' | 'critical' | 'high' | 'medium' | 'low' | 'info' | 'default';
+export type BadgeVariant =
+  | 'income'
+  | 'expense'
+  | 'critical'
+  | 'high'
+  | 'medium'
+  | 'low'
+  | 'info'
+  | 'default'
+  | 'success'
+  | 'warning'
+  | 'primary';
 
 interface BadgeProps {
   children: React.ReactNode;
