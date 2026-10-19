@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import { corsOptions } from './config/cors';
 import { env } from './config/env';
 import { clerkAuthMiddleware } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
@@ -10,16 +11,14 @@ import { apiRouter } from './routes';
 export const createApp = (): Express => {
   const app = express();
 
-  // Basic security and HTTP protection
-  app.use(helmet());
+  // Cross-Origin Resource Sharing (runs first to intercept preflights & set CORS headers)
+  app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions));
 
-  // Cross-Origin Resource Sharing
+  // Basic security and HTTP protection (allows cross-origin resource reads for API/files)
   app.use(
-    cors({
-      origin: [env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:3000'],
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'x-mock-user-id'],
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
     })
   );
 
