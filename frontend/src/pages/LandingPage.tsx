@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
 import {
   AlertTriangle,
@@ -19,7 +19,10 @@ import {
   Zap,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
+import { Link001, Link003 } from '../components/common/skiper40';
 import { CashflowChart } from '../components/dashboard/CashflowChart';
+import { LandingFaqChatbot } from '../components/landing/LandingFaqChatbot';
+import { LandingTypewriter } from '../components/landing/LandingTypewriter';
 import { useAppAuth } from '../context/AuthContext';
 import { mockDashboardData } from '../mocks/mockDashboard';
 import { transactionsService } from '../services/transactions.service';
@@ -65,28 +68,28 @@ export const LandingPage: React.FC = () => {
           >
             <Zap size={20} fill="#FFFFFF" />
           </div>
-          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
             Vyapar<span style={{ color: 'var(--info)' }}>IQ</span>
           </span>
         </div>
 
-        {/* Product Navigation */}
+        {/* Product Navigation with Skiper UI Link003 Animation */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }} className="landing-nav-links">
-          <Link to="/apps" style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+          <Link003 to="/apps" style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: 600 }}>
             App Suite
-          </Link>
-          <a href="#features" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+          </Link003>
+          <Link003 href="#features" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
             Features
-          </a>
-          <a href="#workflow" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+          </Link003>
+          <Link003 href="#workflow" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
             Workflow
-          </a>
-          <a href="#preview" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+          </Link003>
+          <Link003 href="#preview" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
             Platform Preview
-          </a>
-          <a href="#audit" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+          </Link003>
+          <Link003 to="/reports" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
             Audit & Compliance
-          </a>
+          </Link003>
         </nav>
 
         {/* CTA & Authentication Buttons */}
@@ -168,6 +171,15 @@ export const LandingPage: React.FC = () => {
           From Business Data to <span style={{ background: 'var(--primary-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Better Decisions.</span>
         </h1>
 
+        {/* Supporting Typewriter Kicker */}
+        <div className="hero-typewriter-kicker" aria-label="Core Capabilities">
+          <span className="typewriter-badge">
+            <Sparkles size={13} style={{ color: 'var(--primary)' }} />
+            <span>Platform Focus</span>
+          </span>
+          <LandingTypewriter />
+        </div>
+
         <p className="landing-subtitle">
           Empowering small businesses with automated CSV ledger reconciliation, explainable anomaly detection, grounded financial conversational intelligence, and audit-ready reports.
         </p>
@@ -244,7 +256,7 @@ export const LandingPage: React.FC = () => {
             >
               <div className="glass-panel" style={{ padding: '16px' }}>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Revenue (Oct MTD)</span>
-                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#FFFFFF', marginTop: '4px' }}>
+                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
                   ₹1,84,500
                 </div>
                 <span style={{ fontSize: '0.72rem', color: 'var(--success)', fontWeight: 600 }}>
@@ -253,7 +265,7 @@ export const LandingPage: React.FC = () => {
               </div>
               <div className="glass-panel" style={{ padding: '16px' }}>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Expenses</span>
-                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#FFFFFF', marginTop: '4px' }}>
+                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
                   ₹98,250
                 </div>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -262,7 +274,7 @@ export const LandingPage: React.FC = () => {
               </div>
               <div className="glass-panel" style={{ padding: '16px' }}>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Net Margin</span>
-                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#FFFFFF', marginTop: '4px' }}>
+                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
                   ₹86,250
                 </div>
                 <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600 }}>
@@ -271,10 +283,10 @@ export const LandingPage: React.FC = () => {
               </div>
               <div
                 className="glass-panel"
-                style={{ padding: '16px', borderLeft: '4px solid #EF4444' }}
+                style={{ padding: '16px', borderLeft: '4px solid var(--error)' }}
               >
-                <span style={{ fontSize: '0.78rem', color: '#F87171' }}>Audit Flags</span>
-                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#EF4444', marginTop: '4px' }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--error)' }}>Audit Flags</span>
+                <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--error)', marginTop: '4px' }}>
                   3 Anomalies
                 </div>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -283,11 +295,59 @@ export const LandingPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Cashflow Graphic Preview */}
-            <div style={{ backgroundColor: 'rgba(15, 23, 42, 0.4)', borderRadius: '12px', padding: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Cashflow Rolling Trajectory</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Verified Ledger Ingestion</span>
+            {/* Cashflow Graphic Preview (Phase 2 Redesign) */}
+            <div
+              style={{
+                backgroundColor: 'var(--surface-container-lowest)',
+                borderRadius: 'var(--rounded-xl)',
+                border: '1px solid var(--outline-variant)',
+                boxShadow: 'var(--shadow-sm)',
+                padding: '24px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '18px',
+                  flexWrap: 'wrap',
+                  gap: '12px',
+                }}
+              >
+                <div>
+                  <span style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    Cashflow Rolling Trajectory
+                  </span>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '2px 0 0' }}>
+                    Reconciled monthly operating collections, overhead disbursements & net trajectory
+                  </p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span
+                    className="font-label-data-sm"
+                    style={{
+                      fontSize: '0.6875rem',
+                      padding: '3px 10px',
+                      borderRadius: 'var(--rounded-full)',
+                      backgroundColor: 'var(--tertiary-container)',
+                      color: 'var(--tertiary)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    ● Verified Ledger Ingestion
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.72rem',
+                      color: 'var(--text-muted)',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
+                    (Synthetic Sample Figures)
+                  </span>
+                </div>
               </div>
               <CashflowChart data={mockDashboardData.cashflowTrends} />
             </div>
@@ -298,7 +358,7 @@ export const LandingPage: React.FC = () => {
       {/* Feature Pillars Section */}
       <section id="features" style={{ maxWidth: '1280px', margin: '0 auto', padding: '64px 24px 32px' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.1rem', color: '#FFFFFF', marginBottom: '12px' }}>
+          <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Comprehensive Business Financial Intelligence
           </h2>
           <p style={{ color: 'var(--text-muted)', maxWidth: '640px', margin: '0 auto', fontSize: '0.95rem' }}>
@@ -450,7 +510,7 @@ export const LandingPage: React.FC = () => {
       {/* 3-Step Workflow Section */}
       <section id="workflow" className="workflow-section">
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '2.1rem', color: '#FFFFFF', marginBottom: '12px' }}>
+          <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Simple, Deterministic 3-Step Workflow
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
@@ -464,7 +524,7 @@ export const LandingPage: React.FC = () => {
             <div className="step-number">1</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <UploadCloud size={18} color="var(--primary)" />
-              <h4 style={{ fontSize: '1.15rem' }}>Upload Statement CSV</h4>
+              <h4 style={{ fontSize: '1.15rem', color: 'var(--text-primary)' }}>Upload Statement CSV</h4>
             </div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.5 }}>
               Drag and drop your standard bank or accounting CSV statement. Format validation handles numeric cleanup and flexible date parsing.
@@ -476,7 +536,7 @@ export const LandingPage: React.FC = () => {
             <div className="step-number">2</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <ShieldAlert size={18} color="var(--info)" />
-              <h4 style={{ fontSize: '1.15rem' }}>Automated Analysis</h4>
+              <h4 style={{ fontSize: '1.15rem', color: 'var(--text-primary)' }}>Automated Analysis</h4>
             </div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.5 }}>
               Deterministic algorithms calculate rolling cash flows and flag suspicious duplicate vendor disbursements or irregular expenditures.
@@ -488,7 +548,7 @@ export const LandingPage: React.FC = () => {
             <div className="step-number">3</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <CheckCircle2 size={18} color="var(--success)" />
-              <h4 style={{ fontSize: '1.15rem' }}>Act & Optimize</h4>
+              <h4 style={{ fontSize: '1.15rem', color: 'var(--text-primary)' }}>Act & Optimize</h4>
             </div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.5 }}>
               Review anomalies, question the AI copilot for cash flow advice, mark verified resolutions, and export audit statements.
@@ -504,12 +564,13 @@ export const LandingPage: React.FC = () => {
           style={{
             padding: '48px 32px',
             textAlign: 'center',
-            background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%)',
-            border: '1px solid rgba(99, 102, 241, 0.3)',
+            backgroundColor: 'var(--surface-container)',
+            border: '1px solid var(--outline-variant)',
             boxShadow: 'var(--shadow-glow)',
+            borderRadius: 'var(--rounded-xl)',
           }}
         >
-          <h2 style={{ fontSize: '2rem', marginBottom: '12px', color: '#FFFFFF' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '12px', color: 'var(--text-primary)' }}>
             Ready to Take Control of Your Business Cash Flow?
           </h2>
           <p style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto 28px', fontSize: '0.95rem' }}>
@@ -549,72 +610,219 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Spacious, FinTrace AI-Inspired Responsive Footer (Phase 3 & Phase 4) */}
       <footer className="landing-footer">
-        <div
-          style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '24px',
-            borderBottom: '1px solid var(--border-subtle)',
-            paddingBottom: '24px',
-            marginBottom: '20px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div
-              style={{
-                width: '30px',
-                height: '30px',
-                borderRadius: '8px',
-                background: 'var(--primary-gradient)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#FFF',
-              }}
-            >
-              <Zap size={16} fill="#FFF" />
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          {/* Main 4-Column Footer Navigation */}
+          <div className="footer-grid">
+            {/* Column 1: Brand & Positioning */}
+            <div className="footer-col" style={{ paddingRight: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    background: 'var(--primary-gradient)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#FFF',
+                    boxShadow: 'var(--shadow-glow)',
+                  }}
+                >
+                  <Zap size={18} fill="#FFF" />
+                </div>
+                <span style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+                  Vyapar<span style={{ color: 'var(--info)' }}>IQ</span>
+                </span>
+              </div>
+
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, margin: '4px 0 12px' }}>
+                AI-powered financial intelligence & forensic audit SaaS designed for small businesses, accountants, and auditors. Automated CSV ledger reconciliation, deterministic anomaly discovery, and grounded conversational analytics.
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.72rem',
+                    padding: '3px 10px',
+                    borderRadius: 'var(--rounded-full)',
+                    backgroundColor: 'var(--tertiary-container)',
+                    color: 'var(--tertiary)',
+                    fontWeight: 600,
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                  }}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--tertiary)' }} />
+                  AIVORA 2K26 Edition
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    padding: '3px 10px',
+                    borderRadius: 'var(--rounded-full)',
+                    backgroundColor: 'var(--surface-container-high)',
+                    color: 'var(--text-muted)',
+                    fontFamily: 'var(--font-mono)',
+                    border: '1px solid var(--outline-variant)',
+                  }}
+                >
+                  SHA-256 Batch Hashing
+                </span>
+              </div>
             </div>
-            <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#FFFFFF' }}>
-              Vyapar<span style={{ color: 'var(--info)' }}>IQ</span>
-            </span>
+
+            {/* Column 2: Product Overview */}
+            <div className="footer-col">
+              <span className="footer-col-title">Product Overview</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <Link001 href="#features" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Platform Features
+                </Link001>
+                <Link001 href="#workflow" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  3-Step Workflow
+                </Link001>
+                <Link001 href="#preview" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Interactive Trajectory
+                </Link001>
+                <div
+                  onClick={handleDownloadTemplate}
+                  role="button"
+                  tabIndex={0}
+                  style={{
+                    fontSize: '0.85rem',
+                    color: 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <Download size={13} style={{ opacity: 0.8 }} />
+                  <span>Sample CSV Template</span>
+                </div>
+                <Link001 to="/apps" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  App Launcher Suite
+                </Link001>
+              </div>
+            </div>
+
+            {/* Column 3: Workspace Modules */}
+            <div className="footer-col">
+              <span className="footer-col-title">Workspace Modules</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <Link001 to="/dashboard" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Financial Dashboard
+                </Link001>
+                <Link001 to="/transactions" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Reconciled Ledger
+                </Link001>
+                <Link001 to="/analytics" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Cashflow Analytics
+                </Link001>
+                <Link001 to="/findings" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Forensic Findings
+                </Link001>
+                <Link001 to="/network" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Counterparty Graph
+                </Link001>
+                <Link001 to="/copilot" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Grounded AI Copilot
+                </Link001>
+                <Link001 to="/reports" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Audit Statements & PDF
+                </Link001>
+              </div>
+            </div>
+
+            {/* Column 4: Account Access */}
+            <div className="footer-col">
+              <span className="footer-col-title">Account Access</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <Link001 to="/sign-in" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Sign In to Workspace
+                </Link001>
+                <Link001 to="/sign-up" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Create Free Account
+                </Link001>
+                <Link001 to="/settings" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Workspace Settings
+                </Link001>
+                <Link001 to="/apps" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Switch Workspace
+                </Link001>
+              </div>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '24px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/transactions">Transactions</Link>
-            <Link to="/findings">Findings</Link>
-            <Link to="/copilot">AI Copilot</Link>
-            <Link to="/network">Network Graph</Link>
-            <Link to="/reports">Audit Reports</Link>
+          {/* Prominent Financial Compliance & Review Disclaimer */}
+          <div
+            style={{
+              marginTop: '48px',
+              padding: '16px 20px',
+              borderRadius: 'var(--rounded-lg)',
+              backgroundColor: 'var(--surface-container)',
+              border: '1px solid var(--outline-variant)',
+              fontSize: '0.78rem',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.6,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '14px',
+            }}
+          >
+            <ShieldAlert size={20} color="var(--warning)" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div>
+              <strong style={{ color: 'var(--text-primary)' }}>
+                Regulatory, Compliance & Review Notice:
+              </strong>{' '}
+              VyaparIQ provides deterministic algorithmic heuristics, duplicate checks, and generative AI summaries strictly for operational accounting reconciliation and internal business review. Algorithmic anomaly flags and cashflow velocity metrics represent statistical variance observations and do not constitute certified statutory audit opinions, tax filings, or legal proof of fraud. Organizations must conduct independent verification with qualified accounting professionals prior to statutory submission.
+            </div>
           </div>
-        </div>
 
-        <div
-          style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            fontSize: '0.76rem',
-            color: 'var(--text-muted)',
-            lineHeight: 1.6,
-          }}
-        >
-          <div>
-            © 2026 VyaparIQ • Built for AIVORA 2K26 (AI for Business). All rights reserved.
-          </div>
-          <div style={{ maxWidth: '600px' }}>
-            <strong>Legal Disclaimer:</strong> Algorithmic findings and anomaly detections represent statistical heuristics for operational accounting review. They do not constitute legal proof of fraud or financial auditing certifications.
+          {/* Bottom Status & Utility Row */}
+          <div
+            style={{
+              marginTop: '32px',
+              paddingTop: '20px',
+              borderTop: '1px solid var(--outline-variant)',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '16px',
+              fontSize: '0.76rem',
+              color: 'var(--text-muted)',
+            }}
+          >
+            <div>
+              © 2026 VyaparIQ • Engineered for AIVORA 2K26 (AI for Business). All rights reserved.
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <span
+                  style={{
+                    width: '7px',
+                    height: '7px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--tertiary)',
+                  }}
+                />
+                All Systems Operational
+              </span>
+              <span>Deterministic Heuristic Engine v2.4</span>
+              <span>Clerk Auth Secure</span>
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* Landing-Page-Only FAQ Assistant */}
+      <LandingFaqChatbot />
     </div>
   );
 };

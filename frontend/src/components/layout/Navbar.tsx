@@ -4,7 +4,10 @@ import { UserButton } from '@clerk/clerk-react';
 import {
   AlertTriangle,
   BarChart3,
+  Bell,
   Bot,
+  Building2,
+  ChevronRight,
   FileSpreadsheet,
   FileText,
   Grid,
@@ -12,13 +15,13 @@ import {
   Menu,
   Moon,
   Network,
+  Search,
   Settings,
-  ShieldAlert,
-  Sparkles,
   Sun,
 } from 'lucide-react';
 import { useAppAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { anomaliesService } from '../../services/anomalies.service';
 
 interface NavbarProps {
   onToggleSidebar?: () => void;
@@ -32,6 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
 
   const [isAppMenuOpen, setIsAppMenuOpen] = useState(false);
   const [businessName, setBusinessName] = useState('Ansari Textiles & Trading Co.');
+  const [unresolvedAlerts, setUnresolvedAlerts] = useState<number>(4);
   const appMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,7 +46,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
         if (parsed.businessName) setBusinessName(parsed.businessName);
       }
     } catch {}
-  }, []);
+
+    anomaliesService
+      .getAnomalies()
+      .then((res) => {
+        const unres = res.anomalies.filter((a) => !a.isResolved).length;
+        setUnresolvedAlerts(unres);
+      })
+      .catch(() => {});
+  }, [location.pathname]);
 
   // Close app menu on click outside
   useEffect(() => {
@@ -63,23 +75,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   }, [location.pathname]);
 
   const appItems = [
-    { name: 'Dashboard', route: '/dashboard', icon: <LayoutDashboard size={18} color="#6366F1" /> },
-    { name: 'General Ledger', route: '/transactions', icon: <FileSpreadsheet size={18} color="#10B981" /> },
-    { name: 'Analytics', route: '/analytics', icon: <BarChart3 size={18} color="#06B6D4" /> },
-    { name: 'Anomalies', route: '/findings', icon: <AlertTriangle size={18} color="#F59E0B" /> },
-    { name: 'Network Graph', route: '/network', icon: <Network size={18} color="#8B5CF6" /> },
-    { name: 'Business Copilot', route: '/copilot', icon: <Bot size={18} color="#EC4899" /> },
-    { name: 'Audit Reports', route: '/reports', icon: <FileText size={18} color="#3B82F6" /> },
-    { name: 'Settings', route: '/settings', icon: <Settings size={18} color="#64748B" /> },
+    { name: 'Dashboard', route: '/dashboard', icon: <LayoutDashboard size={16} color="var(--primary)" /> },
+    { name: 'General Ledger', route: '/transactions', icon: <FileSpreadsheet size={16} color="var(--tertiary)" /> },
+    { name: 'Analytics', route: '/analytics', icon: <BarChart3 size={16} color="var(--secondary)" /> },
+    { name: 'Anomalies', route: '/findings', icon: <AlertTriangle size={16} color="var(--warning)" /> },
+    { name: 'Network Graph', route: '/network', icon: <Network size={16} color="#8B5CF6" /> },
+    { name: 'Business Copilot', route: '/copilot', icon: <Bot size={16} color="var(--primary)" /> },
+    { name: 'Audit Reports', route: '/reports', icon: <FileText size={16} color="var(--secondary)" /> },
+    { name: 'Settings', route: '/settings', icon: <Settings size={16} color="var(--outline)" /> },
   ];
 
   const currentRouteName =
     {
-      '/apps': 'Applications',
+      '/apps': 'All Applications',
       '/dashboard': 'Financial Dashboard',
       '/transactions': 'General Ledger',
-      '/analytics': 'Financial Analytics',
-      '/findings': 'Audit Anomalies',
+      '/analytics': 'Analytics & Trends',
+      '/findings': 'Findings & Anomalies',
       '/network': 'Counterparty Graph',
       '/copilot': 'Business Copilot',
       '/reports': 'Audit Reports & Export',
@@ -87,40 +99,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
     }[location.pathname] || 'Workspace';
 
   return (
-    <header
-      className="navbar"
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 24px',
-        height: '64px',
-        backgroundColor: 'var(--bg-card)',
-        borderBottom: '1px solid var(--border-subtle)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        backdropFilter: 'blur(16px)',
-      }}
-    >
-      {/* Left: Mobile Toggle, Odoo-Style App Launcher, Breadcrumb */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+    <header className="navbar">
+      {/* Left: Mobile Toggle, Odoo-Style App Switcher, Breadcrumb */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
         <button
           onClick={onToggleSidebar}
           style={{
             display: 'none',
-            color: 'var(--text-secondary)',
-            padding: '6px',
-            borderRadius: '6px',
-            background: 'var(--bg-surface)',
+            color: 'var(--on-surface-variant)',
+            padding: '5px',
+            borderRadius: 'var(--rounded-sm)',
+            backgroundColor: 'var(--surface-container)',
           }}
           className="mobile-toggle-btn"
           title="Toggle Navigation"
         >
-          <Menu size={20} />
+          <Menu size={18} />
         </button>
 
-        {/* Odoo-style App Launcher Grid Icon Button */}
+        {/* Odoo-style App Launcher Matrix Button */}
         <div style={{ position: 'relative' }} ref={appMenuRef}>
           <button
             onClick={() => setIsAppMenuOpen((prev) => !prev)}
@@ -128,38 +125,38 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 10px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: isAppMenuOpen ? 'var(--primary-light)' : 'var(--bg-surface)',
-              color: isAppMenuOpen ? 'var(--primary)' : 'var(--text-secondary)',
-              border: isAppMenuOpen ? '1px solid var(--primary)' : '1px solid var(--border-subtle)',
+              padding: '5px 8px',
+              borderRadius: 'var(--rounded-sm)',
+              backgroundColor: isAppMenuOpen ? 'var(--primary-container)' : 'var(--surface-container)',
+              color: isAppMenuOpen ? 'var(--on-primary-container)' : 'var(--on-surface-variant)',
+              border: isAppMenuOpen ? '1px solid var(--primary)' : '1px solid var(--outline-variant)',
               cursor: 'pointer',
-              fontWeight: 600,
-              fontSize: '0.84rem',
-              transition: 'all 0.15s ease',
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              transition: 'all 0.12s ease',
             }}
-            title="Open Application Launcher"
+            title="Open Application Matrix"
           >
-            <Grid size={17} />
+            <Grid size={15} />
             <span className="hide-on-mobile">Apps</span>
           </button>
 
           {/* Quick Dropdown Matrix */}
           {isAppMenuOpen && (
             <div
-              className="glass-panel"
+              className="card-forensic"
               style={{
                 position: 'absolute',
-                top: 'calc(100% + 8px)',
+                top: 'calc(100% + 6px)',
                 left: 0,
-                width: '320px',
-                padding: '16px',
-                backgroundColor: 'var(--bg-card)',
+                width: '300px',
+                padding: '12px',
+                backgroundColor: 'var(--surface-container-low)',
                 boxShadow: 'var(--shadow-lg)',
-                border: '1px solid var(--border-card)',
-                borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--outline-variant)',
+                borderRadius: 'var(--rounded-md)',
                 zIndex: 100,
-                animation: 'slideUp 0.18s ease-out',
+                animation: 'slideUp 0.15s ease-out',
               }}
             >
               <div
@@ -167,24 +164,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  marginBottom: '12px',
-                  paddingBottom: '8px',
-                  borderBottom: '1px solid var(--border-subtle)',
+                  marginBottom: '8px',
+                  paddingBottom: '6px',
+                  borderBottom: '1px solid var(--outline-variant)',
                 }}
               >
-                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                  VyaparIQ Suite
+                <span className="font-label-ui" style={{ color: 'var(--outline)', fontSize: '0.625rem' }}>
+                  VyaparIQ Business Suite
                 </span>
                 <Link
                   to="/apps"
-                  style={{ fontSize: '0.76rem', color: 'var(--primary)', fontWeight: 600 }}
+                  style={{ fontSize: '0.6875rem', color: 'var(--primary)', fontWeight: 600 }}
                   onClick={() => setIsAppMenuOpen(false)}
                 >
-                  View All Apps →
+                  View All →
                 </Link>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
                 {appItems.map((item) => (
                   <button
                     key={item.route}
@@ -195,26 +192,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
-                      padding: '10px 12px',
-                      borderRadius: 'var(--radius-md)',
+                      gap: '8px',
+                      padding: '8px 10px',
+                      borderRadius: 'var(--rounded-sm)',
                       backgroundColor:
-                        location.pathname === item.route ? 'var(--primary-light)' : 'transparent',
+                        location.pathname === item.route ? 'var(--primary-container)' : 'transparent',
                       color:
-                        location.pathname === item.route ? 'var(--primary)' : 'var(--text-primary)',
+                        location.pathname === item.route ? 'var(--on-primary-container)' : 'var(--on-surface)',
                       border:
                         location.pathname === item.route
                           ? '1px solid var(--primary)'
                           : '1px solid transparent',
                       cursor: 'pointer',
-                      fontSize: '0.84rem',
+                      fontSize: '0.75rem',
                       fontWeight: 500,
                       textAlign: 'left',
-                      transition: 'all 0.12s ease',
+                      transition: 'all 0.1s ease',
                     }}
                     onMouseEnter={(e) => {
                       if (location.pathname !== item.route) {
-                        e.currentTarget.style.backgroundColor = 'var(--bg-surface)';
+                        e.currentTarget.style.backgroundColor = 'var(--surface-container-high)';
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -234,37 +231,127 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           )}
         </div>
 
-        {/* Breadcrumb Module Indicator */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.84rem' }}>/</span>
-          <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-            {currentRouteName}
-          </span>
-        </div>
-
-        {/* Workspace Pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '8px' }}>
+        {/* Forensic Breadcrumb Indicator */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+          <Building2 size={14} color="var(--outline)" />
           <span
+            onClick={() => navigate('/settings')}
             style={{
-              fontSize: '0.82rem',
-              color: 'var(--text-secondary)',
-              backgroundColor: 'var(--bg-surface)',
-              padding: '3px 10px',
-              borderRadius: '6px',
-              border: '1px solid var(--border-subtle)',
-              maxWidth: '220px',
+              fontSize: '0.8125rem',
+              color: 'var(--on-surface-variant)',
+              cursor: 'pointer',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
+              maxWidth: '160px',
             }}
+            title={businessName}
           >
             {businessName}
+          </span>
+          <ChevronRight size={13} color="var(--outline)" />
+          <span
+            style={{
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              color: 'var(--on-surface)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {currentRouteName}
           </span>
         </div>
       </div>
 
-      {/* Right: Theme Switcher, Auth Mode Pill, User Profile */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      {/* Center: Global Search Bar with ⌘K */}
+      <div
+        className="hide-on-mobile"
+        style={{
+          flex: 1,
+          maxWidth: '420px',
+          margin: '0 16px',
+        }}
+      >
+        <div
+          onClick={() => {
+            if (location.pathname !== '/transactions') navigate('/transactions');
+          }}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            cursor: 'pointer',
+          }}
+        >
+          <Search
+            size={14}
+            color="var(--outline)"
+            style={{ position: 'absolute', left: '10px', pointerEvents: 'none' }}
+          />
+          <input
+            type="text"
+            readOnly
+            placeholder="Search transactions, counterparties, findings... ⌘K"
+            style={{
+              width: '100%',
+              height: '32px',
+              paddingLeft: '32px',
+              paddingRight: '48px',
+              borderRadius: 'var(--rounded-sm)',
+              backgroundColor: 'var(--surface-container-lowest)',
+              border: '1px solid var(--outline-variant)',
+              color: 'var(--on-surface)',
+              fontSize: '0.75rem',
+              outline: 'none',
+              cursor: 'pointer',
+            }}
+          />
+          <kbd
+            style={{
+              position: 'absolute',
+              right: '8px',
+              pointerEvents: 'none',
+              fontSize: '0.625rem',
+              padding: '1px 5px',
+            }}
+          >
+            ⌘K
+          </kbd>
+        </div>
+      </div>
+
+      {/* Right: Live Sync HUD, Theme Switcher, Alerts & User Profile */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+        {/* Live Sync HUD Pill */}
+        <div
+          className="hide-on-mobile"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '3px 8px',
+            borderRadius: 'var(--rounded-sm)',
+            backgroundColor: 'var(--tertiary-container)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            color: 'var(--tertiary)',
+            fontSize: '0.6875rem',
+            fontFamily: 'var(--font-mono)',
+          }}
+        >
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--tertiary)',
+              display: 'inline-block',
+              animation: 'pulse 1.8s infinite',
+            }}
+          />
+          <span>Synced with Ledger</span>
+        </div>
+
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
@@ -272,61 +359,69 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '36px',
-            height: '36px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-surface)',
-            color: 'var(--text-secondary)',
-            border: '1px solid var(--border-subtle)',
+            width: '32px',
+            height: '32px',
+            borderRadius: 'var(--rounded-sm)',
+            backgroundColor: 'var(--surface-container)',
+            color: 'var(--on-surface-variant)',
+            border: '1px solid var(--outline-variant)',
             cursor: 'pointer',
-            transition: 'all 0.15s ease',
+            transition: 'all 0.12s ease',
           }}
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
         >
-          {theme === 'dark' ? <Sun size={17} color="#FBBF24" /> : <Moon size={17} color="#6366F1" />}
+          {theme === 'dark' ? <Sun size={15} color="#FBBF24" /> : <Moon size={15} color="var(--primary)" />}
         </button>
 
-        {/* Mock auth mode indicator */}
-        {isMockMode ? (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              backgroundColor: 'rgba(99, 102, 241, 0.12)',
-              border: '1px solid rgba(99, 102, 241, 0.3)',
-              padding: '4px 10px',
-              borderRadius: '9999px',
-              fontSize: '0.78rem',
-              color: 'var(--primary)',
-              fontWeight: 500,
-            }}
-          >
-            <Sparkles size={13} />
-            <span className="hide-on-mobile">Dev Mode</span>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              backgroundColor: 'rgba(16, 185, 129, 0.12)',
-              border: '1px solid rgba(16, 185, 129, 0.3)',
-              padding: '4px 10px',
-              borderRadius: '9999px',
-              fontSize: '0.78rem',
-              color: '#34D399',
-              fontWeight: 500,
-            }}
-          >
-            <ShieldAlert size={13} />
-            <span className="hide-on-mobile">Protected</span>
-          </div>
-        )}
+        {/* Risk Alerts Notification Trigger */}
+        <button
+          onClick={() => navigate('/findings')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '32px',
+            height: '32px',
+            borderRadius: 'var(--rounded-sm)',
+            backgroundColor: 'var(--surface-container)',
+            color: 'var(--on-surface-variant)',
+            border: '1px solid var(--outline-variant)',
+            cursor: 'pointer',
+          }}
+          title="Risk Alerts & Anomalies"
+        >
+          <Bell size={15} />
+          {unresolvedAlerts > 0 && (
+            <span
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                minWidth: '16px',
+                height: '16px',
+                padding: '0 3px',
+                borderRadius: 'var(--rounded-full)',
+                backgroundColor: 'var(--error)',
+                color: '#ffffff',
+                fontSize: '0.625rem',
+                fontWeight: 700,
+                fontFamily: 'var(--font-mono)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1,
+              }}
+            >
+              {unresolvedAlerts}
+            </span>
+          )}
+        </button>
+
+        <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--outline-variant)', margin: '0 2px' }} />
 
         {/* User profile widget */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           {isMockMode ? (
             <Link
               to="/settings"
@@ -334,31 +429,43 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--border-subtle)',
-                padding: '4px 12px',
-                borderRadius: '9999px',
+                padding: '3px 8px',
+                borderRadius: 'var(--rounded-sm)',
+                backgroundColor: 'var(--surface-container)',
+                border: '1px solid var(--outline-variant)',
               }}
             >
               <div
                 style={{
-                  width: '26px',
-                  height: '26px',
+                  width: '24px',
+                  height: '24px',
                   borderRadius: '50%',
                   background: 'var(--primary-gradient)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#FFF',
-                  fontSize: '0.75rem',
+                  color: '#FFFFFF',
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                 }}
               >
-                SP
+                {user?.firstName?.slice(0, 2).toUpperCase() || 'SP'}
               </div>
-              <span style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                {user?.fullName || 'Srushti Patil'}
-              </span>
+              <div className="hide-on-mobile" style={{ display: 'flex', flexDirection: 'column' }}>
+                <span
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    color: 'var(--on-surface)',
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {user?.fullName || 'Srushti Patil'}
+                </span>
+                <span className="font-label-data-sm" style={{ fontSize: '0.5625rem', color: 'var(--outline)' }}>
+                  Financial Controller
+                </span>
+              </div>
             </Link>
           ) : (
             <UserButton afterSignOutUrl="/" />
@@ -368,3 +475,5 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
     </header>
   );
 };
+
+export default Navbar;

@@ -1,12 +1,15 @@
 import React from 'react';
-import { AlertCircle, CheckCircle, Info, RefreshCw } from 'lucide-react';
+import { AlertCircle, AlertTriangle, CheckCircle, Info, RefreshCw } from 'lucide-react';
+import { Button } from './Button';
 
-interface StateAlertProps {
+export interface StateAlertProps {
   type?: 'error' | 'warning' | 'info' | 'success';
   title?: string;
   message: string;
   onRetry?: () => void;
   actionText?: string;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export const StateAlert: React.FC<StateAlertProps> = ({
@@ -15,31 +18,37 @@ export const StateAlert: React.FC<StateAlertProps> = ({
   message,
   onRetry,
   actionText = 'Retry',
+  className = '',
+  style,
 }) => {
   const configs = {
     error: {
-      icon: <AlertCircle size={20} color="#EF4444" />,
-      bg: 'var(--danger-bg)',
-      border: 'rgba(239, 68, 68, 0.3)',
-      text: '#FCA5A5',
+      icon: <AlertCircle size={18} color="var(--error)" />,
+      bg: 'var(--error-container)',
+      border: 'rgba(244, 63, 94, 0.35)',
+      text: 'var(--error)',
+      titleColor: 'var(--on-surface)',
     },
     warning: {
-      icon: <AlertCircle size={20} color="#F59E0B" />,
+      icon: <AlertTriangle size={18} color="var(--warning)" />,
       bg: 'var(--warning-bg)',
-      border: 'rgba(245, 158, 11, 0.3)',
-      text: '#FCD34D',
+      border: 'rgba(245, 158, 11, 0.35)',
+      text: 'var(--warning)',
+      titleColor: 'var(--on-surface)',
     },
     info: {
-      icon: <Info size={20} color="#06B6D4" />,
-      bg: 'var(--info-bg)',
-      border: 'rgba(6, 182, 212, 0.3)',
-      text: '#7DD3FC',
+      icon: <Info size={18} color="var(--secondary)" />,
+      bg: 'var(--secondary-container)',
+      border: 'rgba(14, 165, 233, 0.35)',
+      text: 'var(--secondary)',
+      titleColor: 'var(--on-surface)',
     },
     success: {
-      icon: <CheckCircle size={20} color="#10B981" />,
-      bg: 'var(--success-bg)',
-      border: 'rgba(16, 185, 129, 0.3)',
-      text: '#6EE7B7',
+      icon: <CheckCircle size={18} color="var(--tertiary)" />,
+      bg: 'var(--tertiary-container)',
+      border: 'rgba(16, 185, 129, 0.35)',
+      text: 'var(--tertiary)',
+      titleColor: 'var(--on-surface)',
     },
   };
 
@@ -47,46 +56,50 @@ export const StateAlert: React.FC<StateAlertProps> = ({
 
   return (
     <div
+      className={className}
       style={{
         display: 'flex',
         alignItems: 'flex-start',
-        gap: '14px',
-        padding: '16px 20px',
+        gap: '12px',
+        padding: '12px 16px',
         backgroundColor: config.bg,
         border: `1px solid ${config.border}`,
-        borderRadius: 'var(--radius-md)',
-        marginBottom: '20px',
+        borderRadius: 'var(--rounded-md)',
+        marginBottom: '16px',
+        ...style,
       }}
     >
       <div style={{ flexShrink: 0, marginTop: '2px' }}>{config.icon}</div>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
         {title && (
-          <h4 style={{ fontSize: '0.92rem', fontWeight: 600, color: '#FFFFFF', marginBottom: '4px' }}>
+          <h4
+            className="font-headline-md"
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: config.titleColor,
+              marginBottom: '2px',
+            }}
+          >
             {title}
           </h4>
         )}
-        <p style={{ fontSize: '0.85rem', color: config.text, lineHeight: 1.45 }}>{message}</p>
+        <p className="font-body-sm" style={{ color: config.text, lineHeight: 1.4 }}>
+          {message}
+        </p>
       </div>
       {onRetry && (
-        <button
+        <Button
+          variant="secondary"
+          size="xs"
           onClick={onRetry}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            color: '#FFFFFF',
-            fontSize: '0.8rem',
-            fontWeight: 500,
-            flexShrink: 0,
-          }}
+          icon={<RefreshCw size={12} />}
         >
-          <RefreshCw size={13} />
           {actionText}
-        </button>
+        </Button>
       )}
     </div>
   );
 };
+
+export default StateAlert;

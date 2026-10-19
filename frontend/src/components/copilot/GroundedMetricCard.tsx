@@ -21,10 +21,10 @@ export const GroundedMetricCard: React.FC<GroundedMetricCardProps> = ({ data }) 
       }}
     >
       <div>
-        <div style={{ fontSize: '0.74rem', color: '#6EE7B7', fontWeight: 600, textTransform: 'uppercase' }}>
+        <div style={{ fontSize: '0.74rem', color: 'var(--tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
           {data.metric}
         </div>
-        <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#FFFFFF', marginTop: '2px' }}>
+        <div style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
           {data.value}
         </div>
         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>

@@ -81,7 +81,7 @@ export const FindingsPage: React.FC = () => {
       {/* Page Header */}
       <div style={{ marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-          <h1 style={{ fontSize: '1.75rem', color: '#FFFFFF' }}>
+          <h1 style={{ fontSize: '1.75rem', color: 'var(--text-primary)' }}>
             Anomaly Findings & Audits
           </h1>
           <span
@@ -106,8 +106,8 @@ export const FindingsPage: React.FC = () => {
       {/* Advisory Notice */}
       <div
         style={{
-          backgroundColor: 'rgba(30, 41, 59, 0.5)',
-          border: '1px solid var(--border-subtle)',
+          backgroundColor: 'var(--surface-container)',
+          border: '1px solid var(--outline-variant)',
           borderRadius: 'var(--radius-md)',
           padding: '12px 16px',
           marginBottom: '24px',
@@ -135,7 +135,7 @@ export const FindingsPage: React.FC = () => {
       >
         <div className="glass-panel" style={{ padding: '16px 20px' }}>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Total Detected</span>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#FFFFFF' }}>{data.summary.total}</div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-primary)' }}>{data.summary.total}</div>
         </div>
         <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid #EF4444' }}>
           <span style={{ fontSize: '0.78rem', color: '#F87171' }}>Critical Flags</span>

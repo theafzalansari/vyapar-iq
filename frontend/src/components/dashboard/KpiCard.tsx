@@ -42,7 +42,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({ data, icon }) => {
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '8px' }}>
         <h3
           className="font-display"
-          style={{ fontSize: '1.75rem', color: '#FFFFFF', letterSpacing: '-0.03em' }}
+          style={{ fontSize: '1.75rem', color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
         >
           {data.formatted}
         </h3>

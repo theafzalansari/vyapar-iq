@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  AlertCircle,
   Building2,
   Calendar,
   CheckCircle,
@@ -228,17 +227,18 @@ export const ReportsPage: React.FC = () => {
               onClick={() => setSelectedScope('reconciliation')}
               style={{
                 padding: '6px 14px',
-                borderRadius: '6px',
+                borderRadius: 'var(--rounded-md)',
                 fontSize: '0.82rem',
                 fontWeight: 600,
                 backgroundColor:
-                  selectedScope === 'reconciliation' ? 'rgba(99, 102, 241, 0.25)' : 'transparent',
-                color: selectedScope === 'reconciliation' ? '#FFFFFF' : 'var(--text-secondary)',
+                  selectedScope === 'reconciliation' ? 'var(--primary)' : 'var(--surface-container)',
+                color: selectedScope === 'reconciliation' ? 'var(--on-primary)' : 'var(--text-secondary)',
                 border:
                   selectedScope === 'reconciliation'
                     ? '1px solid var(--primary)'
-                    : '1px solid var(--border-subtle)',
+                    : '1px solid var(--outline-variant)',
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
             >
               Reconciliation
@@ -247,17 +247,18 @@ export const ReportsPage: React.FC = () => {
               onClick={() => setSelectedScope('anomalies')}
               style={{
                 padding: '6px 14px',
-                borderRadius: '6px',
+                borderRadius: 'var(--rounded-md)',
                 fontSize: '0.82rem',
                 fontWeight: 600,
                 backgroundColor:
-                  selectedScope === 'anomalies' ? 'rgba(99, 102, 241, 0.25)' : 'transparent',
-                color: selectedScope === 'anomalies' ? '#FFFFFF' : 'var(--text-secondary)',
+                  selectedScope === 'anomalies' ? 'var(--primary)' : 'var(--surface-container)',
+                color: selectedScope === 'anomalies' ? 'var(--on-primary)' : 'var(--text-secondary)',
                 border:
                   selectedScope === 'anomalies'
                     ? '1px solid var(--primary)'
-                    : '1px solid var(--border-subtle)',
+                    : '1px solid var(--outline-variant)',
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
             >
               Dispute Evidence
@@ -266,17 +267,18 @@ export const ReportsPage: React.FC = () => {
               onClick={() => setSelectedScope('gst')}
               style={{
                 padding: '6px 14px',
-                borderRadius: '6px',
+                borderRadius: 'var(--rounded-md)',
                 fontSize: '0.82rem',
                 fontWeight: 600,
                 backgroundColor:
-                  selectedScope === 'gst' ? 'rgba(99, 102, 241, 0.25)' : 'transparent',
-                color: selectedScope === 'gst' ? '#FFFFFF' : 'var(--text-secondary)',
+                  selectedScope === 'gst' ? 'var(--primary)' : 'var(--surface-container)',
+                color: selectedScope === 'gst' ? 'var(--on-primary)' : 'var(--text-secondary)',
                 border:
                   selectedScope === 'gst'
                     ? '1px solid var(--primary)'
-                    : '1px solid var(--border-subtle)',
+                    : '1px solid var(--outline-variant)',
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
             >
               GST / Tax Prep
@@ -291,11 +293,11 @@ export const ReportsPage: React.FC = () => {
               value={datePreset}
               onChange={(e) => setDatePreset(e.target.value as any)}
               style={{
-                backgroundColor: 'var(--bg-surface)',
+                backgroundColor: 'var(--surface-container)',
                 color: 'var(--text-primary)',
-                border: '1px solid var(--border-subtle)',
+                border: '1px solid var(--outline-variant)',
                 padding: '6px 12px',
-                borderRadius: '6px',
+                borderRadius: 'var(--rounded-md)',
                 fontSize: '0.82rem',
                 outline: 'none',
               }}
@@ -314,11 +316,11 @@ export const ReportsPage: React.FC = () => {
                 value={customStartDate}
                 onChange={(e) => setCustomStartDate(e.target.value)}
                 style={{
-                  backgroundColor: 'var(--bg-surface)',
+                  backgroundColor: 'var(--surface-container)',
                   color: 'var(--text-primary)',
-                  border: '1px solid var(--border-subtle)',
+                  border: '1px solid var(--outline-variant)',
                   padding: '5px 10px',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--rounded-md)',
                   fontSize: '0.8rem',
                 }}
               />
@@ -328,11 +330,11 @@ export const ReportsPage: React.FC = () => {
                 value={customEndDate}
                 onChange={(e) => setCustomEndDate(e.target.value)}
                 style={{
-                  backgroundColor: 'var(--bg-surface)',
+                  backgroundColor: 'var(--surface-container)',
                   color: 'var(--text-primary)',
-                  border: '1px solid var(--border-subtle)',
+                  border: '1px solid var(--outline-variant)',
                   padding: '5px 10px',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--rounded-md)',
                   fontSize: '0.8rem',
                 }}
               />
@@ -380,14 +382,17 @@ export const ReportsPage: React.FC = () => {
       {/* Main Report Body */}
       {report && (
         <>
-          {/* Business & Auditor Info Banner */}
+          {/* Business & Auditor Info Banner (Coherent Theme-Adaptive Surface) */}
           <div
             className="glass-panel"
             style={{
-              padding: '20px 24px',
+              padding: '24px',
               marginBottom: '24px',
-              background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%)',
+              backgroundColor: 'var(--surface-container)',
+              border: '1px solid var(--outline-variant)',
               borderLeft: '4px solid var(--primary)',
+              borderRadius: 'var(--rounded-lg)',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
             <div
@@ -403,18 +408,19 @@ export const ReportsPage: React.FC = () => {
                   style={{
                     width: '46px',
                     height: '46px',
-                    borderRadius: '12px',
-                    backgroundColor: 'rgba(99, 102, 241, 0.15)',
+                    borderRadius: 'var(--rounded-md)',
+                    backgroundColor: 'var(--primary-light)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: 'var(--primary)',
+                    boxShadow: 'var(--shadow-sm)',
                   }}
                 >
                   <Building2 size={24} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', color: '#FFFFFF', marginBottom: '4px' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
                     {report.businessProfile.name}
                   </h3>
                   <div
@@ -427,30 +433,37 @@ export const ReportsPage: React.FC = () => {
                     }}
                   >
                     <span>
-                      <strong>GSTIN:</strong> {report.businessProfile.gstin}
+                      <strong style={{ color: 'var(--text-primary)' }}>GSTIN:</strong> {report.businessProfile.gstin}
                     </span>
                     <span>
-                      <strong>PAN:</strong> {report.businessProfile.pan}
+                      <strong style={{ color: 'var(--text-primary)' }}>PAN:</strong> {report.businessProfile.pan}
                     </span>
                     <span>
-                      <strong>Sector:</strong> {report.businessProfile.industry}
+                      <strong style={{ color: 'var(--text-primary)' }}>Sector:</strong> {report.businessProfile.industry}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div style={{ textAlign: 'right', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              <div style={{ textAlign: 'right', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
                 <div>
-                  Report Ref: <strong style={{ color: 'var(--text-primary)' }}>{report.reportId}</strong>
+                  <span>Report Ref: </span>
+                  <strong style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{report.reportId}</strong>
                 </div>
-                <div>
-                  Generated: {new Date(report.generatedAt).toLocaleString('en-IN', {
-                    dateStyle: 'medium',
-                    timeStyle: 'short',
-                  })}
+                <div style={{ marginTop: '2px' }}>
+                  <span>Generated: </span>
+                  <strong style={{ color: 'var(--text-primary)' }}>
+                    {new Date(report.generatedAt).toLocaleString('en-IN', {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    })}
+                  </strong>
                 </div>
-                <div>
-                  Period: <span style={{ color: 'var(--text-secondary)' }}>{report.period.startDate} to {report.period.endDate}</span>
+                <div style={{ marginTop: '2px' }}>
+                  <span>Period: </span>
+                  <strong style={{ color: 'var(--text-primary)' }}>
+                    {report.period.startDate} to {report.period.endDate}
+                  </strong>
                 </div>
               </div>
             </div>
@@ -459,17 +472,17 @@ export const ReportsPage: React.FC = () => {
               style={{
                 marginTop: '16px',
                 paddingTop: '14px',
-                borderTop: '1px solid var(--border-subtle)',
+                borderTop: '1px solid var(--outline-variant)',
                 fontSize: '0.84rem',
-                color: 'var(--text-muted)',
+                color: 'var(--text-secondary)',
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '8px',
               }}
             >
-              <ShieldCheck size={18} color="var(--success)" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <ShieldCheck size={18} color="var(--tertiary)" style={{ flexShrink: 0, marginTop: '2px' }} />
               <span>
-                <strong style={{ color: 'var(--text-secondary)' }}>Auditor Workpaper Status:</strong>{' '}
+                <strong style={{ color: 'var(--text-primary)' }}>Auditor Workpaper Status:</strong>{' '}
                 {report.businessProfile.auditorNotes}
               </span>
             </div>
@@ -485,38 +498,38 @@ export const ReportsPage: React.FC = () => {
             }}
           >
             <div className="glass-panel" style={{ padding: '20px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                 Total Inflow (Revenue)
               </span>
-              <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#10B981', marginTop: '4px' }}>
+              <div style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--tertiary)', marginTop: '4px' }}>
                 ₹{report.financialSummary.totalRevenue.toLocaleString('en-IN')}
               </div>
-              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
-                <TrendingUp size={14} color="#10B981" /> Verified against {report.financialSummary.totalVolume} ledger transactions
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
+                <TrendingUp size={14} color="var(--tertiary)" /> Verified against {report.financialSummary.totalVolume} ledger transactions
               </span>
             </div>
 
             <div className="glass-panel" style={{ padding: '20px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                 Total Outflow (Expenses)
               </span>
-              <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#F43F5E', marginTop: '4px' }}>
+              <div style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--error)', marginTop: '4px' }}>
                 ₹{report.financialSummary.totalExpenses.toLocaleString('en-IN')}
               </div>
-              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
-                <TrendingDown size={14} color="#F43F5E" /> Operational & capital expenditures
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
+                <TrendingDown size={14} color="var(--error)" /> Operational & capital expenditures
               </span>
             </div>
 
             <div className="glass-panel" style={{ padding: '20px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                 Net Operating Balance
               </span>
               <div
                 style={{
                   fontSize: '1.75rem',
                   fontWeight: 700,
-                  color: report.financialSummary.netOperatingProfit >= 0 ? '#38BDF8' : '#F43F5E',
+                  color: report.financialSummary.netOperatingProfit >= 0 ? 'var(--secondary)' : 'var(--error)',
                   marginTop: '4px',
                 }}
               >
@@ -525,9 +538,10 @@ export const ReportsPage: React.FC = () => {
               <span
                 style={{
                   fontSize: '0.78rem',
-                  color: report.financialSummary.profitMarginPct >= 0 ? '#10B981' : '#F43F5E',
+                  color: report.financialSummary.profitMarginPct >= 0 ? 'var(--tertiary)' : 'var(--error)',
                   marginTop: '6px',
                   display: 'block',
+                  fontWeight: 500,
                 }}
               >
                 {report.financialSummary.profitMarginPct}% profit margin on turnover
@@ -535,15 +549,15 @@ export const ReportsPage: React.FC = () => {
             </div>
 
             <div className="glass-panel" style={{ padding: '20px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                 Anomaly Disputed Exposure
               </span>
-              <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#F59E0B', marginTop: '4px' }}>
+              <div style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--warning)', marginTop: '4px' }}>
                 ₹{report.anomaliesAudit.totalDisputedAmount.toLocaleString('en-IN')}
               </div>
-              <span style={{ fontSize: '0.78rem', color: '#F87171', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <ShieldAlert size={14} />
-                {report.anomaliesAudit.openCriticalCount} critical issues • {report.anomaliesAudit.totalIdentified} total findings
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <ShieldAlert size={14} color="var(--warning)" />
+                <strong style={{ color: 'var(--error)' }}>{report.anomaliesAudit.openCriticalCount} critical issues</strong> • {report.anomaliesAudit.totalIdentified} total findings
               </span>
             </div>
           </div>
@@ -587,7 +601,7 @@ export const ReportsPage: React.FC = () => {
                       <div
                         style={{
                           height: '6px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                          backgroundColor: 'var(--surface-container-highest)',
                           borderRadius: '3px',
                           overflow: 'hidden',
                         }}
@@ -620,7 +634,7 @@ export const ReportsPage: React.FC = () => {
                 <div style={{ overflowX: 'auto' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
                     <thead>
-                      <tr style={{ borderBottom: '1px solid var(--border-subtle)', textAlign: 'left', color: 'var(--text-muted)' }}>
+                      <tr style={{ borderBottom: '1px solid var(--outline-variant)', textAlign: 'left', color: 'var(--text-secondary)' }}>
                         <th style={{ padding: '8px 10px' }}>Month</th>
                         <th style={{ padding: '8px 10px', textAlign: 'right' }}>Inflow</th>
                         <th style={{ padding: '8px 10px', textAlign: 'right' }}>Outflow</th>
@@ -632,17 +646,17 @@ export const ReportsPage: React.FC = () => {
                         <tr
                           key={point.period}
                           style={{
-                            borderBottom: '1px solid var(--border-subtle)',
-                            backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+                            borderBottom: '1px solid var(--outline-variant)',
+                            backgroundColor: idx % 2 === 0 ? 'var(--surface-container-low)' : 'transparent',
                           }}
                         >
                           <td style={{ padding: '8px 10px', fontWeight: 600, color: 'var(--text-primary)' }}>
                             {point.period}
                           </td>
-                          <td style={{ padding: '8px 10px', textAlign: 'right', color: '#10B981' }}>
+                          <td style={{ padding: '8px 10px', textAlign: 'right', color: 'var(--tertiary)', fontWeight: 600 }}>
                             ₹{point.income.toLocaleString('en-IN')}
                           </td>
-                          <td style={{ padding: '8px 10px', textAlign: 'right', color: '#F43F5E' }}>
+                          <td style={{ padding: '8px 10px', textAlign: 'right', color: 'var(--error)', fontWeight: 600 }}>
                             ₹{point.expenses.toLocaleString('en-IN')}
                           </td>
                           <td
@@ -650,7 +664,7 @@ export const ReportsPage: React.FC = () => {
                               padding: '8px 10px',
                               textAlign: 'right',
                               fontWeight: 600,
-                              color: point.netCashflow >= 0 ? '#38BDF8' : '#F43F5E',
+                              color: point.netCashflow >= 0 ? 'var(--secondary)' : 'var(--error)',
                             }}
                           >
                             ₹{point.netCashflow.toLocaleString('en-IN')}
@@ -693,7 +707,7 @@ export const ReportsPage: React.FC = () => {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem' }}>
                   <thead>
-                    <tr style={{ borderBottom: '1px solid var(--border-subtle)', textAlign: 'left', color: 'var(--text-muted)' }}>
+                    <tr style={{ borderBottom: '1px solid var(--outline-variant)', textAlign: 'left', color: 'var(--text-secondary)' }}>
                       <th style={{ padding: '12px 14px' }}>Severity</th>
                       <th style={{ padding: '12px 14px' }}>Finding / Title</th>
                       <th style={{ padding: '12px 14px' }}>Triggered Rule</th>
@@ -707,34 +721,43 @@ export const ReportsPage: React.FC = () => {
                       <tr
                         key={item.id}
                         style={{
-                          borderBottom: '1px solid var(--border-subtle)',
-                          backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+                          borderBottom: '1px solid var(--outline-variant)',
+                          backgroundColor: idx % 2 === 0 ? 'var(--surface-container-low)' : 'transparent',
                         }}
                       >
                         <td style={{ padding: '12px 14px' }}>
                           <span
                             style={{
-                              padding: '2px 8px',
+                              padding: '3px 8px',
                               borderRadius: '4px',
                               fontSize: '0.74rem',
                               fontWeight: 700,
                               textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
                               backgroundColor:
                                 item.severity === 'critical'
-                                  ? 'rgba(239, 68, 68, 0.2)'
+                                  ? 'var(--error-container)'
                                   : item.severity === 'high'
-                                  ? 'rgba(249, 115, 22, 0.2)'
+                                  ? 'rgba(249, 115, 22, 0.18)'
                                   : item.severity === 'medium'
-                                  ? 'rgba(245, 158, 11, 0.2)'
-                                  : 'rgba(59, 130, 246, 0.2)',
+                                  ? 'var(--warning-bg)'
+                                  : 'var(--secondary-container)',
                               color:
                                 item.severity === 'critical'
-                                  ? '#F87171'
+                                  ? 'var(--error)'
                                   : item.severity === 'high'
-                                  ? '#FB923C'
+                                  ? '#EA580C'
                                   : item.severity === 'medium'
-                                  ? '#FCD34D'
-                                  : '#60A5FA',
+                                  ? 'var(--warning)'
+                                  : 'var(--secondary)',
+                              border:
+                                item.severity === 'critical'
+                                  ? '1px solid rgba(244, 63, 94, 0.35)'
+                                  : item.severity === 'high'
+                                  ? '1px solid rgba(249, 115, 22, 0.35)'
+                                  : item.severity === 'medium'
+                                  ? '1px solid rgba(245, 158, 11, 0.35)'
+                                  : '1px solid rgba(14, 165, 233, 0.35)',
                             }}
                           >
                             {item.severity}
@@ -747,7 +770,7 @@ export const ReportsPage: React.FC = () => {
                           </div>
                         </td>
                         <td style={{ padding: '12px 14px', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-                          <code style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '2px 6px', borderRadius: '4px' }}>
+                          <code style={{ backgroundColor: 'var(--surface-container)', color: 'var(--text-primary)', padding: '2px 6px', borderRadius: '4px', border: '1px solid var(--outline-variant)' }}>
                             {item.rule || item.type}
                           </code>
                         </td>
@@ -784,11 +807,11 @@ export const ReportsPage: React.FC = () => {
                     key={rec.id}
                     style={{
                       padding: '16px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 'var(--rounded-md)',
+                      backgroundColor: 'var(--surface-container)',
+                      border: '1px solid var(--outline-variant)',
                       borderLeft: `4px solid ${
-                        rec.priority === 'high' ? '#EF4444' : rec.priority === 'medium' ? '#F59E0B' : '#3B82F6'
+                        rec.priority === 'high' ? 'var(--error)' : rec.priority === 'medium' ? 'var(--warning)' : 'var(--primary)'
                       }`,
                     }}
                   >
@@ -802,7 +825,7 @@ export const ReportsPage: React.FC = () => {
                           textTransform: 'uppercase',
                           fontWeight: 700,
                           color:
-                            rec.priority === 'high' ? '#F87171' : rec.priority === 'medium' ? '#FCD34D' : '#60A5FA',
+                            rec.priority === 'high' ? 'var(--error)' : rec.priority === 'medium' ? 'var(--warning)' : 'var(--primary)',
                         }}
                       >
                         {rec.priority} Priority
@@ -812,7 +835,7 @@ export const ReportsPage: React.FC = () => {
                       {rec.description}
                     </p>
                     <div style={{ marginTop: '8px', fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-                      Category: <strong>{rec.category}</strong>
+                      Category: <strong style={{ color: 'var(--text-primary)' }}>{rec.category}</strong>
                     </div>
                   </div>
                 ))}
@@ -833,7 +856,7 @@ export const ReportsPage: React.FC = () => {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem' }}>
                   <thead>
-                    <tr style={{ borderBottom: '1px solid var(--border-subtle)', textAlign: 'left', color: 'var(--text-muted)' }}>
+                    <tr style={{ borderBottom: '1px solid var(--outline-variant)', textAlign: 'left', color: 'var(--text-secondary)' }}>
                       <th style={{ padding: '12px 14px' }}>TX ID</th>
                       <th style={{ padding: '12px 14px' }}>Date</th>
                       <th style={{ padding: '12px 14px' }}>Category</th>
@@ -848,8 +871,8 @@ export const ReportsPage: React.FC = () => {
                       <tr
                         key={tx.id}
                         style={{
-                          borderBottom: '1px solid var(--border-subtle)',
-                          backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+                          borderBottom: '1px solid var(--outline-variant)',
+                          backgroundColor: idx % 2 === 0 ? 'var(--surface-container-low)' : 'transparent',
                         }}
                       >
                         <td style={{ padding: '12px 14px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
@@ -868,7 +891,8 @@ export const ReportsPage: React.FC = () => {
                               padding: '3px 8px',
                               borderRadius: '4px',
                               fontSize: '0.74rem',
-                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                              backgroundColor: 'var(--surface-container)',
+                              border: '1px solid var(--outline-variant)',
                               color: 'var(--text-primary)',
                             }}
                           >
@@ -886,7 +910,7 @@ export const ReportsPage: React.FC = () => {
                             padding: '12px 14px',
                             textAlign: 'right',
                             fontWeight: 600,
-                            color: tx.type === 'income' ? '#10B981' : '#F43F5E',
+                            color: tx.type === 'income' ? 'var(--tertiary)' : 'var(--error)',
                           }}
                         >
                           {tx.type === 'income' ? '+' : '-'}₹{tx.amount.toLocaleString('en-IN')}
@@ -901,9 +925,10 @@ export const ReportsPage: React.FC = () => {
                                 padding: '2px 8px',
                                 borderRadius: '12px',
                                 fontSize: '0.72rem',
-                                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                                color: '#F87171',
-                                border: '1px solid rgba(239, 68, 68, 0.3)',
+                                fontWeight: 600,
+                                backgroundColor: 'var(--error-container)',
+                                color: 'var(--error)',
+                                border: '1px solid rgba(244, 63, 94, 0.3)',
                               }}
                             >
                               <Clock size={11} /> Flagged
@@ -917,8 +942,9 @@ export const ReportsPage: React.FC = () => {
                                 padding: '2px 8px',
                                 borderRadius: '12px',
                                 fontSize: '0.72rem',
-                                backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                                color: '#34D399',
+                                fontWeight: 600,
+                                backgroundColor: 'var(--tertiary-container)',
+                                color: 'var(--tertiary)',
                                 border: '1px solid rgba(16, 185, 129, 0.3)',
                               }}
                             >
@@ -937,20 +963,23 @@ export const ReportsPage: React.FC = () => {
               style={{
                 marginTop: '16px',
                 padding: '12px 16px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'rgba(6, 182, 212, 0.08)',
-                border: '1px solid rgba(6, 182, 212, 0.2)',
+                borderRadius: 'var(--rounded-md)',
+                backgroundColor: 'var(--surface-container)',
+                border: '1px solid var(--outline-variant)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 fontSize: '0.82rem',
+                flexWrap: 'wrap',
+                gap: '8px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#67E8F9' }}>
-                <FileCheck size={16} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
+                <FileCheck size={16} color="var(--secondary)" />
                 <span>
                   Deterministic Ingestion Ledger: {report.financialSummary.totalVolume} Transactions scanned,{' '}
-                  {report.financialSummary.reconciledCount} Reconciled, {report.anomaliesAudit.totalIdentified} Flagged.
+                  <strong style={{ color: 'var(--tertiary)' }}>{report.financialSummary.reconciledCount} Reconciled</strong>,{' '}
+                  <strong style={{ color: 'var(--error)' }}>{report.anomaliesAudit.totalIdentified} Flagged</strong>.
                 </span>
               </div>
               <span style={{ color: 'var(--text-muted)' }}>
@@ -959,25 +988,52 @@ export const ReportsPage: React.FC = () => {
             </div>
           </Card>
 
-          {/* Explicit Legal & Audit Disclaimer */}
+          {/* Explicit Legal & Audit Disclaimer (Accessible High-Contrast Redesign) */}
           <div
             style={{
               marginTop: '24px',
-              padding: '16px 20px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'rgba(239, 68, 68, 0.06)',
-              border: '1px solid rgba(239, 68, 68, 0.25)',
+              padding: '18px 22px',
+              borderRadius: 'var(--rounded-lg)',
+              backgroundColor: 'var(--surface-container)',
+              border: '1px solid var(--outline-variant)',
+              borderLeft: '4px solid var(--error)',
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '12px',
+              gap: '14px',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <AlertCircle size={20} color="#F87171" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <ShieldAlert size={22} color="var(--error)" style={{ flexShrink: 0, marginTop: '2px' }} />
             <div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FCA5A5', marginBottom: '4px' }}>
-                LEGAL & AUDIT COMPLIANCE DISCLAIMER
+              <div
+                style={{
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  color: 'var(--error)',
+                  letterSpacing: '0.04em',
+                  marginBottom: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <span>LEGAL & AUDIT COMPLIANCE DISCLAIMER</span>
+                <span
+                  style={{
+                    fontSize: '0.6875rem',
+                    padding: '2px 8px',
+                    borderRadius: 'var(--rounded-full)',
+                    backgroundColor: 'var(--error-container)',
+                    color: 'var(--error)',
+                    fontWeight: 600,
+                    border: '1px solid rgba(244, 63, 94, 0.3)',
+                  }}
+                >
+                  Statutory Review Notice
+                </span>
               </div>
-              <p style={{ fontSize: '0.8rem', color: '#FECDD3', lineHeight: 1.5, margin: 0 }}>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
                 {report.disclaimer}
               </p>
             </div>
@@ -1007,9 +1063,9 @@ export const ReportsPage: React.FC = () => {
               maxWidth: '640px',
               width: '100%',
               padding: '28px',
-              backgroundColor: 'var(--bg-surface)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-lg)',
+              backgroundColor: 'var(--surface-container)',
+              border: '1px solid var(--outline-variant)',
+              borderRadius: 'var(--rounded-lg)',
               boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)',
             }}
             onClick={(e) => e.stopPropagation()}
@@ -1020,7 +1076,7 @@ export const ReportsPage: React.FC = () => {
                   width: '42px',
                   height: '42px',
                   borderRadius: '10px',
-                  backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                  backgroundColor: 'var(--primary-light)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1041,9 +1097,10 @@ export const ReportsPage: React.FC = () => {
 
             <div
               style={{
-                backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                backgroundColor: 'var(--surface-container-lowest)',
+                border: '1px solid var(--outline-variant)',
                 padding: '16px',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: 'var(--rounded-md)',
                 fontSize: '0.82rem',
                 color: 'var(--text-secondary)',
                 lineHeight: 1.6,

@@ -1,10 +1,11 @@
 import React from 'react';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   icon?: React.ReactNode;
+  kbd?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -13,20 +14,23 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   isLoading = false,
   icon,
+  kbd,
   className = '',
   disabled,
+  style,
   ...props
 }) => {
-  const sizeStyles = {
-    sm: { padding: '6px 12px', fontSize: '0.8rem' },
-    md: { padding: '9px 18px', fontSize: '0.88rem' },
-    lg: { padding: '12px 24px', fontSize: '1rem' },
+  const sizeStyles: Record<'xs' | 'sm' | 'md' | 'lg', React.CSSProperties> = {
+    xs: { padding: '3px 8px', fontSize: '0.6875rem', height: '24px' },
+    sm: { padding: '5px 10px', fontSize: '0.75rem', height: '30px' },
+    md: { padding: '6px 14px', fontSize: '0.8125rem', height: '34px' },
+    lg: { padding: '9px 18px', fontSize: '0.9375rem', height: '40px' },
   };
 
   return (
     <button
       className={`btn btn-${variant} ${className}`}
-      style={sizeStyles[size]}
+      style={{ ...sizeStyles[size], ...style }}
       disabled={disabled || isLoading}
       {...props}
     >
@@ -34,18 +38,21 @@ export const Button: React.FC<ButtonProps> = ({
         <span
           style={{
             display: 'inline-block',
-            width: '14px',
-            height: '14px',
-            border: '2px solid rgba(255,255,255,0.3)',
-            borderTopColor: '#FFF',
+            width: '12px',
+            height: '12px',
+            border: '2px solid rgba(255,255,255,0.25)',
+            borderTopColor: 'currentColor',
             borderRadius: '50%',
             animation: 'spin 0.6s linear infinite',
           }}
         />
       ) : (
-        icon
+        icon && <span style={{ display: 'inline-flex', alignItems: 'center' }}>{icon}</span>
       )}
       {children}
+      {kbd && <kbd style={{ marginLeft: '4px' }}>{kbd}</kbd>}
     </button>
   );
 };
+
+export default Button;

@@ -78,7 +78,7 @@ export const DashboardPage: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-            <h1 style={{ fontSize: '1.75rem', color: '#FFFFFF' }}>
+            <h1 style={{ fontSize: '1.75rem', color: 'var(--text-primary)' }}>
               Financial Overview
             </h1>
             <Badge variant="info">Synthetic Workspace</Badge>
@@ -144,8 +144,8 @@ export const DashboardPage: React.FC = () => {
         <div style={{ marginBottom: '28px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <AlertTriangle size={18} color="#EF4444" />
-              <h3 style={{ fontSize: '1.1rem', color: '#FFFFFF' }}>Prioritized Findings & Anomalies</h3>
+              <AlertTriangle size={18} color="var(--error)" />
+              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>Prioritized Findings & Anomalies</h3>
             </div>
             <Link
               to="/findings"
@@ -207,7 +207,7 @@ export const DashboardPage: React.FC = () => {
                       )}
                     </div>
 
-                    <h4 style={{ fontSize: '0.95rem', color: '#FFFFFF', marginBottom: '6px' }}>
+                    <h4 style={{ fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '6px' }}>
                       {finding.title}
                     </h4>
                     <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.45, marginBottom: '12px' }}>

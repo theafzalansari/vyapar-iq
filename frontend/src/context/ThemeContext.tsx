@@ -34,14 +34,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch {
       // Ignore local storage errors
     }
-    // Update data-theme attribute on root HTML element
+    // Update data-theme attribute and dark class on root HTML element
     document.documentElement.setAttribute('data-theme', theme);
     if (theme === 'light') {
       document.documentElement.classList.add('light-theme');
       document.documentElement.classList.remove('dark-theme');
+      document.documentElement.classList.remove('dark');
     } else {
       document.documentElement.classList.add('dark-theme');
       document.documentElement.classList.remove('light-theme');
+      document.documentElement.classList.add('dark');
     }
   }, [theme]);
 

@@ -63,7 +63,7 @@ export const TransactionsPage: React.FC = () => {
     <div>
       {/* Page Header */}
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.75rem', color: '#FFFFFF', marginBottom: '4px' }}>
+        <h1 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
           Transaction Ledger
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>

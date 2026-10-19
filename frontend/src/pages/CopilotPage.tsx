@@ -97,7 +97,7 @@ export const CopilotPage: React.FC = () => {
             <Bot size={18} />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.5rem', color: '#FFFFFF' }}>AI Business Copilot</h1>
+            <h1 style={{ fontSize: '1.5rem', color: 'var(--text-primary)' }}>AI Business Copilot</h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.84rem' }}>
               Grounded conversational financial intelligence for small business operations.
             </p>
