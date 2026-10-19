@@ -759,35 +759,10 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Prominent Financial Compliance & Review Disclaimer */}
-          <div
-            style={{
-              marginTop: '48px',
-              padding: '16px 20px',
-              borderRadius: 'var(--rounded-lg)',
-              backgroundColor: 'var(--surface-container)',
-              border: '1px solid var(--outline-variant)',
-              fontSize: '0.78rem',
-              color: 'var(--text-secondary)',
-              lineHeight: 1.6,
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '14px',
-            }}
-          >
-            <ShieldAlert size={20} color="var(--warning)" style={{ flexShrink: 0, marginTop: '2px' }} />
-            <div>
-              <strong style={{ color: 'var(--text-primary)' }}>
-                Regulatory, Compliance & Review Notice:
-              </strong>{' '}
-              VyaparIQ provides deterministic algorithmic heuristics, duplicate checks, and generative AI summaries strictly for operational accounting reconciliation and internal business review. Algorithmic anomaly flags and cashflow velocity metrics represent statistical variance observations and do not constitute certified statutory audit opinions, tax filings, or legal proof of fraud. Organizations must conduct independent verification with qualified accounting professionals prior to statutory submission.
-            </div>
-          </div>
-
           {/* Bottom Status & Utility Row */}
           <div
             style={{
-              marginTop: '32px',
+              marginTop: '48px',
               paddingTop: '20px',
               borderTop: '1px solid var(--outline-variant)',
               display: 'flex',

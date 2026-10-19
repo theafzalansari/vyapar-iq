@@ -123,16 +123,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div
         style={{
           height: '56px',
-          padding: isRail ? '0' : '0 14px',
+          padding: isRail ? '0 10px' : '0 14px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: isRail ? 'center' : 'space-between',
+          justifyContent: 'space-between',
           borderBottom: '1px solid var(--outline-variant)',
           position: 'relative',
           flexShrink: 0,
         }}
       >
-        {/* Brand or Centered Icon */}
+        {/* Brand Logo & Name */}
         <div
           onClick={() => navigate('/apps')}
           style={{
@@ -154,6 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               justifyContent: 'center',
               color: '#FFFFFF',
               boxShadow: 'var(--shadow-glow)',
+              flexShrink: 0,
             }}
           >
             <Zap size={16} fill="#FFFFFF" />
@@ -161,7 +162,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!isRail && (
             <span
               className="font-headline-md"
-              style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--on-surface)', letterSpacing: '-0.02em' }}
+              style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--on-surface)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}
             >
               Vyapar<span style={{ color: 'var(--primary)' }}>IQ</span>
             </span>
@@ -169,7 +170,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Controls when expanded or in mobile drawer */}
-        {!isRail && (
+        {!isRail ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
               onClick={() => navigate('/apps')}
@@ -235,35 +236,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </button>
             )}
           </div>
-        )}
-
-        {/* Floating Expand Toggle on Collapsed Rail */}
-        {isRail && onToggleCollapse && (
-          <button
-            onClick={onToggleCollapse}
-            aria-label="Expand sidebar"
-            aria-expanded={false}
-            style={{
-              position: 'absolute',
-              right: '-11px',
-              top: '17px',
-              width: '22px',
-              height: '22px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--surface-container-highest)',
-              border: '1px solid var(--outline-variant)',
-              color: 'var(--on-surface-variant)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              boxShadow: 'var(--shadow-sm)',
-              zIndex: 20,
-            }}
-            title="Expand sidebar"
-          >
-            <PanelLeftOpen size={12} />
-          </button>
+        ) : (
+          /* Expand Toggle directly in rail header (fits cleanly in 68px, no clipping) */
+          onToggleCollapse && (
+            <button
+              onClick={onToggleCollapse}
+              aria-label="Expand sidebar"
+              aria-expanded={false}
+              style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: 'var(--rounded-sm)',
+                backgroundColor: 'var(--surface-container-highest)',
+                border: '1px solid var(--outline-variant)',
+                color: 'var(--on-surface-variant)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: 'var(--shadow-sm)',
+                flexShrink: 0,
+              }}
+              title="Expand sidebar"
+            >
+              <PanelLeftOpen size={13} />
+            </button>
+          )
         )}
       </div>
 
@@ -357,7 +355,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Navigation Sections */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: isRail ? '10px 0' : '12px 10px' }}>
+      <div style={{ flex: 1, overflowY: isRail ? 'visible' : 'auto', padding: isRail ? '10px 0' : '12px 10px' }}>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: isRail ? '6px' : '14px', alignItems: isRail ? 'center' : 'stretch' }}>
           {sections.map((section, sIdx) => (
             <section key={section.title} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: isRail ? 'center' : 'stretch' }}>
@@ -388,9 +386,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         key={item.to}
                         to={item.to}
                         onClick={onClose}
-                        className="sidebar-rail-link"
+                        className={`sidebar-rail-link ${isActive ? 'active' : ''}`}
                         aria-label={item.label}
-                        title={item.label}
+                        title={item.badge ? `${item.label} (${item.badge})` : item.label}
                         style={{
                           width: '42px',
                           height: '42px',
@@ -399,14 +397,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           alignItems: 'center',
                           justifyContent: 'center',
                           textDecoration: 'none',
-                          backgroundColor: isActive ? 'var(--primary-container)' : 'transparent',
-                          color: isActive ? 'var(--primary)' : 'var(--outline)',
-                          borderLeft: isActive ? '3px solid var(--primary)' : '3px solid transparent',
+                          backgroundColor: isActive ? 'var(--primary)' : 'transparent',
+                          color: isActive ? 'var(--on-primary)' : 'var(--on-surface-variant)',
+                          boxShadow: isActive ? '0 2px 8px rgba(79, 70, 229, 0.45)' : 'none',
+                          borderLeft: isActive ? '3px solid var(--primary-hover)' : '3px solid transparent',
                           position: 'relative',
                           transition: 'all 0.12s ease',
                         }}
                       >
-                        <span>{item.icon}</span>
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: isActive ? 'var(--on-primary)' : 'currentColor',
+                          }}
+                        >
+                          {item.icon}
+                        </span>
 
                         {/* Dot indicator if badge exists */}
                         {item.badge && (
@@ -438,6 +446,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       key={item.to}
                       to={item.to}
                       onClick={onClose}
+                      aria-label={item.label}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -448,9 +457,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         fontSize: '0.8125rem',
                         fontWeight: isActive ? 600 : 400,
                         backgroundColor: isActive ? 'var(--primary-container)' : 'transparent',
-                        color: isActive ? 'var(--on-primary-container)' : 'var(--on-surface-variant)',
+                        color: isActive ? 'var(--on-primary)' : 'var(--on-surface-variant)',
                         borderLeft: isActive ? '2px solid var(--primary)' : '2px solid transparent',
-                        boxShadow: isActive ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08)' : 'none',
+                        boxShadow: isActive ? 'inset 0 1px 0 rgba(255, 255, 255, 0.12)' : 'none',
                         transition: 'all 0.12s ease',
                       }}
                       onMouseEnter={(e) => {
@@ -467,10 +476,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: isActive ? 'var(--primary)' : 'var(--outline)' }}>
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: isActive ? 'var(--on-primary)' : 'var(--outline)',
+                          }}
+                        >
                           {item.icon}
                         </span>
-                        <span>{item.label}</span>
+                        <span style={{ color: isActive ? 'var(--on-primary)' : 'inherit' }}>{item.label}</span>
                       </div>
 
                       {item.badge && (

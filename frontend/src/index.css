@@ -334,7 +334,6 @@ kbd {
   left: 0;
   z-index: 50;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow-x: hidden;
 }
 
 .sidebar.collapsed {
@@ -356,9 +355,28 @@ kbd {
   margin-left: 68px;
 }
 
-/* Collapsed rail hover tooltips */
+/* Collapsed rail hover tooltips and active states */
 .sidebar-rail-link {
   position: relative;
+}
+
+.sidebar-rail-link.active {
+  background-color: var(--primary) !important;
+  color: var(--on-primary) !important;
+}
+
+.sidebar-rail-link.active svg {
+  color: var(--on-primary) !important;
+  stroke: var(--on-primary) !important;
+}
+
+.sidebar-rail-link:hover:not(.active) {
+  background-color: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+.sidebar-rail-link:hover:not(.active) svg {
+  color: var(--on-surface);
 }
 
 .sidebar-rail-link .sidebar-rail-tooltip {
@@ -379,7 +397,7 @@ kbd {
   opacity: 0;
   visibility: hidden;
   box-shadow: var(--shadow-md);
-  z-index: 100;
+  z-index: 1000;
   transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 

@@ -1,588 +1,674 @@
-# VyaparIQ 🚀
-> **AI-Powered Business Copilot for Small Businesses (AIVORA 2K26)**
+# VyaparIQ — AI Business Copilot
 
-VyaparIQ is an intelligent financial copilot designed to empower small business owners (SMEs) with automated bookkeeping, hybrid deterministic anomaly detection, and grounded AI insights.
+> **AI-Powered Financial Intelligence, Algorithmic Forensic Audit & Business Copilot for AIVORA 2K26**
 
----
-
-## 🏗️ Architecture & Ownership
-
-- **Backend, Database & AI Logic**:
-  - Runtime: Node.js + Express (TypeScript)
-  - Database: MongoDB + Mongoose ODM
-  - Authentication: Clerk (`@clerk/express`)
-  - Validation: Zod
-  - AI Approach: Hybrid (Deterministic financial analytics & anomaly heuristics + grounded LLM explanations)
-- **Frontend UI/UX**:
-  - React + Vite + TypeScript (Maintained by **Srushti Patil** via a standalone starter ZIP; no Git repository access required).
+VyaparIQ is an intelligent financial intelligence and audit copilot engineered for small-to-medium businesses (SMBs), accounting professionals, and finance teams. It bridges the gap between raw bank statements and actionable business decisions by combining **deterministic financial analytics**, **heuristic anomaly detection**, **counterparty relationship exploration**, and **grounded generative AI explanations** powered by Google Gemini.
 
 ---
 
-## 📁 Project Structure
+## Table of Contents
+
+1. [Overview](#1-overview)
+2. [Problem Statement](#2-problem-statement)
+3. [Key Features](#3-key-features)
+4. [Application Screens & Routes](#4-application-screens--routes)
+5. [Architecture](#5-architecture)
+6. [Technology Stack](#6-technology-stack)
+7. [Repository Structure](#7-repository-structure)
+8. [Prerequisites](#8-prerequisites)
+9. [Local Installation & Development](#9-local-installation--development)
+10. [Environment Variables](#10-environment-variables)
+11. [API Documentation](#11-api-documentation)
+12. [Data Model](#12-data-model)
+13. [AI & Anomaly Detection Methodology](#13-ai--anomaly-detection-methodology)
+14. [Security & Privacy](#14-security--privacy)
+15. [Testing & Quality Checks](#15-testing--quality-checks)
+16. [Production Deployment Guide](#16-production-deployment-guide)
+17. [Known Limitations](#17-known-limitations)
+18. [Contributors & AIVORA 2K26](#18-contributors--aivora-2k26)
+19. [Disclaimer & License](#19-disclaimer--license)
+
+---
+
+## 1. Overview
+
+Small business owners and accounting professionals face recurring friction when reconciling bank statements, reviewing expense velocity, tracking duplicate vendor debits, and compiling workpapers for statutory audits.
+
+VyaparIQ introduces a dual-layer architectural model that strictly separates **deterministic financial math** from **generative natural-language interpretation**:
+- **Deterministic Math & Heuristics:** Ingested bank statement rows are parsed, categorized, mathematically aggregated, and scanned using exact statistical algorithms (Z-score thresholds, time-window duplicate matching, category multipliers, and cashflow velocity). Numbers are never generated or approximated by LLMs.
+- **Evidence-Grounded AI Copilot:** When users query the Business Copilot, verified ledger aggregates and flagged anomalies are placed inside a strict evidence container. Google Gemini translates verified facts into plain-English business recommendations, answers financial questions, and suggests follow-up actions without hallucinating balances or transactions.
+
+---
+
+## 2. Problem Statement
+
+1. **Tedious Manual Reconciliation:** Businesses process hundreds of transactions per month across sales, inventory, payroll, utilities, and tax debits. Identifying duplicate debits or unlinked expenses manually is time-consuming and error-prone.
+2. **Delayed Cashflow Visibility:** Traditional accounting software often locks cashflow trajectory and burn-rate calculations behind complex periodic reporting menus or expensive enterprise modules.
+3. **Hidden Vendor Duplicate Debits:** Accidental double debits (e.g. repeated POS or UPI charges within minutes) frequently go unnoticed until monthly or quarterly reconciliations.
+4. **Audit Friction & Workpaper Preparation:** Compiling bank reconciliations, anomaly reviews, and tax preparation schedules for external auditors or tax consultants requires manual spreadsheet formatting and data aggregation.
+
+---
+
+## 3. Key Features
+
+- **Financial Dashboard & KPIs:**
+  - Real-time KPI quad cards: Total Inflow/Income, Total Outflow/Expenses, Net Ingested Balance, and Unresolved Anomaly Alerts.
+  - Interactive 6-month rolling cashflow trajectory chart (SVG-rendered) contrasting income, expenses, and net cash generation.
+  - Recent transactions ledger snippet with one-click status filters and quick actions.
+- **CSV Statement Ingestion & Transaction Ledger:**
+  - Drag-and-drop CSV upload supporting standard bank formats (`date`, `type`, `amount`, `category`, `description`, `reference`).
+  - Cryptographic **SHA-256 batch fingerprinting** to reject duplicate file uploads with HTTP 409 Conflict (with optional `allowDuplicate=true` override).
+  - Downloadable standardized sample CSV template directly from the interface or API.
+  - Full transaction ledger with column sorting, paginated browsing, type filtering, and text search across descriptions and references.
+- **Deterministic Analytics & Cashflow Trends:**
+  - Chronological trend grouping by day or month with net cashflow calculations.
+  - Granular category breakdown showing absolute spending, transaction frequencies, and percentage shares.
+  - Ingested net balance semantics: distinctly marked as net ingested transaction balance (not misrepresented as verified total bank balance without an opening statement balance).
+- **Rule-Based Anomaly & Risk Detection:**
+  - 5 deterministic forensic detection rules:
+    1. `DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT`: Identical amounts within 24 hours with high description token similarity (boosted risk score for $\le 15$ min intervals).
+    2. `UNUSUAL_EXPENSE_SPIKE`: Leave-one-out statistical anomaly scoring ($Z \ge 2.0$ standard deviations and multiplier $\ge 2.2\times$ baseline).
+    3. `REPEATED_TRANSACTION_BURST`: High-frequency repeated transactions ($\ge 3$ within 24 hours).
+    4. `HIGH_VALUE_UNRECONCILED`: Outlier debit exceeding ₹15,000 without an invoice/cheque reference.
+    5. `NEGATIVE_CASHFLOW_VELOCITY`: 7-day rolling outflow $> 1.8\times$ inflow with net burn $> ₹10,000$.
+  - Severity banding (`critical`, `high`, `medium`, `low`) with transparent risk scoring ($0.0 \le \text{score} \le 1.0$).
+  - Reviewer workflow: Mark anomalies as resolved, add auditor/reviewer notes, and preserve resolution status idempotently across re-scans.
+- **Interactive Counterparty Relationship Graph:**
+  - Visual counterparty intelligence graph rendered on an interactive SVG canvas.
+  - Bounded force-directed node positioning mapping the central business to vendors and customers.
+  - Node inspection panel detailing transaction frequency, total volume, counterparty risk level, and directionality.
+- **Evidence-Grounded Business AI Copilot:**
+  - Interactive conversational interface powered by Google Gemini (`@google/genai`).
+  - Strict evidence grounding: Ledger numbers, totals, and anomalies are pre-calculated by backend services and supplied inside `<verified_ledger_evidence>` boundaries.
+  - Pre-computed grounded metrics, follow-up query suggestions, and actionable business directives.
+  - Anti-prompt-injection sanitization, rate limiting (30 requests/minute per user), and error shielding.
+- **Audit Reports & Compliance Workpapers:**
+  - Three distinct report audit scopes: `Reconciliation`, `Dispute Evidence`, and `GST / Tax Preparation`.
+  - On-demand server-rendered vector PDF generated via PDFKit featuring enterprise headers, KPI summaries, anomaly schedules, and statutory disclaimers.
+  - Multi-format CSV data export: full reconciled transaction ledger and detected anomaly audit findings.
+- **Clerk Authentication & Multi-Tenant Workspace:**
+  - Industry-standard user authentication via Clerk (`@clerk/clerk-react` and `@clerk/express`).
+  - Seamless route protection for internal workspace pages (`/dashboard`, `/transactions`, `/analytics`, `/findings`, `/network`, `/copilot`, `/reports`, `/settings`, `/apps`).
+  - Built-in Developer Mock Mode fallback for local testing without internet access or live Clerk credentials.
+- **Company Settings & Adaptive Design System:**
+  - Business profile customization (business name, legal entity type, financial year selection).
+  - Theme switching: Light and Dark themes implemented via semantic CSS variables and design tokens.
+  - Precision Odoo-inspired application launcher (`/apps`) and collapsible sidebar with icon-rail mode.
+- **Public Landing Page & Local FAQ Assistant:**
+  - Polished landing page with typewriter headline micro-animation.
+  - Live financial telemetry demo preview.
+  - Interactive local FAQ chatbot widget providing instant answers regarding supported CSV formats, security, anomaly scoring, and report generation.
+
+---
+
+## 4. Application Screens & Routes
+
+### Public Routes
+| Route | Component | Description |
+|---|---|---|
+| `/` | `LandingPage` | Public landing page featuring product overview, interactive typewriter hero, telemetry preview, workflow steps, FAQ widget, and footer navigation. |
+| `/sign-in/*` | `SignInPage` | Clerk-hosted Sign In component with Demo Mode quick-login shortcut. |
+| `/sign-up/*` | `SignUpPage` | Clerk-hosted Sign Up component for new account creation. |
+
+### Authenticated Workspace Routes (Wrapped in `ProtectedRoute` and `Layout`)
+| Route | Component | Description |
+|---|---|---|
+| `/apps` | `AppsPage` | Application suite launcher inspired by modern ERP interfaces (Odoo/Precision Core). |
+| `/dashboard` | `DashboardPage` | Executive financial health overview, KPI quad cards, 6-month cashflow trajectory, and recent transactions. |
+| `/transactions` | `TransactionsPage` | CSV statement dropzone, template download, ledger search, filters, and batch status. |
+| `/analytics` | `AnalyticsPage` | Income/expense trends aggregated by day or month, category breakdown charts, and percentage shares. |
+| `/findings` | `FindingsPage` | Algorithmic forensic anomaly findings, risk scores, rule triggers, and resolution audit notes. |
+| `/network` | `NetworkPage` | Interactive counterparty entity graph with node relationship inspector and degree statistics. |
+| `/copilot` | `CopilotPage` | Grounded AI Copilot conversational interface with suggested business inquiries and verified metrics. |
+| `/reports` | `ReportsPage` | Formal audit workpaper generation, scope configuration, and vector PDF / CSV export downloads. |
+| `/settings` | `SettingsPage` | Business legal entity profile, financial year selector, theme toggle, and API configuration status. |
+
+---
+
+## 5. Architecture
+
+```mermaid
+flowchart TD
+    subgraph Client ["Frontend (React 18 + Vite + TypeScript)"]
+        UI["Landing / Workspace Pages"]
+        AuthCtx["AuthContext (Clerk React / Dev Mock)"]
+        ThemeCtx["ThemeContext (Light / Dark Tokens)"]
+        ApiClient["apiClient (Bearer Token / Auto-Headers)"]
+    end
+
+    subgraph Edge ["Authentication & Identity"]
+        ClerkAuth["Clerk Identity Service"]
+    end
+
+    subgraph Backend ["Backend API (Node.js + Express + TypeScript)"]
+        Router["Express Router (/api)"]
+        AuthMW["requireAuth Middleware"]
+        ZodMW["Zod Validation Middleware"]
+        
+        subgraph Engines ["Core Computation Engines"]
+            CSVEngine["CSV Parser & SHA-256 Hasher"]
+            AnalyticsEngine["Deterministic Analytics Engine"]
+            AnomalyEngine["Heuristic Forensic Anomaly Engine"]
+            PDFEngine["PDFKit Vector Workpaper Generator"]
+            CopilotEngine["Evidence Grounding & Sanitization"]
+        end
+    end
+
+    subgraph Storage ["Persistence Layer"]
+        MongoDB[(MongoDB Database)]
+        CollTx["transactions"]
+        CollBatch["importbatches"]
+        CollAnomaly["anomalies"]
+    end
+
+    subgraph AI ["Generative AI Layer"]
+        Gemini["Google Gemini API (@google/genai)"]
+    end
+
+    UI --> AuthCtx
+    UI --> ThemeCtx
+    UI --> ApiClient
+    AuthCtx <--> ClerkAuth
+    ApiClient -- "HTTP / REST (Bearer JWT)" --> Router
+    Router --> AuthMW
+    AuthMW --> ZodMW
+    ZodMW --> Engines
+    
+    CSVEngine --> CollBatch & CollTx
+    AnalyticsEngine --> CollTx
+    AnomalyEngine --> CollTx & CollAnomaly
+    PDFEngine --> CollTx & CollAnomaly
+    CopilotEngine -- "1. Query Verified Stats" --> AnalyticsEngine & AnomalyEngine
+    CopilotEngine -- "2. Grounded Evidence JSON" --> Gemini
+    Gemini -- "3. Business Advice" --> CopilotEngine
+    Engines --> MongoDB
+```
+
+### Architectural Principles:
+1. **Zero Hallucinated Numbers:** All balances, category percentages, counts, and anomaly confidence scores are calculated deterministically by Node.js service modules. Google Gemini is provided only pre-calculated facts.
+2. **Tenant Data Isolation:** Every database operation in MongoDB is scoped strictly to the authenticated `userId` extracted from the verified Clerk JWT. Cross-tenant data leakage is prevented at the schema query level.
+3. **Graceful Offline / Demo Degradation:** When live Clerk keys or Gemini keys are not configured, the platform operates seamlessly using development mock headers (`x-mock-user-id`) and simulated fallback intelligence.
+
+---
+
+## 6. Technology Stack
+
+### Frontend Dependencies (`frontend/package.json`)
+- **Runtime & Build:** `react` (v18.3.1), `react-dom` (v18.3.1), `vite` (v6.0.1), `typescript` (v5.7.2).
+- **Routing & Navigation:** `react-router-dom` (v6.28.0).
+- **Authentication:** `@clerk/clerk-react` (v5.21.0).
+- **Icons & Visuals:** `lucide-react` (v0.468.0).
+- **Styling Architecture:** Precision Forensic Core Design Tokens, centralized CSS custom properties (`index.css`), responsive layouts, zero heavy UI frameworks.
+
+### Backend Dependencies (`backend/package.json`)
+- **Runtime & Web Framework:** `node` (>= 18), `express` (v4.21.2), `typescript` (v5.7.3), `tsx` (v4.19.3).
+- **Database & ODM:** `mongodb`, `mongoose` (v8.9.5).
+- **Authentication & Security:** `@clerk/express` (v2.1.78), `helmet` (v8.0.0), `cors` (v2.8.5).
+- **Schema Validation:** `zod` (v3.24.2).
+- **File Ingestion & Parsing:** `multer` (v2.4.0), `csv-parse` (v7.0.3).
+- **Document Generation:** `pdfkit` (v0.20.2), `@types/pdfkit` (v0.17.6).
+- **Artificial Intelligence:** `@google/genai` (v2.30.0).
+- **Testing Framework:** `vitest` (v3.0.5), `supertest` (v7.0.0).
+
+---
+
+## 7. Repository Structure
 
 ```
 vyapar-iq/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── db.ts               # MongoDB Mongoose connection & lifecycle
-│   │   │   └── env.ts              # Zod-validated environment config
+│   │   │   ├── db.ts                 # MongoDB connection lifecycle & event handlers
+│   │   │   └── env.ts                # Zod-validated server environment variables
 │   │   ├── middleware/
-│   │   │   ├── auth.ts             # Clerk Express authentication & route protection
-│   │   │   ├── errorHandler.ts     # Global JSON error handling (Zod, Mongoose, 500)
-│   │   │   └── validate.ts         # Schema validation middleware for body/query/params
+│   │   │   ├── auth.ts               # Clerk JWT verification & mock fallback
+│   │   │   ├── errorHandler.ts       # Global error handler with typed error envelopes
+│   │   │   └── validate.ts           # Schema validation middleware for Zod
 │   │   ├── models/
-│   │   │   ├── Transaction.ts      # Mongoose Transaction model with compound indexes
-│   │   │   └── ImportBatch.ts      # Mongoose ImportBatch model for CSV tracking
+│   │   │   ├── Anomaly.ts            # Mongoose schema for detected forensic anomalies
+│   │   │   ├── ImportBatch.ts        # Mongoose schema for CSV batch tracking & SHA-256
+│   │   │   └── Transaction.ts        # Mongoose schema for ledger transactions
 │   │   ├── routes/
-│   │   │   ├── health.routes.ts    # GET /api/health endpoint
-│   │   │   └── index.ts            # Route aggregation & /api/auth/me protected route
+│   │   │   ├── analytics.routes.ts   # GET /api/analytics (summary, trends, categories)
+│   │   │   ├── anomaly.routes.ts     # GET, POST, PATCH /api/anomalies
+│   │   │   ├── copilot.routes.ts     # POST /api/copilot/chat
+│   │   │   ├── dashboard.routes.ts   # GET /api/dashboard/summary
+│   │   │   ├── health.routes.ts      # GET /api/health
+│   │   │   ├── networkGraph.routes.ts# GET /api/network-graph
+│   │   │   ├── reports.routes.ts     # GET /api/reports (preview, PDF, CSV)
+│   │   │   ├── transaction.routes.ts # GET, POST /api/transactions
+│   │   │   └── index.ts              # Route registry & /api/auth/me
 │   │   ├── schemas/
-│   │   │   ├── transaction.schema.ts  # Zod schemas (create, update, query, CSV row)
-│   │   │   ├── importBatch.schema.ts  # Zod schemas for batch tracking
-│   │   │   └── copilot.schema.ts      # Zod schemas for AI copilot chat
+│   │   │   ├── analytics.schema.ts   # Zod contracts for date range and grouping
+│   │   │   ├── anomaly.schema.ts     # Zod contracts for anomaly queries and resolution
+│   │   │   ├── copilot.schema.ts     # Zod contracts for Copilot chat payload
+│   │   │   └── transaction.schema.ts # Zod contracts for CSV rows and queries
+│   │   ├── services/
+│   │   │   ├── analytics.service.ts  # Deterministic financial aggregation engine
+│   │   │   ├── anomaly.service.ts    # Heuristic statistical anomaly detection engine
+│   │   │   ├── copilot.service.ts    # Evidence-grounded Gemini prompt orchestration
+│   │   │   ├── csv.service.ts        # Fast CSV streaming parser & sanitization
+│   │   │   ├── networkGraph.service.ts# Counterparty graph node & edge generator
+│   │   │   ├── pdfReport.service.ts  # Server-rendered PDFKit vector workpaper builder
+│   │   │   └── transaction.service.ts# Ledger persistence & batch tracking
 │   │   ├── types/
-│   │   │   ├── api.types.ts        # Common ApiResponse<T>, errors, pagination
-│   │   │   ├── contracts.types.ts  # Public API contracts (CSV, Dashboard, Anomalies, Copilot)
-│   │   │   └── express.d.ts        # Express Request augmentation (req.userId)
-│   │   ├── app.ts                  # Express application setup, CORS, Helmet, Clerk
-│   │   └── server.ts               # Server startup listener & graceful shutdown
+│   │   │   ├── api.types.ts          # Generic ApiResponse<T> and error envelopes
+│   │   │   ├── contracts.types.ts    # Public TypeScript interfaces shared across tiers
+│   │   │   └── express.d.ts          # Express Request augmentation (req.userId)
+│   │   ├── app.ts                    # Express application setup, security, and routes
+│   │   └── server.ts                 # HTTP server listener and graceful shutdown
 │   ├── tests/
-│   │   ├── health.test.ts          # Health check & 404 handler tests
-│   │   ├── schemas.test.ts         # Zod schemas validation tests
-│   │   └── auth.test.ts            # Clerk route protection & auth tests
-│   ├── .env.example                # Documented environment variables template
-│   ├── .gitignore                  # Backend-specific ignore list
+│   │   ├── fixtures/
+│   │   │   └── synthetic_anomalies_test.csv # Synthetic multi-scenario test statement
+│   │   ├── analytics.test.ts
+│   │   ├── anomalies.test.ts
+│   │   ├── auth.test.ts
+│   │   ├── copilot.test.ts
+│   │   ├── dashboard.test.ts
+│   │   ├── health.test.ts
+│   │   ├── networkGraph.test.ts
+│   │   ├── reports.test.ts
+│   │   ├── schemas.test.ts
+│   │   └── transactions.test.ts
+│   ├── .env.example
 │   ├── package.json
 │   └── tsconfig.json
-├── .gitignore                      # Root Git ignore list
-├── package.json                    # Monorepo root scripts
-└── README.md                       # Setup and documentation
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── auth/ProtectedRoute.tsx# Clerk / Mock protected route wrapper
+│   │   │   ├── common/               # Button, Badge, Card, skiper40 animated links
+│   │   │   ├── dashboard/            # CashflowChart, StatCard, TransactionTable
+│   │   │   ├── landing/              # LandingTypewriter, LandingFaqChatbot
+│   │   │   ├── layout/               # Layout, Navbar, Sidebar (collapsible rail)
+│   │   │   └── network/              # NetworkGraphCanvas, NetworkInspector
+│   │   ├── config/env.ts             # Client environment helper
+│   │   ├── context/                  # AuthContext, ThemeContext, ToastContext
+│   │   ├── mocks/                    # Offline mock datasets (dashboard, ledger, graph)
+│   │   ├── pages/                    # 11 React router page components
+│   │   ├── services/                 # Frontend API client & endpoint service modules
+│   │   ├── types/                    # Shared client TypeScript types
+│   │   ├── App.tsx                   # Main router hierarchy
+│   │   ├── index.css                 # Precision Forensic design tokens (Dark/Light)
+│   │   └── main.tsx                  # React DOM root entry
+│   ├── .env.example
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
+├── .gitignore
+├── package.json                      # Monorepo convenience scripts
+└── README.md                         # Project documentation
 ```
 
 ---
 
-## 🔑 Environment Variables
+## 8. Prerequisites
 
-Copy `backend/.env.example` to `backend/.env`:
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-| Variable | Description | Default | Required |
-|---|---|---|---|
-| `PORT` | Backend server port | `5000` | No |
-| `NODE_ENV` | App environment (`development`, `production`, `test`) | `development` | No |
-| `MONGODB_URI` | MongoDB connection string (Local or Atlas) | `mongodb://localhost:27017/vyapariq` | Yes (for data persistence) |
-| `CLERK_PUBLISHABLE_KEY` | Clerk Publishable Key (`pk_test_...`) | — | Yes (for production auth) |
-| `CLERK_SECRET_KEY` | Clerk Secret Key (`sk_test_...`) | — | Yes (for production auth) |
-| `FRONTEND_URL` | Allowed CORS frontend origin | `http://localhost:5173` | No |
-| `GEMINI_API_KEY` | Google Gemini API Key | — | Yes (for AI Copilot features) |
-| `GEMINI_MODEL` | Gemini Model identifier | `gemini-3.5-flash` | No |
-
-> **Development Mode Fallback:** If Clerk keys are not yet configured, the server boots normally, and protected routes can be tested locally using the header `x-mock-user-id: <user_id>`.
+- **Node.js**: `v18.0.0` or higher (verified on Node `v20.x` and `v24.x`).
+- **npm**: `v9.0.0` or higher.
+- **MongoDB**: A running MongoDB instance locally (`mongodb://localhost:27017/vyapariq`) or a cloud URI from **MongoDB Atlas**.
+- **Clerk Account** *(Optional for local dev, Required for production)*: Application keys from [clerk.com](https://clerk.com).
+- **Google Gemini API Key** *(Optional for local dev, Required for live AI Copilot)*: Key from [Google AI Studio](https://aistudio.google.com/).
 
 ---
 
-## 🚀 Quickstart & Setup
+## 9. Local Installation & Development
 
-### 1. Prerequisites
-- Node.js >= 18 (Tested on Node v24.13.1)
-- npm >= 9 (Tested on npm 11.8.0)
-- MongoDB instance running locally (or MongoDB Atlas connection string)
-
-### 2. Install Dependencies
-From the repository root:
+### 1. Clone the Repository
 ```bash
+git clone https://github.com/your-username/vyapar-iq.git
+cd vyapar-iq
+```
+
+### 2. Configure Backend Environment
+```bash
+# Navigate to backend directory
 cd backend
+
+# Copy template to active .env
+cp .env.example .env
+
+# Edit .env with your favorite editor and configure:
+# MONGODB_URI=mongodb://localhost:27017/vyapariq
+```
+
+### 3. Install Backend Dependencies
+```bash
 npm install
 ```
 
-### 3. Build & Run in Development
+### 4. Configure Frontend Environment
 ```bash
-# Start backend in watch mode (tsx)
+# In a separate terminal, navigate to frontend directory
+cd ../frontend
+
+# Copy template to active .env
+cp .env.example .env
+
+# Set VITE_API_BASE_URL (defaults to http://localhost:5000/api)
+# Set VITE_USE_MOCK_DATA=false to connect to the live backend
+```
+
+### 5. Install Frontend Dependencies
+```bash
+npm install
+```
+
+### 6. Start the Local Development Servers
+
+**Option A — Separate Terminals (Recommended):**
+```bash
+# Terminal 1: Backend API server (runs with tsx watch on port 5000)
+cd backend
 npm run dev
 
-# Or from repository root:
-npm run dev:backend
+# Terminal 2: Frontend client (runs with Vite on port 5173)
+cd frontend
+npm run dev
 ```
 
-The server will be available at `http://localhost:5000`.
-
-### 4. Build for Production
+**Option B — Monorepo Root Scripts:**
 ```bash
-# Compiles TypeScript to dist/
-npm run build
-
-# Start production server
-npm start
+# From the repository root:
+npm run dev:backend   # Starts backend
+npm run dev:frontend  # Starts frontend
 ```
 
-### 5. Run Tests
-```bash
-# Run unit & integration tests
-npm test
-
-# Or from repository root:
-npm run test:backend
-```
+Access the frontend application at: **`http://localhost:5173`**  
+Access the backend health check at: **`http://localhost:5000/api/health`**
 
 ---
 
-## 📡 API Endpoints
+## 10. Environment Variables
 
-### System & Authentication
-- **`GET /api/health`** (Public)
-  - Returns service status, uptime, environment, and MongoDB connection state (`connected` | `disconnected` | `connecting`).
-- **`GET /api/auth/me`** (Protected)
-  - Requires Clerk Bearer token (or `x-mock-user-id` in dev/test mode). Returns authenticated user identity.
+> **SECURITY NOTICE:** Never commit actual `.env` files, production credentials, database connection passwords, or API secrets into version control.
 
-### Transactions & CSV Ingestion (Milestone 2)
-- **`GET /api/transactions/template`** (Public)
-  - Downloads a sample CSV template (`date,type,amount,category,description,reference`).
-- **`POST /api/transactions/import`** (Protected)
-  - Ingests transactions via `multipart/form-data` with form field name `file`.
-  - Supports `?allowDuplicate=true` to override duplicate file detection.
-- **`GET /api/transactions`** (Protected)
-  - Fetches paginated transactions scoped strictly to the authenticated user.
-  - Query parameters: `page`, `limit`, `type`, `category`, `startDate`, `endDate`, `search`, `sortBy`, `sortOrder`.
-
-### Deterministic Financial Analytics (Milestone 3)
-- **`GET /api/analytics/summary`** (Protected)
-  - Returns cumulative total income, total expenses, net balance (income minus expenses), transaction counts, and currency.
-  - Query parameters: `startDate`, `endDate` (optional).
-  - Semantics: Ingested net balance is clearly noted and not misrepresented as a total bank balance without opening statement balance.
-- **`GET /api/analytics/trends`** (Protected)
-  - Returns income, expenses, and net cashflow aggregated chronologically by month or day.
-  - Query parameters: `groupBy` (`day` | `month`, default `month`), `startDate`, `endDate` (optional).
-- **`GET /api/analytics/categories`** (Protected)
-  - Returns category totals, transaction counts, and percentage shares.
-  - Query parameters: `type` (`income` | `expense` | `all`, default `all`), `startDate`, `endDate` (optional).
-  - Uncategorized rows (missing, null, or whitespace) are safely aggregated as `"Uncategorized"`.
-
-### Explainable Hybrid Anomaly Detection (Milestone 4)
-- **`GET /api/anomalies`** (Protected)
-  - Fetches detected anomalies scoped to the authenticated user.
-  - Query parameters: `severity` (`critical` | `high` | `medium` | `low`), `type` (`duplicate_payment` | `expense_spike` | `irregular_frequency` | `unusual_merchant`), `isResolved` (`true` | `false`), `startDate`, `endDate`, `recompute` (`true` | `false`).
-- **`POST /api/anomalies/detect`** (Protected)
-  - Triggers or recomputes deterministic anomaly detection scan across user's transactions.
-- **`PATCH /api/anomalies/:id/resolve`** (Protected)
-  - Updates review status (`isResolved: true/false`) and records reviewer/auditor notes with audit timestamp.
-
-### Gemini Business AI Copilot (Milestone 5)
-- **`POST /api/copilot/chat`** (Protected)
-  - Evidence-grounded conversational business intelligence powered by Google Gemini.
-  - Rate-limited to 30 queries/minute per user. Scoped strictly to authenticated ledger records.
-  - Returns grounded metrics, suggested follow-ups, and actionable business recommendations.
-
----
-
-## 📅 Date Boundary Semantics
-
-All analytics endpoints implement strict, inclusive date boundary filtering:
-- **`startDate=YYYY-MM-DD`**: Evaluated inclusively from `00:00:00.000Z` on that day.
-- **`endDate=YYYY-MM-DD`**: Evaluated inclusively through `23:59:59.999Z` on that day.
-- **Validation**: Enforced via Zod. If `startDate > endDate`, returns `400 VALIDATION_ERROR` with path `startDate`.
-
----
-
-## 📥 CSV Ingestion & Idempotency Specification
-
-### Accepted Columns
-| Column | Type | Required | Description / Example |
+### Backend (`backend/.env`)
+| Variable | Description | Default / Example | Required |
 |---|---|---|---|
-| `date` | String | **Yes** | ISO-8601 (`2026-10-01`), `YYYY-MM-DD`, or `DD-MM-YYYY` |
-| `type` | String | **Yes** | `income` or `expense` (case-insensitive) |
-| `amount` | Number/String | **Yes** | Positive number, supports commas (e.g. `12500` or `"12,500.00"`) |
-| `category` | String | **Yes** | Category name (e.g. `Sales`, `Inventory`, `Rent`, `Utilities`) |
-| `description` | String | **Yes** | Transaction description (max 500 chars) |
-| `reference` | String | *Optional* | Invoice, cheque, or reference code (e.g. `INV-001`, `PO-982`) |
+| `PORT` | HTTP server listener port | `5000` | No |
+| `NODE_ENV` | Operational environment (`development`, `production`, `test`) | `development` | No |
+| `MONGODB_URI` | MongoDB connection string (local instance or Atlas cluster) | `mongodb://localhost:27017/vyapariq` | **Yes** (for persistence) |
+| `CLERK_PUBLISHABLE_KEY` | Clerk Publishable Key (`pk_test_...` or `pk_live_...`) | — | Yes (Prod Auth) |
+| `CLERK_SECRET_KEY` | Clerk Secret Key (`sk_test_...` or `sk_live_...`) | — | Yes (Prod Auth) |
+| `FRONTEND_URL` | Allowed CORS frontend origin | `http://localhost:5173` | **Yes** (in production) |
+| `GEMINI_API_KEY` | Google Gemini API Key | — | Yes (Live AI Copilot) |
+| `GEMINI_MODEL` | Gemini LLM identifier | `gemini-3.5-flash` | No |
 
-### Idempotency & Duplicate Upload Strategy
-1. **Mechanism**: Every uploaded CSV file buffer is cryptographically hashed using **SHA-256**.
-2. **Behavior**: Before processing rows, the system queries `ImportBatch` for an existing batch with the same `userId` and `fileHash`.
-   - If found, the request is immediately rejected with **HTTP 409 Conflict** (`code: 'DUPLICATE_UPLOAD'`), returning the previous batch ID and timestamp.
-   - To deliberately re-import an identical file, clients can pass `?allowDuplicate=true` or the header `x-allow-duplicate: true`.
-3. **Strategy Limitations**:
-   - **Byte-sensitivity**: Changing a single space, header capitalization, or row ordering modifies the SHA-256 hash, so partial overlaps cannot be caught by file hash alone.
-   - **Filename-insensitivity**: Files with different names but identical content are correctly recognized as duplicate uploads.
-
----
-
-## 📜 Public API Contracts & Response Examples
-
-Full TypeScript interfaces are exported in [backend/src/types/contracts.types.ts](file:///d:/Hackathon/vyapar-iq/backend/src/types/contracts.types.ts):
-
-### 1. Analytics Summary (`GET /api/analytics/summary`)
-```json
-{
-  "success": true,
-  "data": {
-    "totalIncome": 43500.75,
-    "totalExpenses": 20550.75,
-    "netBalance": 22950.0,
-    "transactionCount": 7,
-    "incomeCount": 3,
-    "expenseCount": 4,
-    "currency": "INR",
-    "period": {
-      "startDate": "2026-09-15T10:00:00.000Z",
-      "endDate": "2026-10-16T08:00:00.000Z"
-    },
-    "calculationBasis": "Calculated strictly from 7 ingested transaction(s) in scope (total income minus total expenses). Does not reflect total bank balance without verified opening balance."
-  }
-}
-```
-
-### 2. Analytics Trends (`GET /api/analytics/trends?groupBy=month`)
-```json
-{
-  "success": true,
-  "data": {
-    "groupBy": "month",
-    "period": {
-      "startDate": null,
-      "endDate": null
-    },
-    "trends": [
-      {
-        "period": "2026-09",
-        "income": 10000.0,
-        "expenses": 2500.5,
-        "netCashflow": 7499.5,
-        "transactionCount": 2
-      },
-      {
-        "period": "2026-10",
-        "income": 33500.75,
-        "expenses": 18050.25,
-        "netCashflow": 15450.5,
-        "transactionCount": 5
-      }
-    ]
-  }
-}
-```
-
-### 3. Analytics Categories (`GET /api/analytics/categories?type=all`)
-```json
-{
-  "success": true,
-  "data": {
-    "period": { "startDate": null, "endDate": null },
-    "typeFilter": "all",
-    "totalIncome": 43500.75,
-    "totalExpenses": 20550.75,
-    "categories": [
-      {
-        "category": "Sales",
-        "type": "income",
-        "totalAmount": 35000.25,
-        "transactionCount": 2,
-        "percentage": 80.46
-      },
-      {
-        "category": "Rent",
-        "type": "expense",
-        "totalAmount": 12000.0,
-        "transactionCount": 1,
-        "percentage": 58.39
-      },
-      {
-        "category": "Uncategorized",
-        "type": "expense",
-        "totalAmount": 4200.0,
-        "transactionCount": 1,
-        "percentage": 20.44
-      }
-    ],
-    "breakdown": {
-      "income": [
-        { "category": "Sales", "type": "income", "totalAmount": 35000.25, "transactionCount": 2, "percentage": 80.46 },
-        { "category": "Consulting", "type": "income", "totalAmount": 8500.5, "transactionCount": 1, "percentage": 19.54 }
-      ],
-      "expenses": [
-        { "category": "Rent", "type": "expense", "totalAmount": 12000.0, "transactionCount": 1, "percentage": 58.39 },
-        { "category": "Uncategorized", "type": "expense", "totalAmount": 4200.0, "transactionCount": 1, "percentage": 20.44 },
-        { "category": "Supplies", "type": "expense", "totalAmount": 2500.5, "transactionCount": 1, "percentage": 12.17 },
-        { "category": "Utilities", "type": "expense", "totalAmount": 1850.25, "transactionCount": 1, "percentage": 9.0 }
-      ]
-    }
-  }
-}
-```
-
-### 4. Anomaly Detection Findings (`GET /api/anomalies`)
-```json
-{
-  "success": true,
-  "data": {
-    "anomalies": [
-      {
-        "id": "673f4...",
-        "type": "duplicate_payment",
-        "severity": "critical",
-        "rule": "DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT",
-        "title": "Duplicate Payment Detected within 12 Minutes",
-        "description": "Two identical payments of ₹3,200 were recorded for \"Cardboard Box Packaging Supplies\" within 12 minutes (Refs: INV-BOX-12, UPI-REF-DUP).",
-        "detectedAt": "2026-10-05T13:22:00.000Z",
-        "transactionIds": [
-          "673f40...",
-          "673f41..."
-        ],
-        "transactionId": "673f41...",
-        "affectedAmount": 3200,
-        "confidenceScore": 0.94,
-        "riskScore": 0.94,
-        "isResolved": false,
-        "evidence": {
-          "duplicateAmount": 3200,
-          "descriptionMatch": true,
-          "timeDeltaMinutes": 12,
-          "timeDeltaHours": 0.2
-        }
-      }
-    ],
-    "summary": {
-      "total": 1,
-      "unresolved": 1,
-      "resolved": 0,
-      "critical": 1,
-      "high": 0,
-      "medium": 0,
-      "low": 0
-    }
-  }
-}
-```
-
-### 5. Copilot Chat Response (`POST /api/copilot/chat`)
-```json
-{
-  "success": true,
-  "data": {
-    "reply": "Based on your verified ledger records, your total income is **₹50,000** and total expenses are **₹23,200**, leaving a net cash balance of **₹26,800**.\n\nYour highest expenditure category is **Packaging Supplies (₹15,000, 64.7% of total expenses)**, followed by **Utilities at ₹8,200**.\n\n⚠️ Note: An unresolved duplicate payment of ₹3,200 in Utilities was flagged on Oct 5. Reviewing this could save ₹3,200.",
-    "groundedMetrics": [
-      {
-        "metric": "Total Income",
-        "value": "₹50,000",
-        "basis": "Calculated from 2 verified sales records"
-      },
-      {
-        "metric": "Total Expenses",
-        "value": "₹23,200",
-        "basis": "Calculated from 3 verified expense records"
-      },
-      {
-        "metric": "Net Balance",
-        "value": "₹26,800",
-        "basis": "Total Income minus Total Expenses"
-      }
-    ],
-    "suggestedFollowUps": [
-      "Which supplier accounted for the most packaging expenses?",
-      "Show details of the flagged duplicate payment in Utilities",
-      "What steps can reduce our recurring overhead costs?"
-    ],
-    "recommendedActions": [
-      {
-        "id": "act_review_packaging",
-        "title": "Review Packaging Supplies Supplier Terms",
-        "actionType": "review_transactions",
-        "payload": { "category": "Packaging" }
-      }
-    ],
-    "confidence": 0.95,
-    "timestamp": "2026-10-16T07:50:00.000Z",
-    "relatedAnomalies": [
-      {
-        "id": "6ad189ac0dea...",
-        "rule": "DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT",
-        "type": "duplicate_payment",
-        "severity": "high",
-        "title": "Potential Duplicate Payment in Utilities",
-        "affectedAmount": 3200,
-        "isResolved": false
-      }
-    ]
-  }
-}
-```
+### Frontend (`frontend/.env`)
+| Variable | Description | Default / Example | Required |
+|---|---|---|---|
+| `VITE_API_BASE_URL` | Base URL pointing to the Express `/api` endpoints | `http://localhost:5000/api` | **Yes** |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Client-safe Clerk publishable key (`pk_test_...`) | — | Yes (Prod Auth) |
+| `VITE_USE_MOCK_DATA` | Set to `false` to communicate with live backend | `false` | No |
 
 ---
 
-## 🧮 Explainable Anomaly Detection Rules & Scoring Model
+## 11. API Documentation
 
-Every detected anomaly generates a transparent risk score ($0.0 \le \text{Risk Score} \le 1.0$) with documented weights and empirical evidence:
+All protected endpoints require either a Clerk Bearer JWT in the `Authorization` header (`Bearer <token>`) or an active development mock header (`x-mock-user-id: <user_id>`).
 
-| Rule Key | Anomaly Type | Deterministic Logic | Transparent Risk Scoring Formula | Severity Band |
-|---|---|---|---|---|
-| `DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT` | `duplicate_payment` | Same user, same amount within 24h, high description similarity (Levenshtein / word token overlap). | $\text{score} = 0.50 \cdot T_{\text{factor}} + 0.35 \cdot D_{\text{factor}} + 0.15 \cdot A_{\text{factor}}$<br>• $T_{\text{factor}} \in [0.5, 1.0]$ based on $\Delta t$<br>• Exact matches $\le 15$ mins boosted to $\ge 0.88$ | Critical ($\le 15$m)<br>High ($\le 1$h)<br>Medium ($> 1$h) |
-| `UNUSUAL_EXPENSE_SPIKE` | `expense_spike` | Leave-one-out statistical baseline ($Z \ge 2.0$ standard deviations AND multiplier $M \ge 2.2\times$ average for category, min 3 baseline txns). | $\text{score} = \min(0.96, \max(0.50, 0.40 \cdot \min(1, \frac{Z}{4}) + 0.45 \cdot \min(1, \frac{M}{5}) + 0.15 \cdot A_{\text{factor}}))$ | Critical ($\ge 0.85$)<br>High ($0.70 - 0.85$) |
-| `REPEATED_TRANSACTION_BURST` | `irregular_frequency` | Rapid repeated transactions ($\ge 3$ within 24h) with identical amounts. | $\text{score} = 0.72$ (for 3 txns) or $0.85$ (for $\ge 4$ txns) | High / Critical |
-| `HIGH_VALUE_UNRECONCILED` | `unusual_merchant` | Outlier single expense $> ₹15,000$ with missing invoice/cheque reference. | Base $\text{score} = 0.65$ | Medium |
-| `NEGATIVE_CASHFLOW_VELOCITY` | `irregular_frequency` | Rolling 7-day outflow $> 1.8\times$ inflow and net burn $> ₹10,000$. | Base $\text{score} = 0.80$ | High |
+### System & Health
+- **`GET /api/health`** *(Public)*
+  - Returns service status, uptime, node environment, and MongoDB state (`connected`, `disconnected`).
+- **`GET /api/auth/me`** *(Protected)*
+  - Verifies user authentication and returns user identity metadata.
 
-### Severity Thresholds:
-- **Critical**: Risk Score $\ge 0.85$
-- **High**: $0.70 \le \text{Risk Score} < 0.85$
-- **Medium**: $0.50 \le \text{Risk Score} < 0.70$
-- **Low**: $\text{Risk Score} < 0.50$
+### Ledger & CSV Ingestion
+- **`GET /api/transactions/template`** *(Public)*
+  - Downloads the standardized CSV statement template with headers `date,type,amount,category,description,reference`.
+- **`POST /api/transactions/import`** *(Protected)*
+  - Accepts `multipart/form-data` with key `file`.
+  - Calculates SHA-256 file hash to reject duplicate uploads (HTTP 409 Conflict).
+  - Query parameters: `allowDuplicate=true` (optional override).
+- **`GET /api/transactions`** *(Protected)*
+  - Returns paginated transactions filtered by user.
+  - Query parameters: `page`, `limit`, `type` (`income` \| `expense`), `category`, `startDate`, `endDate`, `search`, `sortBy`, `sortOrder`.
 
-### Audit Lifecycle & Idempotent Fingerprinting:
-- Each anomaly is keyed by a deterministic SHA-256 fingerprint: `SHA256(rule + userId + sortedKeyData)`.
-- Re-running scans or re-importing statements safely performs an idempotent upsert: unresolved findings are updated with fresh confidence metadata, while user reviews (`isResolved: true`, `resolutionNotes`, `resolvedAt`) are **strictly preserved**.
+### Financial Analytics
+- **`GET /api/analytics/summary`** *(Protected)*
+  - Computes total income, total expenses, net balance, transaction counts, and calculation basis.
+  - Query parameters: `startDate`, `endDate` (ISO dates `YYYY-MM-DD`).
+- **`GET /api/analytics/trends`** *(Protected)*
+  - Aggregates income, expense, and net trajectory over time.
+  - Query parameters: `groupBy` (`day` \| `month`), `startDate`, `endDate`.
+- **`GET /api/analytics/categories`** *(Protected)*
+  - Aggregates totals and percentage shares by category.
+  - Query parameters: `type` (`income` \| `expense` \| `all`), `startDate`, `endDate`.
+
+### Forensic Anomaly Detection
+- **`GET /api/anomalies`** *(Protected)*
+  - Retrieves flagged anomaly records.
+  - Query parameters: `severity` (`critical` \| `high` \| `medium` \| `low`), `type`, `isResolved` (`true` \| `false`), `startDate`, `endDate`, `recompute` (`true` \| `false`).
+- **`POST /api/anomalies/detect`** *(Protected)*
+  - Re-triggers on-demand deterministic anomaly scan across all user transactions.
+- **`PATCH /api/anomalies/:id/resolve`** *(Protected)*
+  - Updates review status (`isResolved: boolean`) and appends resolution notes.
+
+### Business AI Copilot
+- **`POST /api/copilot/chat`** *(Protected)*
+  - Body: `{ "message": string, "context"?: object }`.
+  - Injects pre-calculated verified metrics and returns grounded reply, citations, recommended actions, and follow-up prompts.
+
+### Audit Reports & Exports
+- **`GET /api/reports/preview`** *(Protected)*
+  - Returns structured audit workpaper JSON covering financial summaries, trends, and anomaly findings.
+- **`GET /api/reports/export/pdf`** *(Protected)*
+  - Streams a binary vector PDF workpaper package generated dynamically with PDFKit.
+- **`GET /api/reports/export/csv`** *(Protected)*
+  - Streams a CSV export of all user transactions in the specified period.
+- **`GET /api/reports/export/anomalies-csv`** *(Protected)*
+  - Streams a CSV export of all flagged anomalies, risk scores, and affected amounts.
+
+### Counterparty Graph & Dashboard
+- **`GET /api/network-graph`** *(Protected)*
+  - Returns graph payload containing entity nodes (central business, counterparties) and directed transaction edges with coordinates and metrics.
+- **`GET /api/dashboard/stats`** *(Protected)*
+  - Returns high-level dashboard metrics, cashflow history, and recent ledger activity.
 
 ---
 
-## 🧪 Testing with cURL
+## 12. Data Model
 
-### 1. Financial Summary
+VyaparIQ utilizes MongoDB via Mongoose with strict multi-tenant schema isolation:
+
+### 1. `Transaction` (`transactions` collection)
+| Field | Type | Description |
+|---|---|---|
+| `userId` | String | Scoped user identifier (indexed) |
+| `date` | Date | Transaction timestamp (indexed) |
+| `type` | String | Enum: `'income'` or `'expense'` |
+| `amount` | Number | Absolute transaction value |
+| `category` | String | Category label (e.g. Sales, Rent, Inventory) |
+| `description`| String | Descriptive transaction title |
+| `reference` | String | Optional reference code (invoice, cheque, UPI ID) |
+| `batchId` | ObjectId | Reference to the associated `ImportBatch` |
+
+*Compound Index:* `{ userId: 1, date: -1 }` for high-performance timeline queries.
+
+### 2. `ImportBatch` (`importbatches` collection)
+| Field | Type | Description |
+|---|---|---|
+| `userId` | String | Scoped user identifier (indexed) |
+| `filename` | String | Original client filename |
+| `fileHash` | String | SHA-256 cryptographic hash of CSV buffer |
+| `rowCount` | Number | Total parsed rows |
+| `importedCount`| Number | Total inserted records |
+| `status` | String | `'completed'` or `'failed'` |
+| `createdAt` | Date | Batch ingestion timestamp |
+
+*Compound Index:* `{ userId: 1, fileHash: 1 }` for instant idempotency checks.
+
+### 3. `Anomaly` (`anomalies` collection)
+| Field | Type | Description |
+|---|---|---|
+| `userId` | String | Scoped user identifier (indexed) |
+| `fingerprint`| String | Deterministic SHA-256 hash preventing duplicate findings |
+| `type` | String | Enum: `duplicate_payment`, `expense_spike`, `irregular_frequency`, `unusual_merchant` |
+| `severity` | String | Enum: `critical`, `high`, `medium`, `low` |
+| `rule` | String | Triggered heuristic rule key |
+| `title` | String | Human-readable alert summary |
+| `description`| String | Detailed explanation with context |
+| `transactionIds`| ObjectId[]| Associated transaction records |
+| `affectedAmount`| Number | Financial amount involved |
+| `confidenceScore`| Number | Risk scoring metric ($0.0 \le \text{score} \le 1.0$) |
+| `isResolved` | Boolean | Human review verification state |
+| `resolutionNotes`| String | Auditor / reviewer commentary |
+
+---
+
+## 13. AI & Anomaly Detection Methodology
+
+### Deterministic vs. Generative Separation
+VyaparIQ maintains a strict firewall between math and AI:
+- **Financial Calculations are 100% Deterministic:** Net balances, cash flows, rolling averages, Z-scores, and token similarity are executed entirely via deterministic TypeScript logic.
+- **Generative AI is an Interpreter, not an Accountant:** Google Gemini receives structured, pre-computed evidence. It is strictly constrained from calculating balances or fabricating transaction data.
+
+### Anomaly Rules & Heuristic Formulas
+
+```
++--------------------------------------------------------------------------------------------------+
+| Rule 1: DUPLICATE_OR_NEAR_DUPLICATE_PAYMENT                                                      |
+| Score = 0.50 * TimeFactor + 0.35 * DescriptionSimilarity + 0.15 * AmountFactor                   |
+| If identical amount and description overlap within 15 mins -> Score boosted to >= 0.88 (Critical) |
++--------------------------------------------------------------------------------------------------+
+| Rule 2: UNUSUAL_EXPENSE_SPIKE (Leave-One-Out Category Baseline)                                  |
+| Score = min(0.96, max(0.50, 0.40 * min(1, Z/4) + 0.45 * min(1, Multiplier/5) + 0.15 * Amount))    |
+| Flagged when Z >= 2.0 standard deviations AND Multiplier >= 2.2x category average                 |
++--------------------------------------------------------------------------------------------------+
+| Rule 3: REPEATED_TRANSACTION_BURST                                                               |
+| Flagged when >= 3 identical amounts occur within 24 hours (Score = 0.72 for 3, 0.85 for >= 4)    |
++--------------------------------------------------------------------------------------------------+
+| Rule 4: HIGH_VALUE_UNRECONCILED                                                                  |
+| Outlier debit > Rs 15,000 without an invoice/cheque reference (Score = 0.65, Medium)             |
++--------------------------------------------------------------------------------------------------+
+| Rule 5: NEGATIVE_CASHFLOW_VELOCITY                                                               |
+| Rolling 7-day outflow > 1.8x inflow with net cash burn > Rs 10,000 (Score = 0.80, High)          |
++--------------------------------------------------------------------------------------------------+
+```
+
+> **STATUTORY DISCLAIMER:** Algorithmic anomaly flags and variance scores are operational indicators designed to assist human business review. They do not constitute certified statutory audit opinions, tax filings, or legal proof of fraud.
+
+---
+
+## 14. Security & Privacy
+
+1. **Strict Multi-Tenant Scoping:** Every Mongoose query is scoped by `userId`. Users cannot view or modify transactions belonging to another identity.
+2. **Anti-Prompt-Injection Guardrails:** Ingested ledger descriptions and references are sanitized before inclusion in AI prompts. XML/HTML tags are stripped, strings are length-capped, and system prompts instruct the model to ignore instructions embedded in transaction notes.
+3. **Cryptographic Idempotency:** SHA-256 file hashing prevents accidental duplicate uploads. Anomaly fingerprints ensure re-scans preserve existing reviewer notes.
+4. **Rate Limiting:** Business Copilot chat endpoints are protected by in-memory sliding-window rate limiters (30 requests/minute per user).
+5. **Security Headers & CORS:** Helmet enforces HTTP security headers, and CORS restricts browser requests to configured origins (`FRONTEND_URL`).
+6. **Shielded Error Responses:** Internal error stacks and database connection strings are never returned in client response envelopes.
+
+---
+
+## 15. Testing & Quality Checks
+
+VyaparIQ includes an automated test suite powered by **Vitest** and **Supertest**:
+
 ```bash
-# Using development mock user header
-curl -X GET "http://localhost:5000/api/analytics/summary" \
-  -H "x-mock-user-id: user_srushti_patil"
-
-# With date range filter
-curl -X GET "http://localhost:5000/api/analytics/summary?startDate=2026-10-01&endDate=2026-10-15" \
-  -H "x-mock-user-id: user_srushti_patil"
-
-# Production Clerk Bearer token
-curl -X GET "http://localhost:5000/api/analytics/summary" \
-  -H "Authorization: Bearer <CLERK_JWT_SESSION_TOKEN>"
+# Run the complete test suite
+cd backend
+npm run test
 ```
 
-### 2. Cashflow Trends
-```bash
-# Monthly trends
-curl -X GET "http://localhost:5000/api/analytics/trends?groupBy=month" \
-  -H "x-mock-user-id: user_srushti_patil"
+### Verified Test Results (All 10 Suites Passing):
+- **10/10 Test Suites Passed** (105 / 105 tests):
+  - `health.test.ts` — Public health check & 404 handler.
+  - `auth.test.ts` — Route protection and Clerk authentication middleware.
+  - `schemas.test.ts` — Zod schema validation across all input boundaries.
+  - `transactions.test.ts` — CSV ingestion, SHA-256 duplicate detection, ledger pagination, and filters.
+  - `analytics.test.ts` — Deterministic summary, cashflow trends, and category breakdown math.
+  - `anomalies.test.ts` — Heuristic detection rules, risk scoring, idempotency, and synthetic dataset scans.
+  - `copilot.test.ts` — Evidence-grounded Copilot responses, rate limiting, and prompt injection defense.
+  - `dashboard.test.ts` — Executive dashboard KPIs, zero-state handling, and data isolation.
+  - `networkGraph.test.ts` — Counterparty node extraction and directed transaction edges.
+  - `reports.test.ts` — Server-rendered PDF generation, workpaper JSON previews, and CSV exports.
 
-# Daily trends with date boundaries
-curl -X GET "http://localhost:5000/api/analytics/trends?groupBy=day&startDate=2026-10-01&endDate=2026-10-15" \
-  -H "x-mock-user-id: user_srushti_patil"
-```
-
-### 3. Category Breakdown
-```bash
-# All categories
-curl -X GET "http://localhost:5000/api/analytics/categories?type=all" \
-  -H "x-mock-user-id: user_srushti_patil"
-
-# Expense categories only
-curl -X GET "http://localhost:5000/api/analytics/categories?type=expense" \
-  -H "x-mock-user-id: user_srushti_patil"
-```
-
-### 4. Anomaly Detection & Review Lifecycle
-```bash
-# Get all unresolved anomalies
-curl -X GET "http://localhost:5000/api/anomalies?isResolved=false" \
-  -H "x-mock-user-id: user_srushti_patil"
-
-# Filter by critical severity only
-curl -X GET "http://localhost:5000/api/anomalies?severity=critical" \
-  -H "x-mock-user-id: user_srushti_patil"
-
-# Trigger on-demand anomaly scan
-curl -X POST "http://localhost:5000/api/anomalies/detect" \
-  -H "x-mock-user-id: user_srushti_patil"
-
-# Mark an anomaly as resolved with audit review notes
-curl -X PATCH "http://localhost:5000/api/anomalies/673f41ab9c/resolve" \
-  -H "x-mock-user-id: user_srushti_patil" \
-  -H "Content-Type: application/json" \
-  -d '{"isResolved": true, "resolutionNotes": "Verified with supplier: double debit refunded on Oct 8"}'
-```
-
-### 5. Gemini Business AI Copilot
-```bash
-# Ask general financial position question
-curl -X POST "http://localhost:5000/api/copilot/chat" \
-  -H "x-mock-user-id: user_srushti_patil" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "What is our net balance and what are our biggest expenses?"}'
-
-# Ask for anomaly explanation with context
-curl -X POST "http://localhost:5000/api/copilot/chat" \
-  -H "x-mock-user-id: user_srushti_patil" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "Why was the ₹3,200 packaging expense flagged as an anomaly?",
-    "context": { "category": "Packaging" }
-  }'
-```
+### TypeScript Compilation & Linting:
+- Backend: `npm run typecheck` passes with **0 errors**.
+- Frontend: `npm run typecheck` passes with **0 errors**.
+- Frontend Production Build: `npm run build` compiles Vite assets successfully.
+- Backend Production Build: `npm run build` compiles TypeScript to `dist/` with 0 errors.
 
 ---
 
-## 🤖 Gemini AI Copilot Architecture & Security (Milestone 5)
+## 16. Production Deployment Guide
 
-### 1. Hybrid Analytical Model
-VyaparIQ adopts a strict separation between deterministic financial computation and generative interpretation:
-```
-[User Ledger Data] 
-       │
-       ▼ (Deterministic Execution)
-[Analytics & Anomaly Engine] ───► Calculates net balance, category shares, Z-scores, duplicate timestamps
-       │
-       ▼ (Grounding Layer)
-[Verified Evidence Payload]  ───► Sanitized JSON inside <verified_ledger_evidence> boundary
-       │
-       ▼ (Generative Interpretation)
-[Google Gemini API]          ───► Explains patterns, cites verified grounds, suggests human business actions
-       │
-       ▼ (Zod Output Validation)
-[Safe Structured Response]   ───► Validated reply, groundedMetrics[], recommendedActions[], suggestedFollowUps[]
-```
+### Recommended Topology
+- **Frontend:** Vercel, Netlify, or Cloudflare Pages.
+- **Backend:** Render, Railway, AWS ECS, or any Node.js container platform.
+- **Database:** MongoDB Atlas (M0 Free Tier or Dedicated Cluster).
+- **Authentication:** Clerk Production Instance.
 
-### 2. Supported Business Inquiries
-The Copilot is engineered to address core business questions grounded in verified data:
-- *What are my total income, expenses, and net cash flow?*
-- *Which expense categories cost the most?*
-- *What unusual transactions were detected?*
-- *Explain this anomaly and show its supporting evidence.*
-- *What financial changes occurred during the selected period?*
-- *What practical steps could help reduce expenses?*
-- *Summarize the current business financial position.*
+### 1. MongoDB Atlas Configuration
+1. Create a cluster on [cloud.mongodb.com](https://cloud.mongodb.com).
+2. Create a database user with read/write access.
+3. Whitelist the backend hosting provider's IP addresses (or `0.0.0.0/0` with strong authentication).
+4. Copy the connection string (`mongodb+srv://<user>:<password>@cluster.mongodb.net/vyapariq?retryWrites=true&w=majority`).
 
-### 3. Enterprise Security & Anti-Prompt-Injection Safeguards
-- **Authentication & User Scoping**: Protected by Clerk JWTs in production. Every database query filters strictly by `userId`.
-- **Anti-Prompt-Injection Guardrails**: Transaction descriptions and invoice references are treated as untrusted data. HTML/XML tags are stripped, text is truncated, and system instructions explicitly command the model to ignore adversarial instructions or persona overrides embedded within ledger records.
-- **No Hallucinated Financials**: Gemini is strictly instructed never to fabricate numbers or claim an anomaly constitutes fraud or criminal misconduct.
-- **Shielded Error Handling**: Rate limits (429), timeouts (504), and provider issues (502/503) return clean, typed error envelopes without leaking API keys, tokens, or raw stack traces.
-- **In-Memory Rate Limiter**: Enforces a limit of 30 queries/minute per user to protect against automated abuse.
+### 2. Clerk Production Setup
+1. In the Clerk Dashboard, switch from Development to Production.
+2. Add your production frontend domain (e.g. `https://vyapariq.vercel.app`) to allowed redirect origins.
+3. Obtain your production **Publishable Key** (`pk_live_...`) and **Secret Key** (`sk_live_...`).
+
+### 3. Backend Deployment (e.g., Render / Railway)
+- **Root Directory:** `backend`
+- **Build Command:** `npm install && npm run build`
+- **Start Command:** `npm start` (or `node dist/server.js`)
+- **Environment Variables:**
+  ```env
+  NODE_ENV=production
+  PORT=5000
+  MONGODB_URI=mongodb+srv://...
+  CLERK_PUBLISHABLE_KEY=pk_live_...
+  CLERK_SECRET_KEY=sk_live_...
+  FRONTEND_URL=https://vyapariq.vercel.app
+  GEMINI_API_KEY=your_gemini_api_key_here
+  GEMINI_MODEL=gemini-3.5-flash
+  ```
+
+### 4. Frontend Deployment (e.g., Vercel)
+- **Root Directory:** `frontend`
+- **Framework Preset:** Vite
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Environment Variables:**
+  ```env
+  VITE_API_BASE_URL=https://your-backend-service.onrender.com/api
+  VITE_CLERK_PUBLISHABLE_KEY=pk_live_...
+  VITE_USE_MOCK_DATA=false
+  ```
+- **SPA Rewrite Rule (`vercel.json`):**
+  ```json
+  {
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  }
+  ```
 
 ---
 
-## 📂 Synthetic Test Dataset
+## 17. Known Limitations
 
-A reproducible synthetic CSV dataset with real-world edge cases and injected anomalies is provided for testing:
-- **Location**: `backend/tests/fixtures/synthetic_anomalies_test.csv`
-- **Scenarios Injected**:
-  - Baseline business transactions (Sales revenue, rent, office supplies)
-  - Duplicate payment: Two ₹3,200 packaging payments within 12 minutes
-  - Statistical expense spike: ₹5,400 power bill in Utilities (normal baseline ~₹1,200)
-  - Irregular frequency burst: Three ₹1,500 delivery courier debits within 3 hours
-  - Unreconciled high-value expense: ₹28,000 equipment payment lacking an invoice reference
+1. **Byte-Level SHA-256 Ingestion Check:** Duplicate file detection relies on the SHA-256 hash of the uploaded CSV buffer. Altering a single comma, trailing space, or column header capitalization changes the hash and bypasses the file-level duplicate check (though individual row duplicates are still flagged by anomaly detection).
+2. **Single-Currency Ingestion:** Ingested transactions are assumed to be in a consistent home currency (default: `INR / ₹`). Multi-currency conversion from live forex APIs is not implemented.
+3. **In-Memory Rate Limiter:** The Copilot chat rate limiter (30 req/min) uses an in-memory sliding window, which resets if the server process restarts. For high-availability multi-instance clusters, a distributed Redis cache is recommended.
 
 ---
 
-## 📊 Audit Reports & Compliance Export (Milestone 7)
+## 18. Contributors & AIVORA 2K26
 
-### 1. Features
-- **Deterministic Workpapers**: Integrates live ledger analytics, expense category breakdown, monthly cash flow progression, and heuristic anomaly findings into an auditable report pack.
-- **Dynamic Scope Modes**:
-  - `Reconciliation`: Focuses on bank statement matching, ledger balances, and payment verification.
-  - `Dispute Evidence`: Deep dive on duplicate payments, unusual spikes, and unresolved counterparty risks.
-  - `GST / Tax Prep`: Aggregates taxable turnovers, input tax credit schedules, and period-close summaries.
-- **Multi-Format Export**:
-  - **Vector PDF Report Pack**: Server-rendered PDF using PDFKit featuring business headers, KPI metric quad cards, anomaly evidence tables, advisory action items, statutory disclaimer, and dynamic page numbering.
-  - **Ledger CSV**: Complete export of all reconciled transactions for the selected period.
-  - **Audit Findings CSV**: Granular export of detected anomalies, confidence weights, affected amounts, and triggered rules.
-- **Enterprise Isolation & Transparency**:
-  - Strict user-level data isolation via Clerk authentication.
-  - Clear distinction between verified historical facts and automated advisory recommendations.
-  - Statutory disclaimer embedded in every export asserting that anomalies indicate variance for review and do not constitute legal proof of fraud.
+Developed for **AIVORA 2K26** (AI for Business Hackathon):
+- **Architecture, Backend API & Forensic AI Integration:** Engineering Team
+- **UI/UX & Design Tokens:** Integrated Precision Forensic Core & Odoo-inspired Design System
 
+---
 
+## 19. Disclaimer & License
+
+### Regulatory, Compliance & Review Notice
+VyaparIQ provides deterministic algorithmic heuristics, duplicate checks, statistical variance scores, and generative AI summaries strictly for operational accounting reconciliation and internal business review. Algorithmic anomaly flags and cashflow velocity metrics do not constitute certified statutory audit opinions, tax filings, or legal proof of fraud. Organizations must conduct independent verification with qualified accounting professionals prior to statutory submission.
+
+### License
+This project is licensed under the **ISC License**.
