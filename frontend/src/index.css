@@ -10,78 +10,6 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-display: 'Geist', 'Outfit', var(--font-sans);
 
-  /* Surface Elevation Hierarchy — Dark Mode (Default) */
-  --surface: #0f131c;
-  --surface-dim: #0a0e17;
-  --surface-bright: #353943;
-  --surface-container-lowest: #06080f;
-  --surface-container-low: #111827;
-  --surface-container: #181b25;
-  --surface-container-high: #1f2937;
-  --surface-container-highest: #283040;
-
-  /* Legacy Backward-Compatibility Surface Aliases */
-  --bg-primary: #06080f;
-  --bg-secondary: #111827;
-  --bg-card: #181b25;
-  --bg-card-hover: #1f2937;
-  --bg-surface: #111827;
-  --bg-input: #0a0e17;
-  --bg-canvas: #06080f;
-
-  /* Typography Colors */
-  --on-surface: #dfe2ef;
-  --on-surface-variant: #94a3b8;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  --text-inverse: #0f172a;
-
-  /* Structural 1px Boundary Lines */
-  --outline: #918fa1;
-  --outline-variant: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-card: rgba(255, 255, 255, 0.12);
-  --border-focus: #6366f1;
-  --border-hover: rgba(99, 102, 241, 0.35);
-
-  /* Primary Brand Tokens (Indigo) */
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-container: #4f46e5;
-  --on-primary: #ffffff;
-  --on-primary-container: #dad7ff;
-  --primary-light: rgba(99, 102, 241, 0.12);
-  --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #06b6d4 100%);
-  --brand-gradient-subtle: linear-gradient(135deg, rgba(79, 70, 229, 0.12) 0%, rgba(99, 102, 241, 0.04) 100%);
-
-  /* Semantic Forensic Spectrum (Strictly Functional) */
-  /* Verified / Compliant (Emerald) */
-  --tertiary: #10b981;
-  --tertiary-container: rgba(16, 185, 129, 0.15);
-  --on-tertiary: #003825;
-  --on-tertiary-container: #7df1bd;
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.12);
-
-  /* Observation / Variance / Medium Risk (Amber) */
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.12);
-
-  /* Forensic Anomaly / Critical Risk (Rose / Error) */
-  --error: #f43f5e;
-  --error-container: rgba(244, 63, 94, 0.15);
-  --on-error: #690005;
-  --on-error-container: #ffdad6;
-  --danger: #f43f5e;
-  --danger-bg: rgba(244, 63, 94, 0.12);
-
-  /* System Telemetry / Secondary Informational (Sky) */
-  --secondary: #0ea5e9;
-  --secondary-container: rgba(14, 165, 233, 0.15);
-  --info: #0ea5e9;
-  --info-bg: rgba(14, 165, 233, 0.12);
-
   /* Instrument-Grade Radii */
   --rounded-xs: 2px;
   --rounded-sm: 4px;
@@ -96,35 +24,28 @@
   --radius-lg: 8px;
   --radius-xl: 12px;
 
-  /* Shadows (Micro-ambient planar separation) */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.2);
-}
-
-/* ==========================================================================
-   Light Mode Calibration
-   Clean, high-clarity contrast for external reporting and print workflows
-   ========================================================================== */
-[data-theme="light"], .light-theme, html:not(.dark)[data-theme="light"] {
+  /* ========================================================================
+     Default Theme: Light Mode (Clean, High-Clarity Fintech SaaS Aesthetic)
+     ======================================================================== */
   --surface: #f8fafc;
   --surface-dim: #f1f5f9;
   --surface-bright: #ffffff;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #f8fafc;
-  --surface-container: #f1f5f9;
-  --surface-container-high: #e2e8f0;
-  --surface-container-highest: #cbd5e1;
+  --surface-container-lowest: #f8fafc;
+  --surface-container-low: #ffffff;
+  --surface-container: #ffffff;
+  --surface-container-high: #f1f5f9;
+  --surface-container-highest: #e2e8f0;
 
+  /* Backward-Compatibility Surface Aliases */
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-card: #ffffff;
   --bg-card-hover: #f1f5f9;
-  --bg-surface: #f1f5f9;
+  --bg-surface: #f8fafc;
   --bg-input: #ffffff;
   --bg-canvas: #f8fafc;
 
+  /* Typography Colors */
   --on-surface: #0f172a;
   --on-surface-variant: #475569;
   --text-primary: #0f172a;
@@ -132,13 +53,15 @@
   --text-muted: #64748b;
   --text-inverse: #ffffff;
 
-  --outline: #64748b;
+  /* Structural 1px Boundary Lines */
+  --outline: #94a3b8;
   --outline-variant: #e2e8f0;
   --border-subtle: #e2e8f0;
-  --border-card: #cbd5e1;
+  --border-card: #e2e8f0;
   --border-focus: #4f46e5;
-  --border-hover: rgba(79, 70, 229, 0.3);
+  --border-hover: rgba(79, 70, 229, 0.35);
 
+  /* Primary Brand Tokens (Indigo) */
   --primary: #4f46e5;
   --primary-hover: #4338ca;
   --primary-container: #4f46e5;
@@ -148,29 +71,113 @@
   --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #0284c7 100%);
   --brand-gradient-subtle: linear-gradient(135deg, rgba(79, 70, 229, 0.06) 0%, rgba(99, 102, 241, 0.02) 100%);
 
+  /* Semantic Forensic Spectrum (Strictly Functional) */
+  /* Verified / Compliant (Emerald) */
   --tertiary: #059669;
   --tertiary-container: rgba(5, 150, 105, 0.1);
+  --on-tertiary: #ffffff;
   --on-tertiary-container: #065f46;
   --success: #059669;
   --success-bg: rgba(5, 150, 105, 0.08);
 
+  /* Observation / Variance / Medium Risk (Amber) */
   --warning: #d97706;
   --warning-bg: rgba(217, 119, 6, 0.08);
 
+  /* Forensic Anomaly / Critical Risk (Rose / Error) */
   --error: #e11d48;
   --error-container: rgba(225, 29, 72, 0.08);
+  --on-error: #ffffff;
+  --on-error-container: #881337;
   --danger: #e11d48;
   --danger-bg: rgba(225, 29, 72, 0.08);
 
+  /* System Telemetry / Secondary Informational (Sky) */
   --secondary: #0284c7;
   --secondary-container: rgba(2, 132, 199, 0.08);
   --info: #0284c7;
   --info-bg: rgba(2, 132, 199, 0.08);
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  /* Shadows (Micro-ambient planar separation) */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
   --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.12);
-  --shadow-glow: 0 0 16px rgba(79, 70, 229, 0.12);
+  --shadow-glow: 0 0 16px rgba(79, 70, 229, 0.14);
+  --preview-shadow: 0 20px 45px -15px rgba(15, 23, 42, 0.14);
+}
+
+/* ==========================================================================
+   Dark Mode Forensic Tokens (User Selectable)
+   Preserved precision forensic core aesthetic for night and low-light work
+   ========================================================================== */
+[data-theme="dark"], .dark-theme, .dark, html.dark {
+  --surface: #0f131c;
+  --surface-dim: #0a0e17;
+  --surface-bright: #353943;
+  --surface-container-lowest: #06080f;
+  --surface-container-low: #111827;
+  --surface-container: #181b25;
+  --surface-container-high: #1f2937;
+  --surface-container-highest: #283040;
+
+  --bg-primary: #06080f;
+  --bg-secondary: #111827;
+  --bg-card: #181b25;
+  --bg-card-hover: #1f2937;
+  --bg-surface: #111827;
+  --bg-input: #0a0e17;
+  --bg-canvas: #06080f;
+
+  --on-surface: #dfe2ef;
+  --on-surface-variant: #94a3b8;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  --outline: #918fa1;
+  --outline-variant: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-card: rgba(255, 255, 255, 0.12);
+  --border-focus: #6366f1;
+  --border-hover: rgba(99, 102, 241, 0.35);
+
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-container: #4f46e5;
+  --on-primary: #ffffff;
+  --on-primary-container: #dad7ff;
+  --primary-light: rgba(99, 102, 241, 0.12);
+  --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #06b6d4 100%);
+  --brand-gradient-subtle: linear-gradient(135deg, rgba(79, 70, 229, 0.12) 0%, rgba(99, 102, 241, 0.04) 100%);
+
+  --tertiary: #10b981;
+  --tertiary-container: rgba(16, 185, 129, 0.15);
+  --on-tertiary: #003825;
+  --on-tertiary-container: #7df1bd;
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.12);
+
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+
+  --error: #f43f5e;
+  --error-container: rgba(244, 63, 94, 0.15);
+  --on-error: #690005;
+  --on-error-container: #ffdad6;
+  --danger: #f43f5e;
+  --danger-bg: rgba(244, 63, 94, 0.12);
+
+  --secondary: #0ea5e9;
+  --secondary-container: rgba(14, 165, 233, 0.15);
+  --info: #0ea5e9;
+  --info-bg: rgba(14, 165, 233, 0.12);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.2);
+  --preview-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7);
 }
 
 /* ==========================================================================
@@ -616,7 +623,7 @@ kbd {
 }
 
 .data-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-container-high);
 }
 
 .data-table .num-cell {
@@ -719,7 +726,7 @@ kbd {
   color: var(--primary);
   padding: 2px 8px;
   border-radius: 9999px;
-  background-color: var(--primary-container);
+  background-color: var(--primary-light);
 }
 
 .landing-typewriter-wrap {
@@ -764,7 +771,7 @@ kbd {
   max-width: 1160px;
   border-radius: var(--rounded-xl);
   border: 1px solid var(--outline-variant);
-  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--preview-shadow);
   overflow: hidden;
   background: var(--surface-container-low);
 }
@@ -799,13 +806,15 @@ kbd {
   background: var(--surface-container-low);
   border: 1px solid var(--outline-variant);
   border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-sm);
   backdrop-filter: blur(12px);
-  transition: transform 0.15s, border-color 0.15s;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
 .feature-card:hover {
   transform: translateY(-2px);
   border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .workflow-section {
@@ -820,6 +829,7 @@ kbd {
   background: var(--surface-container-low);
   border: 1px solid var(--outline-variant);
   border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .step-number {

@@ -89,9 +89,9 @@ export const FindingsPage: React.FC = () => {
               padding: '2px 8px',
               borderRadius: '9999px',
               fontSize: '0.74rem',
-              backgroundColor: 'rgba(99, 102, 241, 0.15)',
-              border: '1px solid rgba(99, 102, 241, 0.3)',
-              color: '#A5B4FC',
+              backgroundColor: 'var(--primary-light)',
+              border: '1px solid var(--border-hover)',
+              color: 'var(--primary)',
               fontWeight: 600,
             }}
           >
@@ -118,7 +118,7 @@ export const FindingsPage: React.FC = () => {
           gap: '10px',
         }}
       >
-        <span style={{ color: '#F59E0B', fontSize: '1rem' }}>ℹ️</span>
+        <span style={{ color: 'var(--warning)', fontSize: '1rem' }}>ℹ️</span>
         <span>
           <strong>Audit Review Notice:</strong> Flagged findings reflect statistical pattern anomalies and deterministic threshold triggers for accounting verification. Anomaly detection does NOT confirm or imply fraudulent intent.
         </span>
@@ -137,17 +137,17 @@ export const FindingsPage: React.FC = () => {
           <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Total Detected</span>
           <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-primary)' }}>{data.summary.total}</div>
         </div>
-        <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid #EF4444' }}>
-          <span style={{ fontSize: '0.78rem', color: '#F87171' }}>Critical Flags</span>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#EF4444' }}>{data.summary.critical}</div>
+        <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid var(--error)' }}>
+          <span style={{ fontSize: '0.78rem', color: 'var(--error)' }}>Critical Flags</span>
+          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--error)' }}>{data.summary.critical}</div>
         </div>
-        <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid #F59E0B' }}>
-          <span style={{ fontSize: '0.78rem', color: '#FBBF24' }}>High Priority</span>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#F59E0B' }}>{data.summary.high}</div>
+        <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid var(--warning)' }}>
+          <span style={{ fontSize: '0.78rem', color: 'var(--warning)' }}>High Priority</span>
+          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--warning)' }}>{data.summary.high}</div>
         </div>
-        <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid #06B6D4' }}>
-          <span style={{ fontSize: '0.78rem', color: '#38BDF8' }}>Medium Warnings</span>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#06B6D4' }}>{data.summary.medium}</div>
+        <div className="glass-panel" style={{ padding: '16px 20px', borderLeft: '4px solid var(--secondary)' }}>
+          <span style={{ fontSize: '0.78rem', color: 'var(--secondary)' }}>Medium Warnings</span>
+          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--secondary)' }}>{data.summary.medium}</div>
         </div>
       </div>
 
@@ -163,9 +163,11 @@ export const FindingsPage: React.FC = () => {
               fontSize: '0.82rem',
               fontWeight: 600,
               textTransform: 'capitalize',
-              color: filter === f ? '#FFFFFF' : 'var(--text-muted)',
-              backgroundColor: filter === f ? 'rgba(99, 102, 241, 0.25)' : 'var(--bg-surface)',
-              border: filter === f ? '1px solid var(--primary)' : '1px solid var(--border-subtle)',
+              color: filter === f ? 'var(--on-primary)' : 'var(--text-muted)',
+              backgroundColor: filter === f ? 'var(--primary)' : 'var(--surface-container-high)',
+              border: filter === f ? '1px solid var(--primary)' : '1px solid var(--outline-variant)',
+              boxShadow: filter === f ? 'var(--shadow-sm)' : 'none',
+              transition: 'all 0.15s ease',
             }}
           >
             {f}

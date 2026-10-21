@@ -9,10 +9,12 @@ import {
   Download,
   FileText,
   LogIn,
+  Moon,
   Network,
   Shield,
   ShieldAlert,
   Sparkles,
+  Sun,
   TrendingUp,
   UploadCloud,
   UserPlus,
@@ -24,12 +26,14 @@ import { CashflowChart } from '../components/dashboard/CashflowChart';
 import { LandingFaqChatbot } from '../components/landing/LandingFaqChatbot';
 import { LandingTypewriter } from '../components/landing/LandingTypewriter';
 import { useAppAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { mockDashboardData } from '../mocks/mockDashboard';
 import { transactionsService } from '../services/transactions.service';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const { isSignedIn, isMockMode, user } = useAppAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleDownloadTemplate = async () => {
     try {
@@ -92,8 +96,30 @@ export const LandingPage: React.FC = () => {
           </Link003>
         </nav>
 
-        {/* CTA & Authentication Buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* CTA, Theme Toggle & Authentication Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Header Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '34px',
+              height: '34px',
+              borderRadius: 'var(--rounded-sm)',
+              backgroundColor: 'var(--surface-container-high)',
+              color: 'var(--on-surface-variant)',
+              border: '1px solid var(--outline-variant)',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
+            aria-label="Toggle light or dark theme"
+          >
+            {theme === 'dark' ? <Sun size={16} color="#FBBF24" /> : <Moon size={16} color="var(--primary)" />}
+          </button>
+
           {isSignedIn ? (
             <>
               <button
@@ -397,8 +423,8 @@ export const LandingPage: React.FC = () => {
                 width: '44px',
                 height: '44px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                color: '#EF4444',
+                backgroundColor: 'var(--error-container)',
+                color: 'var(--error)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -489,8 +515,8 @@ export const LandingPage: React.FC = () => {
                 width: '44px',
                 height: '44px',
                 borderRadius: '12px',
-                backgroundColor: 'rgba(139, 92, 246, 0.15)',
-                color: '#A78BFA',
+                backgroundColor: 'var(--primary-light)',
+                color: 'var(--primary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

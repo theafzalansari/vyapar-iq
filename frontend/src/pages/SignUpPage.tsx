@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SignUp } from '@clerk/clerk-react';
-import { ArrowLeft, CheckCircle2, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Moon, ShieldCheck, Sparkles, Sun, Zap } from 'lucide-react';
 import { useAppAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export const SignUpPage: React.FC = () => {
   const { hasClerkKey, isMockMode, isSignedIn } = useAppAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -81,25 +83,48 @@ export const SignUpPage: React.FC = () => {
           </span>
         </Link>
 
-        <Link
-          to="/"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.86rem',
-            color: 'var(--text-secondary)',
-            fontWeight: 500,
-            textDecoration: 'none',
-            padding: '8px 14px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-surface)',
-            border: '1px solid var(--border-subtle)',
-          }}
-        >
-          <ArrowLeft size={16} />
-          <span>Back to Home</span>
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={toggleTheme}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '36px',
+              height: '36px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--surface-container-high)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border-subtle)',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
+            aria-label="Toggle light or dark theme"
+          >
+            {theme === 'dark' ? <Sun size={16} color="#FBBF24" /> : <Moon size={16} color="var(--primary)" />}
+          </button>
+
+          <Link
+            to="/"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.86rem',
+              color: 'var(--text-secondary)',
+              fontWeight: 500,
+              textDecoration: 'none',
+              padding: '8px 14px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border-subtle)',
+            }}
+          >
+            <ArrowLeft size={16} />
+            <span>Back to Home</span>
+          </Link>
+        </div>
       </header>
 
       {/* Main Content Area */}

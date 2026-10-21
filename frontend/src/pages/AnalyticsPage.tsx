@@ -191,7 +191,7 @@ export const AnalyticsPage: React.FC = () => {
                 style={{
                   fontSize: '1.75rem',
                   fontWeight: 700,
-                  color: summary.netBalance >= 0 ? '#38BDF8' : '#F43F5E',
+                  color: summary.netBalance >= 0 ? 'var(--secondary)' : 'var(--error)',
                   marginTop: '4px',
                 }}
               >
@@ -278,7 +278,7 @@ export const AnalyticsPage: React.FC = () => {
                       <div
                         style={{
                           height: '6px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                          backgroundColor: 'var(--surface-container-highest)',
                           borderRadius: '3px',
                           overflow: 'hidden',
                         }}
@@ -324,16 +324,16 @@ export const AnalyticsPage: React.FC = () => {
                           key={point.period}
                           style={{
                             borderBottom: '1px solid var(--border-subtle)',
-                            backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+                            backgroundColor: idx % 2 === 0 ? 'var(--surface-container-high)' : 'transparent',
                           }}
                         >
                           <td style={{ padding: '10px 12px', fontWeight: 600, color: 'var(--text-primary)' }}>
                             {point.period}
                           </td>
-                          <td style={{ padding: '10px 12px', textAlign: 'right', color: '#10B981' }}>
+                          <td style={{ padding: '10px 12px', textAlign: 'right', color: 'var(--success)' }}>
                             ₹{point.income.toLocaleString('en-IN')}
                           </td>
-                          <td style={{ padding: '10px 12px', textAlign: 'right', color: '#F43F5E' }}>
+                          <td style={{ padding: '10px 12px', textAlign: 'right', color: 'var(--error)' }}>
                             ₹{point.expenses.toLocaleString('en-IN')}
                           </td>
                           <td
@@ -341,7 +341,7 @@ export const AnalyticsPage: React.FC = () => {
                               padding: '10px 12px',
                               textAlign: 'right',
                               fontWeight: 600,
-                              color: point.netCashflow >= 0 ? '#38BDF8' : '#F43F5E',
+                              color: point.netCashflow >= 0 ? 'var(--secondary)' : 'var(--error)',
                             }}
                           >
                             ₹{point.netCashflow.toLocaleString('en-IN')}

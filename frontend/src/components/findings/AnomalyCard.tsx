@@ -37,7 +37,7 @@ export const AnomalyCard: React.FC<AnomalyCardProps> = ({ anomaly, onResolve }) 
             <span
               style={{
                 fontSize: '0.78rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                backgroundColor: 'var(--surface-container-high)',
                 padding: '2px 8px',
                 borderRadius: '4px',
                 color: 'var(--text-muted)',
@@ -60,7 +60,7 @@ export const AnomalyCard: React.FC<AnomalyCardProps> = ({ anomaly, onResolve }) 
         {anomaly.affectedAmount && (
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Disputed Impact</span>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#F87171' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--error)' }}>
               ₹{anomaly.affectedAmount.toLocaleString()}
             </div>
           </div>
@@ -78,7 +78,7 @@ export const AnomalyCard: React.FC<AnomalyCardProps> = ({ anomaly, onResolve }) 
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
-            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+            backgroundColor: 'var(--surface-container-high)',
             border: '1px solid var(--border-subtle)',
             borderRadius: '6px',
             padding: '4px 10px',

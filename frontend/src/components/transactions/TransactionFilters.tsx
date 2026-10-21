@@ -88,8 +88,9 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
                 fontSize: '0.82rem',
                 fontWeight: 600,
                 textTransform: 'capitalize',
-                color: typeFilter === t ? '#FFFFFF' : 'var(--text-muted)',
-                backgroundColor: typeFilter === t ? 'rgba(99, 102, 241, 0.3)' : 'transparent',
+                color: typeFilter === t ? 'var(--on-primary)' : 'var(--text-muted)',
+                backgroundColor: typeFilter === t ? 'var(--primary)' : 'transparent',
+                boxShadow: typeFilter === t ? 'var(--shadow-sm)' : 'none',
                 transition: 'all 0.15s',
               }}
             >

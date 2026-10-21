@@ -64,7 +64,7 @@ export const RecentTransactionsWidget: React.FC<RecentTransactionsWidgetProps> =
                     style={{
                       textAlign: 'right',
                       fontWeight: 600,
-                      color: isIncome ? 'var(--success)' : '#FFFFFF',
+                      color: isIncome ? 'var(--success)' : 'var(--text-primary)',
                     }}
                   >
                     {isIncome ? `+₹${tx.amount.toLocaleString()}` : `-₹${tx.amount.toLocaleString()}`}

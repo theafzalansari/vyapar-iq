@@ -30,7 +30,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({ data, icon }) => {
             style={{
               padding: '8px',
               borderRadius: '8px',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              backgroundColor: 'var(--surface-container-high)',
               color: 'var(--text-secondary)',
             }}
           >
@@ -62,7 +62,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({ data, icon }) => {
                 ? 'var(--success-bg)'
                 : isNegative
                 ? 'var(--danger-bg)'
-                : 'rgba(255, 255, 255, 0.08)',
+                : 'var(--surface-container-high)',
               color: isPositive
                 ? 'var(--success)'
                 : isNegative

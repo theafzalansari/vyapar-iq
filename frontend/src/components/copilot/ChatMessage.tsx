@@ -124,9 +124,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onSelectPromp
                       fontSize: '0.78rem',
                       padding: '4px 10px',
                       borderRadius: '9999px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                      color: '#A5B4FC',
-                      border: '1px solid rgba(99, 102, 241, 0.25)',
+                      backgroundColor: 'var(--primary-light)',
+                      color: 'var(--primary)',
+                      border: '1px solid var(--border-hover)',
+                      fontWeight: 500,
                       cursor: 'pointer',
                     }}
                   >

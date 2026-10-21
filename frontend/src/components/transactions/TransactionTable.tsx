@@ -86,7 +86,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                       style={{
                         fontSize: '0.82rem',
                         padding: '3px 8px',
-                        backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                        backgroundColor: 'var(--surface-container-high)',
                         borderRadius: '4px',
                         border: '1px solid var(--border-subtle)',
                       }}
@@ -110,7 +110,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                           tx.status === 'completed'
                             ? 'var(--success)'
                             : tx.status === 'flagged'
-                            ? '#F87171'
+                            ? 'var(--error)'
                             : 'var(--text-muted)',
                       }}
                     >
@@ -122,7 +122,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                       textAlign: 'right',
                       fontWeight: 700,
                       fontSize: '0.94rem',
-                      color: isIncome ? 'var(--success)' : '#FFFFFF',
+                      color: isIncome ? 'var(--success)' : 'var(--text-primary)',
                     }}
                   >
                     {isIncome ? `+₹${tx.amount.toLocaleString()}` : `-₹${tx.amount.toLocaleString()}`}

@@ -28,8 +28,8 @@ export const PromptChips: React.FC<PromptChipsProps> = ({ prompts, onSelectPromp
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = 'var(--primary)';
-            e.currentTarget.style.color = '#FFFFFF';
-            e.currentTarget.style.backgroundColor = 'rgba(99, 102, 241, 0.15)';
+            e.currentTarget.style.color = 'var(--primary)';
+            e.currentTarget.style.backgroundColor = 'var(--primary-light)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = 'var(--border-card)';

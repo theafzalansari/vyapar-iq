@@ -9,7 +9,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: 'dark',
+  theme: 'light',
   setTheme: () => {},
   toggleTheme: () => {},
 });
@@ -21,10 +21,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const saved = localStorage.getItem(THEME_STORAGE_KEY);
       if (saved === 'dark' || saved === 'light') return saved;
-      // Default to dark for fintech SaaS aesthetic
-      return 'dark';
+      // Default to light for clean fintech SaaS aesthetic
+      return 'light';
     } catch {
-      return 'dark';
+      return 'light';
     }
   });
 

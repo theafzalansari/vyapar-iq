@@ -145,7 +145,7 @@ export const AppAuthProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const clerkAppearance = useMemo(
     () => ({
       variables: {
-        colorPrimary: '#6366F1',
+        colorPrimary: theme === 'dark' ? '#6366F1' : '#4F46E5',
         colorBackground: theme === 'dark' ? '#111827' : '#FFFFFF',
         colorText: theme === 'dark' ? '#F8FAFC' : '#0F172A',
         colorTextSecondary: theme === 'dark' ? '#94A3B8' : '#64748B',
@@ -158,7 +158,7 @@ export const AppAuthProvider: React.FC<{ children: React.ReactNode }> = ({ child
         card: {
           backgroundColor: theme === 'dark' ? '#111827' : '#FFFFFF',
           border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid #E2E8F0',
-          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.35)',
+          boxShadow: theme === 'dark' ? '0 10px 30px rgba(0, 0, 0, 0.35)' : '0 10px 30px rgba(15, 23, 42, 0.08)',
         },
         headerTitle: {
           color: theme === 'dark' ? '#F8FAFC' : '#0F172A',

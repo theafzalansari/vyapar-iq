@@ -49,7 +49,7 @@ export const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ categories }
               width: '100%',
               height: '6px',
               borderRadius: '9999px',
-              backgroundColor: 'rgba(255, 255, 255, 0.06)',
+              backgroundColor: 'var(--surface-container-highest)',
               overflow: 'hidden',
             }}
           >

@@ -20,7 +20,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
         width,
         height,
         borderRadius,
-        backgroundColor: 'rgba(255, 255, 255, 0.06)',
+        backgroundColor: 'var(--surface-container-high)',
       }}
     />
   );
